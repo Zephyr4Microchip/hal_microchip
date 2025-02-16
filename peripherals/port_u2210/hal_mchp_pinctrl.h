@@ -1,38 +1,70 @@
 /*
- * Copyright (c) [2025] [Microchip Technology Inc.]
+ * Copyright (c) 2025 Microchip Technology Inc.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @file
+/**
+ * @file hal_mchp_pinctrl.h
  * @brief Microchip MCU family I/O Pin Controller hal functions(PORT)
+ *
+ * This file provides the implementation of pin control functions
+ * for Microchip-based systems.
  */
 
-#ifndef _HAL_MCHP_PINCTRL_H_
-#define _HAL_MCHP_PINCTRL_H_
+#ifndef PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_
+#define PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_
 
+/**
+ * @brief Union representing pin control configuration.
+ *
+ * This union allows access to pin control configuration either as individual
+ * bit fields or as a single 32-bit value.
+ */
 typedef union {
+	/* Structure used for pinmux and flag access */
 	struct {
-		uint32_t fpull_up: 1;        /*!< bit:  0 */
-		uint32_t fpull_down: 1;      /*!< bit:  1 */
-		uint32_t foutput_enable: 1;  /*!< bit:  2 */
-		uint32_t finput_enable: 1;   /*!< bit:  3 */
-		uint32_t fopen_drain: 1;     /*!< bit:  4 */
-		uint32_t fdrive_strength: 1; /*!< bit:  5 */
-		uint32_t reserved: 10;       /*!< bit:  6.. 15 */
-		uint32_t port: 4;            /*!< bit:  16.. 19 */
-		uint32_t pinnum: 5;          /*!< bit:  20.. 24 */
-		uint32_t func: 3;            /*!< bit:  25.. 27  PORT Event Pin Identifier 0  */
-		uint32_t pinmux: 4;          /*!< bit:  28.. 31  Pinmux function  */
-	} soc_pin;                           /*!< Structure used for pinmux and flag access */
+		/* Pull-up resistor enable flag */
+		uint32_t fpull_up: 1;
+		/* Pull-down resistor enable flag */
+		uint32_t fpull_down: 1;
+		/* Output enable flag */
+		uint32_t foutput_enable: 1;
+		/* Input enable flag */
+		uint32_t finput_enable: 1;
+		/* Open-drain enable flag */
+		uint32_t fopen_drain: 1;
+		/* Drive strength enable flag */
+		uint32_t fdrive_strength: 1;
+		/* Reserved bits */
+		uint32_t reserved: 10;
+		/* Port number */
+		uint32_t port: 4;
+		/* Pin number */
+		uint32_t pinnum: 5;
+		/* PORT Event Pin Identifier */
+		uint32_t func: 3;
+		/* Pinmux function */
+		uint32_t pinmux: 4;
+	} soc_pin;
+	/* Union member to access all bits as a single uint32_t */
 	uint32_t pinctrl_soc_bits;
-} pinctrl_pin_un_t;
+} pinctrl_pin_t;
 
-/* set pinmux registers using odd/even logic */
+/**
+ * @brief Set pinmux registers using odd/even logic
+ *
+ * This function configures the pinmux registers for a given pin based on
+ * the provided pin control information. It determines whether the pin number
+ * is odd or even and sets the appropriate bits in the PORT_PMUX register.
+ *
+ * @param hal Pointer to the pin control information
+ * @param reg Pointer to the base address of the port group registers
+ */
 static inline void hal_mchp_pinctrl_pinmux(const uint32_t *hal, const uint32_t *reg)
 {
 	port_group_registers_t *pRegister;
-	pinctrl_pin_un_t pinctrl_dts_info;
+	pinctrl_pin_t pinctrl_dts_info;
 
 	pinctrl_dts_info.pinctrl_soc_bits = *hal;
 	bool is_odd = (pinctrl_dts_info.soc_pin.pinnum) & 1;
@@ -52,10 +84,19 @@ static inline void hal_mchp_pinctrl_pinmux(const uint32_t *hal, const uint32_t *
 	pRegister->PORT_PINCFG[pinctrl_dts_info.soc_pin.pinnum] |= (uint8_t)PORT_PINCFG_PMUXEN_Msk;
 }
 
-/* set all pin configuration registers by checking the flags */
+/**
+ * @brief Set all pin configuration registers by checking the flags
+ *
+ * This function configures various pin settings such as pull-up, pull-down,
+ * input enable, output enable, and drive strength based on the provided
+ * pin control information.
+ *
+ * @param hal Pointer to the pin control information
+ * @param reg Pointer to the base address of the port group registers
+ */
 static inline void hal_mchp_pinctrl_set_flags(const uint32_t *hal, const uint32_t *reg)
 {
-	pinctrl_pin_un_t pinctrl_dts_info;
+	pinctrl_pin_t pinctrl_dts_info;
 
 	pinctrl_dts_info.pinctrl_soc_bits = *hal;
 	port_group_registers_t *pRegister =
@@ -85,4 +126,4 @@ static inline void hal_mchp_pinctrl_set_flags(const uint32_t *hal, const uint32_
 	}
 }
 
-#endif /* _HAL_MCHP_PINCTRL_H_ */
+#endif /* PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_ */
