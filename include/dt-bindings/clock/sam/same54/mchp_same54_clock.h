@@ -1,7 +1,16 @@
 /*
- * Copyright (c) [2024] [Microchip Technology Inc.]
+ * Copyright (c) 2025 Microchip Technology Inc.
  *
  * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * @file mchp_same54_clock.h
+ * @brief Clock control driver DT-bindings for Microchip devices.
+ *
+ * This header file defines the macros for clock controllers, which can
+ * be used in device tree nodes for configuring and managing clocks on
+ * Microchip-based systems.
  */
 
 #ifndef INCLUDE_DT_BINDINGS_CLOCK_MCHP_SAME54_CLOCK_H_
@@ -10,6 +19,8 @@
 /** @brief Clocks handled by the CLK peripheral.
  *
  * This has to be in sync with clock_control subsys ids.
+ * Do not use 0 for any of the clocks since it is reserved
+ * for indicating all clocks in a subsys.
  */
 
 /* OSCCTRL Clock Controller */
@@ -30,7 +41,7 @@
 #define CLOCK_MCHP_SAME54_OSC32KCTRL_OSCULP32K_OUT1K  6
 #define CLOCK_MCHP_SAME54_OSC32KCTRL_RTC              7
 
-/* GCLK Controller */
+/* GCLK Generator Controller */
 #define CLOCK_MCHP_SAME54_GCLK_GEN0  1
 #define CLOCK_MCHP_SAME54_GCLK_GEN1  2
 #define CLOCK_MCHP_SAME54_GCLK_GEN2  3
@@ -44,7 +55,7 @@
 #define CLOCK_MCHP_SAME54_GCLK_GEN10 11
 #define CLOCK_MCHP_SAME54_GCLK_GEN11 12
 
-/* Peripheral Clocks which needs GCLK as input */
+/* GCLK Peripheral Clocks which needs GCLK as input */
 #define CLOCK_MCHP_SAME54_GCLK_OSCCTRL_DFLL48 13
 #define CLOCK_MCHP_SAME54_GCLK_OSCCTRL_FDPLL0 14
 #define CLOCK_MCHP_SAME54_GCLK_OSCCTRL_FDPLL1 15
@@ -98,7 +109,7 @@
 #define CLOCK_MCHP_SAME54_MCLK_CPU 1
 #define CLOCK_MCHP_SAME54_MCLK_HS  2
 
-/* AHB Clock */
+/* MCLK AHB Clocks */
 #define CLOCK_MCHP_SAME54_MCLK_AHB_HPB0             3
 #define CLOCK_MCHP_SAME54_MCLK_AHB_HPB1             4
 #define CLOCK_MCHP_SAME54_MCLK_AHB_HPB2             5
@@ -120,7 +131,7 @@
 #define CLOCK_MCHP_SAME54_MCLK_AHB_NVMCTRL_SMEEPROM 21
 #define CLOCK_MCHP_SAME54_MCLK_AHB_NVMCTRL_CACHE    22
 
-/* APBA Clocks */
+/* MCLK APBA Clocks */
 #define CLOCK_MCHP_SAME54_MCLK_APBA_PAC        23
 #define CLOCK_MCHP_SAME54_MCLK_APBA_PM         24
 #define CLOCK_MCHP_SAME54_MCLK_APBA_MCLK       25
@@ -138,7 +149,7 @@
 #define CLOCK_MCHP_SAME54_MCLK_APBA_TC0        37
 #define CLOCK_MCHP_SAME54_MCLK_APBA_TC1        38
 
-/* APBB Clocks */
+/* MCLK APBB Clocks */
 #define CLOCK_MCHP_SAME54_MCLK_APBB_USB     39
 #define CLOCK_MCHP_SAME54_MCLK_APBB_DSU     40
 #define CLOCK_MCHP_SAME54_MCLK_APBB_NVMCTRL 41
@@ -152,7 +163,7 @@
 #define CLOCK_MCHP_SAME54_MCLK_APBB_TC3     49
 #define CLOCK_MCHP_SAME54_MCLK_APBB_RAMECC  50
 
-/* APBC Clocks */
+/* MCLK APBC Clocks */
 #define CLOCK_MCHP_SAME54_MCLK_APBC_GMAC 51
 #define CLOCK_MCHP_SAME54_MCLK_APBC_TCC2 52
 #define CLOCK_MCHP_SAME54_MCLK_APBC_TCC3 53
@@ -166,7 +177,7 @@
 #define CLOCK_MCHP_SAME54_MCLK_APBC_QSPI 61
 #define CLOCK_MCHP_SAME54_MCLK_APBC_CCL  62
 
-/* APBD Clocks */
+/* MCLK APBD Clocks */
 #define CLOCK_MCHP_SAME54_MCLK_APBD_SERCOM4 63
 #define CLOCK_MCHP_SAME54_MCLK_APBD_SERCOM5 64
 #define CLOCK_MCHP_SAME54_MCLK_APBD_SERCOM6 65
