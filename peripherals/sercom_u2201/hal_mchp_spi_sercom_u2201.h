@@ -310,3 +310,5 @@ hal_mchp_spi_get_dma_dest_addr(const struct hal_mchp_spi *hal)
 {
 	return ((void *)&(hal->mregs->SERCOM_DATA));
 }
+
+#endif /* MICROCHIP_HAL_SPI_SERCOM_U2201_H_ */
