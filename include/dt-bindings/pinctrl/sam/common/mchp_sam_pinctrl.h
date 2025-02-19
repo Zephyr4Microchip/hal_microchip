@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#ifndef _DT_BINDINGS_MCHP_SAM_PINCTRL_H_
-#define _DT_BINDINGS_MCHP_SAM_PINCTRL_H_
+#ifndef MICROCHIP_MCHP_SAM_PINCTRL_H_
+#define MICROCHIP_MCHP_SAM_PINCTRL_H_
 
 #define SAM_PINMUX_PORT_a 0U
 #define SAM_PINMUX_PORT_b 1U
@@ -140,4 +140,4 @@
 #define SAM_PINMUX_PERIPH_GET(pincfg)                                                              \
 	((SAM_PINMUX_GET(pincfg) >> SAM_PINMUX_PERIPH_POS) & SAM_PINMUX_PERIPH_MSK)
 
-#endif /* _DT_BINDINGS_MCHP_SAM_PINCTRL_H_ */
+#endif /* MICROCHIP_MCHP_SAM_PINCTRL_H_ */
