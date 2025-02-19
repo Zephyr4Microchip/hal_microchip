@@ -5,12 +5,12 @@
  */
 
 /**
- * @file hal_mchp_uart.h
+ * @file hal_mchp_uart_sercom_u2201.h
  * @brief HAL functions for sercom_u2201 UART.
  */
 
-#ifndef _HAL_MCHP_UART_H_
-#define _HAL_MCHP_UART_H_
+#ifndef MICROCHIP_HAL_MCHP_UART_SERCOM_U2201_H_
+#define MICROCHIP_HAL_MCHP_UART_SERCOM_U2201_H_
 
 /**
  * @brief Wait for synchronization of the UART.
@@ -222,31 +222,6 @@ static inline void hal_mchp_uart_set_lsb_first(const hal_mchp_uart_t *hal, bool 
 			hal->regs->USART_EXT.SERCOM_CTRLA |= SERCOM_USART_EXT_CTRLA_DORD_Msk;
 		} else {
 			hal->regs->USART_EXT.SERCOM_CTRLA &= ~SERCOM_USART_EXT_CTRLA_DORD_Msk;
-		}
-	}
-
-	hal_mchp_uart_wait_sync(hal);
-}
-
-/**
- * @brief Enable or disable collision detection for the UART.
- *
- * @param hal Pointer to the hal_mchp_uart structure.
- * @param enable Boolean to enable or disable collision detection.
- */
-static inline void hal_mchp_uart_enable_collision_detect(const hal_mchp_uart_t *hal, bool enable)
-{
-	if (hal->is_clock_internal == true) {
-		if (enable) {
-			hal->regs->USART_INT.SERCOM_CTRLB |= SERCOM_USART_INT_CTRLB_COLDEN_Msk;
-		} else {
-			hal->regs->USART_INT.SERCOM_CTRLB &= ~SERCOM_USART_INT_CTRLB_COLDEN_Msk;
-		}
-	} else {
-		if (enable) {
-			hal->regs->USART_EXT.SERCOM_CTRLB |= SERCOM_USART_EXT_CTRLB_COLDEN_Msk;
-		} else {
-			hal->regs->USART_EXT.SERCOM_CTRLB &= ~SERCOM_USART_EXT_CTRLB_COLDEN_Msk;
 		}
 	}
 
@@ -494,7 +469,7 @@ static inline void hal_mchp_uart_enable_rx_interrupt(const hal_mchp_uart_t *hal,
  * @param hal Pointer to the UART instance.
  * @return True if receive is complete, false otherwise.
  */
-static inline bool hal_mchp_uart_is_receive_complete(const hal_mchp_uart_t *hal)
+static inline bool hal_mchp_uart_is_rx_complete(const hal_mchp_uart_t *hal)
 {
 	if (hal->is_clock_internal == true) {
 		return ((hal->regs->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk) !=
@@ -846,4 +821,4 @@ static inline void hal_mchp_uart_err_clear_all(const hal_mchp_uart_t *hal)
 	}
 }
 
-#endif /* _HAL_MCHP_UART_H_ */
+#endif /* MICROCHIP_HAL_MCHP_UART_SERCOM_U2201_H_ */
