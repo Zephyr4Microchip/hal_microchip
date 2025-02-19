@@ -11,6 +11,9 @@
  * using the SERCOM peripheral.
  */
 
+#ifndef MICROCHIP_HAL_SPI_SERCOM_U2201_H_
+#define MICROCHIP_HAL_SPI_SERCOM_U2201_H_
+
 /*Wait synchronization*/
 static inline void hal_mchp_spi_wait_sync(const struct hal_mchp_spi *hal)
 {
