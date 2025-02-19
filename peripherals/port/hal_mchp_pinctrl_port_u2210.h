@@ -5,15 +5,15 @@
  */
 
 /**
- * @file hal_mchp_pinctrl.h
+ * @file hal_mchp_pinctrl_port_u2210.h
  * @brief Microchip MCU family I/O Pin Controller hal functions(PORT)
  *
  * This file provides the implementation of pin control functions
  * for Microchip-based systems.
  */
 
-#ifndef PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_
-#define PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_
+#ifndef MICROCHIP_HAL_MCHP_PINCTRL_PORT_U2210_H_
+#define MICROCHIP_HAL_MCHP_PINCTRL_PORT_U2210_H_
 
 /**
  * @brief Union representing pin control configuration.
@@ -126,4 +126,4 @@ static inline void hal_mchp_pinctrl_set_flags(const uint32_t *hal, const uint32_
 	}
 }
 
-#endif /* PERIPHERALS_PORT_U2210_HAL_MCHP_PINCTRL_H_ */
+#endif /* MICROCHIP_HAL_MCHP_PINCTRL_PORT_U2210_H_ */
