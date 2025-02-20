@@ -5,7 +5,7 @@
  */
 
 /**
- * @file hal_mchp_mclk.h
+ * @file hal_mchp_clock_mclk_u2408.h
  * @brief HAL functions for MCLK clock control on Microchip devices.
  *
  * This header file provides the HAL functions for the MCLK clock
@@ -13,8 +13,8 @@
  * for Microchip-based systems.
  */
 
-#ifndef PERIPHERALS_MCLK_U2408_HAL_MCHP_MCLK_H_
-#define PERIPHERALS_MCLK_U2408_HAL_MCHP_MCLK_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_MCLK_U2408_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_MCLK_U2408_H_
 
 /**
  * @brief AHB Clocks mapping structure
@@ -151,10 +151,10 @@ static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbd[] = {
  * @param clk Clock identifier to be turned off.
  * @return The state of the clock after the operation.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_off(mclk_registers_t *regs, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_off(mclk_registers_t *regs, uint32_t clk)
 {
 	/* Variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Variable to iterate through the clock mask maps */
 	uint32_t index;
@@ -256,10 +256,10 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_off(mclk_registers_t *
  * @param clk Clock identifier to be turned on.
  * @return The state of the clock after the operation.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_on(mclk_registers_t *regs, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_on(mclk_registers_t *regs, uint32_t clk)
 {
 	/* Variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Variable to iterate through the clock mask maps */
 	uint32_t index;
@@ -367,11 +367,10 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_on(mclk_registers_t *r
  * @param clk Clock identifier to check the status of.
  * @return The state of the clock.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_status(mclk_registers_t *regs,
-								 uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *regs, uint32_t clk)
 {
 	/* Variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Variable to iterate through the clock mask maps */
 	uint32_t index;
@@ -520,8 +519,8 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_status(mclk_registers_
  * @param clk Clock identifier for which the interrupt is to be enabled.
  * @return The state of the clock after enabling the interrupt.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_enable_interrupt(mclk_registers_t *regs,
-									   uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_enable_interrupt(mclk_registers_t *regs,
+									uint32_t clk)
 {
 	/* Enable the interrupt for the specified clock group */
 	regs->MCLK_INTENSET |= MCLK_INTENSET_Msk;
@@ -540,8 +539,8 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_enable_interrupt(mclk_
  * @param clk Clock identifier for which the interrupt is to be cleared.
  * @return The state of the clock after clearing the interrupt.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_clear_interrupt(mclk_registers_t *regs,
-									  uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_clear_interrupt(mclk_registers_t *regs,
+								       uint32_t clk)
 {
 	/* Clear the interrupt for the specified clock group */
 	regs->MCLK_INTFLAG |= MCLK_INTFLAG_Msk;
@@ -561,8 +560,8 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_clear_interrupt(mclk_r
  *
  * @return CLOCK_CONTROL_MCHP_STATE_OK on success.
  */
-static inline enum clock_control_mchp_state hal_mchp_mclk_disable_interrupt(mclk_registers_t *regs,
-									    uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_mclk_disable_interrupt(mclk_registers_t *regs,
+									 uint32_t clk)
 {
 	/* Set the register to disable the interrupt for the specified clock */
 	regs->MCLK_INTENCLR |= MCLK_INTENCLR_Msk;
@@ -582,11 +581,11 @@ static inline enum clock_control_mchp_state hal_mchp_mclk_disable_interrupt(mclk
  * @param src Pointer to the structure to store the clock source information.
  * @return The state of the clock after retrieving the rate.
  */
-static inline enum clock_control_mchp_state
-hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, struct clock_control_mchp_source *src)
+static inline clock_control_mchp_state_t
+hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_source_t *src)
 {
 	/* Declare a variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Declare a variable to use as an index in loops */
 	uint32_t index;
@@ -766,11 +765,11 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, struct clock_contro
  * information.
  * @return The state of the clock after setting the rate.
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_mclk_set_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_rate_t *rate)
 {
 	/* Declare a variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Pointer to the mclk_rate field in the rate structure. */
 	clock_control_mchp_mclk_rate_t *mclk_rate = rate->mclk_rate;
@@ -806,12 +805,12 @@ hal_mchp_mclk_set_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
  * configuration information.
  * @return The state of the clock after configuration.
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			clock_control_mchp_configuration_t *configuration)
 {
 	/* Declare a variable to store the state of the clock */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	/* Declare a variable to use as an index in loops */
 	uint32_t index;
 	/* Pointer to the mclk_configuration in the configuration structure. */
@@ -981,4 +980,4 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 	return state;
 }
 
-#endif /* PERIPHERALS_MCLK_U2408_HAL_MCHP_MCLK_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_MCLK_U2408_H_ */

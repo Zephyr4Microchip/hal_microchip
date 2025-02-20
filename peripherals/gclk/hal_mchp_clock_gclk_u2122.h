@@ -5,7 +5,7 @@
  */
 
 /**
- * @file hal_mchp_gclk.h
+ * @file hal_mchp_clock_gclk_u2122.h
  * @brief HAL functions for GCLK clock control on Microchip devices.
  *
  * This header file provides the HAL functions for the GCLK clock
@@ -13,8 +13,8 @@
  * for Microchip-based systems.
  */
 
-#ifndef PERIPHERALS_GCLK_U2122_HAL_MCHP_GCLK_H_
-#define PERIPHERALS_GCLK_U2122_HAL_MCHP_GCLK_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_GCLK_U2122_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_GCLK_U2122_H_
 
 /**
  * @brief Mapping of clock generators to their sync status.
@@ -120,10 +120,10 @@ static const struct clock_control_mchp_id_map hal_mchp_id_map_gclk_periph[] = {
  *         if successful, `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock
  *         is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_off(gclk_registers_t *regs, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_off(gclk_registers_t *regs, uint32_t clk)
 {
 	uint32_t index;
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Loop through the GCLK sync map to check for a matching clock generator */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
@@ -172,10 +172,10 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_off(gclk_registers_t *
  *         if successful, `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock
  *         is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_on(gclk_registers_t *regs, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_on(gclk_registers_t *regs, uint32_t clk)
 {
 	uint32_t index;
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Loop through the GCLK sync map to check for a matching clock generator */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
@@ -228,11 +228,10 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_on(gclk_registers_t *r
  *         and `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock is not
  * supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_status(gclk_registers_t *regs,
-								 uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_status(gclk_registers_t *regs, uint32_t clk)
 {
 	uint32_t index;
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Loop through the GCLK sync map to check for a matching clock generator */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
@@ -293,8 +292,8 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_status(gclk_registers_
  * @return The status of the operation. Always returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` as interrupt support is not available.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_enable_interrupt(gclk_registers_t *regs,
-									   uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_enable_interrupt(gclk_registers_t *regs,
+									uint32_t clk)
 {
 	/* No interrupt support */
 	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -314,8 +313,8 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_enable_interrupt(gclk_
  * @return The status of the operation. Always returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` as interrupt support is not available.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_clear_interrupt(gclk_registers_t *regs,
-									  uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_clear_interrupt(gclk_registers_t *regs,
+								       uint32_t clk)
 {
 	/* No interrupt support */
 	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -335,8 +334,8 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_clear_interrupt(gclk_r
  * @return The status of the operation. Always returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` as interrupt support is not available.
  */
-static inline enum clock_control_mchp_state hal_mchp_gclk_disable_interrupt(gclk_registers_t *regs,
-									    uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_gclk_disable_interrupt(gclk_registers_t *regs,
+									 uint32_t clk)
 {
 	/* No interrupt support */
 	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -353,19 +352,19 @@ static inline enum clock_control_mchp_state hal_mchp_gclk_disable_interrupt(gclk
  * @param regs Pointer to the GCLK register structure.
  * @param clk The clock for which the rate is to be retrieved (specified by its
  * ID).
- * @param src Pointer to the `clock_control_mchp_source` structure where the
+ * @param src Pointer to the `clock_control_mchp_source_t` structure where the
  * source and frequency information will be stored.
  *
  * @return The status of the operation, indicating whether the rate was
  * successfully retrieved or if the clock is unsupported or invalid.
  */
-static inline enum clock_control_mchp_state
-hal_mchp_gclk_get_rate(gclk_registers_t *regs, uint32_t clk, struct clock_control_mchp_source *src)
+static inline clock_control_mchp_state_t
+hal_mchp_gclk_get_rate(gclk_registers_t *regs, uint32_t clk, clock_control_mchp_source_t *src)
 {
 	uint32_t index;
 	uint32_t divider;
 	uint32_t gen_index;
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the global clock generator mapping */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
@@ -518,7 +517,7 @@ static inline int hal_mchp_gclk_set_rate(gclk_registers_t *regs, uint32_t clk,
 					 clock_control_mchp_rate_t *rate)
 {
 	uint32_t index;
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Pointer to the gclk_rate field in the rate structure. */
 	clock_control_mchp_gclk_rate_t *gclk_rate = rate->gclk_rate;
@@ -564,11 +563,11 @@ static inline int hal_mchp_gclk_set_rate(gclk_registers_t *regs, uint32_t clk,
  *
  * @return The status of the configuration, indicating success or failure.
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 			clock_control_mchp_configuration_t *configuration)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	/* Pointer to the gclk_configuration in the configuration structure. */
@@ -618,4 +617,4 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 	return state;
 }
 
-#endif /* PERIPHERALS_GCLK_U2122_HAL_MCHP_GCLK_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_GCLK_U2122_H_ */

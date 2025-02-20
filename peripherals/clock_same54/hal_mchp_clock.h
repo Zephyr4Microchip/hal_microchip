@@ -13,8 +13,8 @@
  * controllers, including the MCLK, OSCCTRL, OSC32KCTRL and GCLK.
  */
 
-#ifndef PERIPHERALS_CLOCK_SAME54_HAL_MCHP_CLOCK_H_
-#define PERIPHERALS_CLOCK_SAME54_HAL_MCHP_CLOCK_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_H_
 
 /**
  * @brief Defines the resolution for the fractional part of the clock
@@ -65,7 +65,7 @@ static const uint32_t hal_mchp_clock_base_addresses[] = {
  *
  * @return The state of the clock control.
  */
-typedef enum clock_control_mchp_state (*hal_mchp_clock_function_t)(void *clk_regs, uint32_t clk);
+typedef clock_control_mchp_state_t (*hal_mchp_clock_function_t)(void *clk_regs, uint32_t clk);
 
 /**
  * @brief Function pointer type for clock configuration functions.
@@ -78,7 +78,7 @@ typedef enum clock_control_mchp_state (*hal_mchp_clock_function_t)(void *clk_reg
  *
  * @return The state of the clock control after configuration.
  */
-typedef enum clock_control_mchp_state (*hal_mchp_clock_configure_function_t)(
+typedef clock_control_mchp_state_t (*hal_mchp_clock_configure_function_t)(
 	void *clk_addr, uint32_t clk, clock_control_mchp_configuration_t *configuration);
 
 /**
@@ -93,8 +93,8 @@ typedef enum clock_control_mchp_state (*hal_mchp_clock_configure_function_t)(
  *
  * @return The state of the clock control after getting the rate.
  */
-typedef enum clock_control_mchp_state (*hal_mchp_clock_get_rate_function_t)(
-	void *clk_addr, uint32_t clk, struct clock_control_mchp_source *source);
+typedef clock_control_mchp_state_t (*hal_mchp_clock_get_rate_function_t)(
+	void *clk_addr, uint32_t clk, clock_control_mchp_source_t *source);
 
 /**
  * @brief Function pointer type for setting the clock rate.
@@ -107,7 +107,7 @@ typedef enum clock_control_mchp_state (*hal_mchp_clock_get_rate_function_t)(
  *
  * @return The state of the clock control after setting the rate.
  */
-typedef enum clock_control_mchp_state (*hal_mchp_clock_set_rate_function_t)(
+typedef clock_control_mchp_state_t (*hal_mchp_clock_set_rate_function_t)(
 	void *clk_addr, uint32_t clk, clock_control_mchp_rate_t *rate);
 
 /**
@@ -294,7 +294,7 @@ static const hal_mchp_clock_set_rate_function_t
  * @return The state of the clock control after configuration. Returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock address is not supported.
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_clock_configure(uint32_t clk_addr, uint32_t clk,
 			 clock_control_mchp_configuration_t *configuration)
 {
@@ -302,7 +302,7 @@ hal_mchp_clock_configure(uint32_t clk_addr, uint32_t clk,
 	uint8_t index;
 
 	/* Initialize state to NO_SUPPORT, indicating clock is not configured yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find a match */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -333,14 +333,14 @@ hal_mchp_clock_configure(uint32_t clk_addr, uint32_t clk,
  * @return The state of the clock control after clearing the interrupt. Returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock address is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_clear_interrupt(uint32_t clk_addr,
-									   uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_clear_interrupt(uint32_t clk_addr,
+									uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state, indicating the interrupt is not cleared yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find a match */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -371,14 +371,14 @@ static inline enum clock_control_mchp_state hal_mchp_clock_clear_interrupt(uint3
  * @return The state of the clock control after enabling the interrupt. Returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock address is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_enable_interrupt(uint32_t clk_addr,
-									    uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_enable_interrupt(uint32_t clk_addr,
+									 uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state, indicating the interrupt is not enabled yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find a match */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -409,14 +409,14 @@ static inline enum clock_control_mchp_state hal_mchp_clock_enable_interrupt(uint
  * @return The state of the clock control after disabling the interrupt. Returns
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock address is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_disable_interrupt(uint32_t clk_addr,
-									     uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_disable_interrupt(uint32_t clk_addr,
+									  uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state, indicating the interrupt is not disabled yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find a match */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -453,7 +453,7 @@ static inline enum clock_control_mchp_state hal_mchp_clock_disable_interrupt(uin
  * states like `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_RATE` if errors occur.
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 			struct clock_control_mchp_user_frequency user_frequency)
 {
@@ -461,13 +461,13 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 	uint32_t index;
 
 	/* Stores the state of the clock operation */
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Holds the calculated clock rate */
 	uint64_t calc_rate;
 
 	/* Initialize the source structure with default values */
-	struct clock_control_mchp_source source = {
+	clock_control_mchp_source_t source = {
 		/* Default divisor */
 		.div = 1,
 		/* Default multiplier */
@@ -486,7 +486,7 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 		.user_freq_id = CLOCK_CONTROL_MCHP_USER_DEFINED_FREQUENCY_NONE,
 	};
 
-	struct clock_control_mchp_source *src = &source;
+	clock_control_mchp_source_t *src = &source;
 
 	/* Search for the corresponding clock base address and get its rate */
 	do {
@@ -584,13 +584,13 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
  * turned off, or other states like `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the
  * clock is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_off(uint32_t clk_addr, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_off(uint32_t clk_addr, uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state to NO_SUPPORT, indicating clock is not turned off yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base to find the matching clock address */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -620,13 +620,13 @@ static inline enum clock_control_mchp_state hal_mchp_clock_off(uint32_t clk_addr
  * on, or other states like `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock
  * is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_on(uint32_t clk_addr, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_on(uint32_t clk_addr, uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state to NO_SUPPORT, indicating clock is not turned on yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find the matching address */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -659,14 +659,14 @@ static inline enum clock_control_mchp_state hal_mchp_clock_on(uint32_t clk_addr,
  * set, or other states like `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the clock
  * is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_set_rate(uint32_t clk_addr, uint32_t clk,
-								    clock_control_mchp_rate_t *rate)
+static inline clock_control_mchp_state_t hal_mchp_clock_set_rate(uint32_t clk_addr, uint32_t clk,
+								 clock_control_mchp_rate_t *rate)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state to NO_SUPPORT, indicating the rate is not set yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find the matching address */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -699,13 +699,13 @@ static inline enum clock_control_mchp_state hal_mchp_clock_set_rate(uint32_t clk
  * retrieved, or other states like `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT` if the
  * clock is not supported.
  */
-static inline enum clock_control_mchp_state hal_mchp_clock_status(uint32_t clk_addr, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_clock_status(uint32_t clk_addr, uint32_t clk)
 {
 	/* Index for iterating through clock base addresses */
 	uint8_t index;
 
 	/* Initialize state, indicating the status is not retrieved yet */
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 	/* Iterate through the clock base addresses to find the matching address */
 	for (index = 0; index < HAL_MCHP_CLOCK_BASE_ADDRESS_SIZE; index++) {
@@ -720,4 +720,4 @@ static inline enum clock_control_mchp_state hal_mchp_clock_status(uint32_t clk_a
 	return state;
 }
 
-#endif /* PERIPHERALS_CLOCK_SAME54_HAL_MCHP_CLOCK_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_H_ */

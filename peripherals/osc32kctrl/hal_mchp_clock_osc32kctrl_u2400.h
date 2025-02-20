@@ -5,7 +5,7 @@
  */
 
 /**
- * @file hal_mchp_osc32kctrl.h
+ * @file hal_mchp_clock_osc32kctrl_u2400.h
  * @brief HAL functions for OSC32KCTRL clock control on Microchip devices.
  *
  * This header file provides the HAL functions for the OSC32KCTRL clock
@@ -13,8 +13,8 @@
  * for Microchip-based systems.
  */
 
-#ifndef PERIPHERALS_OSC32KCTRL_U2400_HAL_MCHP_OSC32KCTRL_H_
-#define PERIPHERALS_OSC32KCTRL_U2400_HAL_MCHP_OSC32KCTRL_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_OSC32KCTRL_U2400_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_OSC32KCTRL_U2400_H_
 
 /** @brief 32.768 kHz frequency for the 32K oscillator. */
 #define HAL_MCHP_OSC32KCTRL_32K_FREQUENCY 32768
@@ -36,10 +36,10 @@
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_off(osc32kctrl_registers_t *regs,
-								    uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_osc32kctrl_off(osc32kctrl_registers_t *regs,
+								 uint32_t clk)
 {
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_OK;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_OK;
 
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
 		/* The clock is XOSC32K */
@@ -78,10 +78,10 @@ static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_off(osc32kctrl_r
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_on(osc32kctrl_registers_t *regs,
-								   uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_osc32kctrl_on(osc32kctrl_registers_t *regs,
+								uint32_t clk)
 {
-	enum clock_control_mchp_state state = CLOCK_CONTROL_MCHP_STATE_OK;
+	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_OK;
 
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
 		/* The clock is XOSC32K */
@@ -119,10 +119,10 @@ static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_on(osc32kctrl_re
  *
  * @return The state of the oscillator or output (ON, OFF, or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_status(osc32kctrl_registers_t *regs,
-								       uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_osc32kctrl_status(osc32kctrl_registers_t *regs,
+								    uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
 		/* XOSC32K has status */
@@ -190,10 +190,10 @@ static inline enum clock_control_mchp_state hal_mchp_osc32kctrl_status(osc32kctr
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_enable_interrupt(osc32kctrl_registers_t *regs, uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Only XOSC32K has interrupt support */
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
@@ -220,10 +220,10 @@ hal_mchp_osc32kctrl_enable_interrupt(osc32kctrl_registers_t *regs, uint32_t clk)
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_clear_interrupt(osc32kctrl_registers_t *regs, uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Only XOSC32K has interrupt support */
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
@@ -250,10 +250,10 @@ hal_mchp_osc32kctrl_clear_interrupt(osc32kctrl_registers_t *regs, uint32_t clk)
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_disable_interrupt(osc32kctrl_registers_t *regs, uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Only XOSC32K has interrupt support */
 	if (clk == CLOCK_CONTROL_MCHP_V1_OSC32KCTRL_XOSC32K) {
@@ -282,11 +282,11 @@ hal_mchp_osc32kctrl_disable_interrupt(osc32kctrl_registers_t *regs, uint32_t clk
  *
  * @return The state of the operation (OK, NO_SUPPORT, or NO_RATE).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_get_rate(osc32kctrl_registers_t *regs, uint32_t clk,
-			     struct clock_control_mchp_source *src)
+			     clock_control_mchp_source_t *src)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	state = CLOCK_CONTROL_MCHP_STATE_OK;
 
@@ -351,11 +351,11 @@ hal_mchp_osc32kctrl_get_rate(osc32kctrl_registers_t *regs, uint32_t clk,
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_set_rate(osc32kctrl_registers_t *regs, uint32_t clk,
 			     clock_control_mchp_rate_t *rate)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Pointer to the osc32kctrl_rate field in the rate structure. */
 	clock_control_mchp_osc32kctrl_rate_t *osc32kctrl_rate = rate->osc32kctrl_rate;
@@ -387,11 +387,11 @@ hal_mchp_osc32kctrl_set_rate(osc32kctrl_registers_t *regs, uint32_t clk,
  *
  * @return The state of the operation (OK or NO_SUPPORT).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_osc32kctrl_configure(osc32kctrl_registers_t *regs, uint32_t clk,
 			      clock_control_mchp_configuration_t *configuration)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	/* Pointer to the osc32kctrl_configuration in the configuration structure. */
 	clock_control_mchp_osc32kctrl_configuration_t *osc32kctrl_configuration =
@@ -451,4 +451,4 @@ hal_mchp_osc32kctrl_configure(osc32kctrl_registers_t *regs, uint32_t clk,
 	return state;
 }
 
-#endif /* PERIPHERALS_OSC32KCTRL_U2400_HAL_MCHP_OSC32KCTRL_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_OSC32KCTRL_U2400_H_ */

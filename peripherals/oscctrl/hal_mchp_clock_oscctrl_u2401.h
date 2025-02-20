@@ -5,7 +5,7 @@
  */
 
 /**
- * @file hal_mchp_oscctrl.h
+ * @file hal_mchp_clock_oscctrl_u2401.h
  * @brief HAL functions for OSCCTRL clock control on Microchip devices.
  *
  * This header file provides the HAL functions for the OSCCTRL clock
@@ -13,8 +13,8 @@
  * for Microchip-based systems.
  */
 
-#ifndef PERIPHERALS_OSCCTRL_U2401_HAL_MCHP_OSCCTRL_H_
-#define PERIPHERALS_OSCCTRL_U2401_HAL_MCHP_OSCCTRL_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_OSCCTRL_U2401_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_OSCCTRL_U2401_H_
 
 /**
  * @brief Mapping structure for external oscillator interrupt control.
@@ -62,10 +62,10 @@ static const struct clock_control_mchp_id_map hal_mchp_id_map_oscctrl_dpll[] = {
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state hal_mchp_oscctrl_off(oscctrl_registers_t *regs,
-								 uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_oscctrl_off(oscctrl_registers_t *regs,
+							      uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	state = CLOCK_CONTROL_MCHP_STATE_OK;
 
@@ -105,10 +105,10 @@ static inline enum clock_control_mchp_state hal_mchp_oscctrl_off(oscctrl_registe
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state hal_mchp_oscctrl_on(oscctrl_registers_t *regs,
-								uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_oscctrl_on(oscctrl_registers_t *regs,
+							     uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 
 	state = CLOCK_CONTROL_MCHP_STATE_OK;
 
@@ -149,10 +149,10 @@ static inline enum clock_control_mchp_state hal_mchp_oscctrl_on(oscctrl_register
  * `CLOCK_CONTROL_MCHP_STATE_OFF`, `CLOCK_CONTROL_MCHP_STATE_STARTING`, or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state hal_mchp_oscctrl_status(oscctrl_registers_t *regs,
-								    uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_oscctrl_status(oscctrl_registers_t *regs,
+								 uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -234,10 +234,10 @@ static inline enum clock_control_mchp_state hal_mchp_oscctrl_status(oscctrl_regi
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_oscctrl_enable_interrupt(oscctrl_registers_t *regs, uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -278,10 +278,10 @@ hal_mchp_oscctrl_enable_interrupt(oscctrl_registers_t *regs, uint32_t clk)
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state
-hal_mchp_oscctrl_clear_interrupt(oscctrl_registers_t *regs, uint32_t clk)
+static inline clock_control_mchp_state_t hal_mchp_oscctrl_clear_interrupt(oscctrl_registers_t *regs,
+									  uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -322,10 +322,10 @@ hal_mchp_oscctrl_clear_interrupt(oscctrl_registers_t *regs, uint32_t clk)
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_oscctrl_disable_interrupt(oscctrl_registers_t *regs, uint32_t clk)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
@@ -370,11 +370,10 @@ hal_mchp_oscctrl_disable_interrupt(oscctrl_registers_t *regs, uint32_t clk)
  * `CLOCK_CONTROL_MCHP_STATE_USER_FREQ`, `CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE`,
  * or `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state
-hal_mchp_oscctrl_get_rate(oscctrl_registers_t *regs, uint32_t clk,
-			  struct clock_control_mchp_source *src)
+static inline clock_control_mchp_state_t
+hal_mchp_oscctrl_get_rate(oscctrl_registers_t *regs, uint32_t clk, clock_control_mchp_source_t *src)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 	uint32_t divider;
 	uint32_t mul_frac;
@@ -501,11 +500,11 @@ hal_mchp_oscctrl_get_rate(oscctrl_registers_t *regs, uint32_t clk,
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE`).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_oscctrl_set_rate(oscctrl_registers_t *regs, uint32_t clk, clock_control_mchp_rate_t *rate)
 {
 	uint32_t index;
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	/* Pointer to the mclk_rate field in the rate structure. */
 	clock_control_mchp_oscctrl_rate_t *oscctrl_rate = rate->oscctrl_rate;
 
@@ -572,11 +571,11 @@ hal_mchp_oscctrl_set_rate(oscctrl_registers_t *regs, uint32_t clk, clock_control
  * @return The state of the operation (either `CLOCK_CONTROL_MCHP_STATE_OK` or
  * `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`).
  */
-static inline enum clock_control_mchp_state
+static inline clock_control_mchp_state_t
 hal_mchp_oscctrl_configure(oscctrl_registers_t *regs, uint32_t clk,
 			   clock_control_mchp_configuration_t *configuration)
 {
-	enum clock_control_mchp_state state;
+	clock_control_mchp_state_t state;
 	uint32_t index;
 
 	/* Pointer to the oscctrl_configuration in the configuration structure. */
@@ -658,4 +657,4 @@ hal_mchp_oscctrl_configure(oscctrl_registers_t *regs, uint32_t clk,
 	return state;
 }
 
-#endif /* PERIPHERALS_OSCCTRL_U2401_HAL_MCHP_OSCCTRL_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_OSCCTRL_U2401_H_ */
