@@ -5,7 +5,7 @@
  */
 
 /**
- * @file hal_mchp_clock.h
+ * @file hal_mchp_clock_sam_d5x_e5x.h
  * @brief HAL clock control functions for Microchip devices
  *
  * This header file contains the declarations of the clock control functions
