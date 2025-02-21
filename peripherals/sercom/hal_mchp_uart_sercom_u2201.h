@@ -19,7 +19,7 @@
  */
 static inline void hal_mchp_uart_wait_sync(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		while ((hal->regs->USART_INT.SERCOM_SYNCBUSY & SERCOM_USART_INT_SYNCBUSY_Msk) !=
 		       0) {
 		}
@@ -37,7 +37,7 @@ static inline void hal_mchp_uart_wait_sync(const hal_mchp_uart_t *hal)
  */
 static inline void hal_mchp_uart_disable_interrupts(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_Msk;
 	} else {
 		hal->regs->USART_EXT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_Msk;
@@ -53,7 +53,7 @@ static inline void hal_mchp_uart_disable_interrupts(const hal_mchp_uart_t *hal)
 static inline void hal_mchp_uart_enable(const hal_mchp_uart_t *hal, bool enable)
 {
 	hal_mchp_uart_wait_sync(hal);
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_ENABLE_Msk;
 		} else {
@@ -79,7 +79,7 @@ static inline void hal_mchp_uart_enable(const hal_mchp_uart_t *hal, bool enable)
 static inline void hal_mchp_uart_rx_enable(const hal_mchp_uart_t *hal, bool enable)
 {
 	hal_mchp_uart_wait_sync(hal);
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_CTRLB |= SERCOM_USART_INT_CTRLB_RXEN_Msk;
 		} else {
@@ -105,7 +105,7 @@ static inline void hal_mchp_uart_rx_enable(const hal_mchp_uart_t *hal, bool enab
 static inline void hal_mchp_uart_tx_enable(const hal_mchp_uart_t *hal, bool enable)
 {
 	hal_mchp_uart_wait_sync(hal);
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_CTRLB |= SERCOM_USART_INT_CTRLB_TXEN_Msk;
 		} else {
@@ -131,7 +131,7 @@ static inline void hal_mchp_uart_config_pinout(const hal_mchp_uart_t *hal)
 {
 	uint32_t reg_value;
 
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		reg_value = hal->regs->USART_INT.SERCOM_CTRLA;
 		reg_value &= ~(SERCOM_USART_INT_CTRLA_RXPO_Msk | SERCOM_USART_INT_CTRLA_TXPO_Msk);
 		reg_value |= (SERCOM_USART_INT_CTRLA_RXPO(hal->rxpo) |
@@ -156,7 +156,7 @@ static inline void hal_mchp_uart_config_pinout(const hal_mchp_uart_t *hal)
  */
 static inline void hal_mchp_uart_set_clock_polarity(const hal_mchp_uart_t *hal, bool tx_rising)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (tx_rising == true) {
 			hal->regs->USART_INT.SERCOM_CTRLA &= ~SERCOM_USART_INT_CTRLA_CPOL_Msk;
 		} else {
@@ -179,11 +179,11 @@ static inline void hal_mchp_uart_set_clock_polarity(const hal_mchp_uart_t *hal, 
  * @param hal Pointer to the hal_mchp_uart structure.
  * @param internal Boolean to set the clock source.
  */
-static inline void hal_mchp_uart_set_clock_internal(hal_mchp_uart_t *hal, bool internal)
+static inline void hal_mchp_uart_set_clock_internal(const hal_mchp_uart_t *hal, bool internal)
 {
 	uint32_t reg_value;
 
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		reg_value = hal->regs->USART_INT.SERCOM_CTRLA;
 		reg_value &= ~SERCOM_USART_INT_CTRLA_MODE_Msk;
 		hal->regs->USART_INT.SERCOM_CTRLA =
@@ -199,8 +199,7 @@ static inline void hal_mchp_uart_set_clock_internal(hal_mchp_uart_t *hal, bool i
 					    : SERCOM_USART_EXT_CTRLA_MODE_USART_EXT_CLK);
 	}
 
-	hal_mchp_uart_wait_sync(hal);
-	hal->is_clock_internal = internal;
+	hal_mchp_uart_wait_sync(hal);	
 }
 
 /**
@@ -211,7 +210,7 @@ static inline void hal_mchp_uart_set_clock_internal(hal_mchp_uart_t *hal, bool i
  */
 static inline void hal_mchp_uart_set_lsb_first(const hal_mchp_uart_t *hal, bool lsb_first)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (lsb_first == true) {
 			hal->regs->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_DORD_Msk;
 		} else {
@@ -246,7 +245,7 @@ enum hal_mchp_uart_config_parity {
 static inline void hal_mchp_uart_config_parity(const hal_mchp_uart_t *hal,
 					       enum hal_mchp_uart_config_parity parity)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_CTRLA &= ~SERCOM_USART_INT_CTRLA_FORM_Msk;
 		switch (parity) {
 		case HAL_MCHP_UART_CFG_PARITY_ODD: {
@@ -310,7 +309,7 @@ static inline void hal_mchp_uart_config_parity(const hal_mchp_uart_t *hal,
  */
 static inline int hal_mchp_uart_config_stop_bits(const hal_mchp_uart_t *hal, unsigned int count)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		switch (count) {
 		case 1:
 			hal->regs->USART_INT.SERCOM_CTRLB &= ~SERCOM_USART_INT_CTRLB_SBMODE_Msk;
@@ -348,7 +347,7 @@ static inline int hal_mchp_uart_config_stop_bits(const hal_mchp_uart_t *hal, uns
 static inline int hal_mchp_uart_config_data_bits(const hal_mchp_uart_t *hal, unsigned int count)
 {
 	uint32_t value;
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		switch (count) {
 		case 5:
 			value = SERCOM_USART_INT_CTRLB_CHSIZE_5_BIT;
@@ -424,7 +423,7 @@ static inline int hal_mchp_uart_set_baudrate(const hal_mchp_uart_t *hal, uint32_
 
 	baud = 65536 - (uint16_t)tmp;
 
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_CTRLA &= ~SERCOM_USART_INT_CTRLA_SAMPR_Msk;
 		hal->regs->USART_INT.SERCOM_BAUD = baud;
 	} else {
@@ -446,7 +445,7 @@ static inline int hal_mchp_uart_set_baudrate(const hal_mchp_uart_t *hal, uint32_
  */
 static inline void hal_mchp_uart_enable_rx_interrupt(const hal_mchp_uart_t *hal, bool enable)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_RXC_Msk;
 		} else {
@@ -471,7 +470,7 @@ static inline void hal_mchp_uart_enable_rx_interrupt(const hal_mchp_uart_t *hal,
  */
 static inline bool hal_mchp_uart_is_rx_complete(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk) !=
 			0);
 	} else {
@@ -490,7 +489,7 @@ static inline bool hal_mchp_uart_is_rx_complete(const hal_mchp_uart_t *hal)
  */
 static inline unsigned char hal_mchp_uart_get_received_char(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((unsigned char)hal->regs->USART_INT.SERCOM_DATA);
 	} else {
 		return ((unsigned char)hal->regs->USART_EXT.SERCOM_DATA);
@@ -507,7 +506,7 @@ static inline unsigned char hal_mchp_uart_get_received_char(const hal_mchp_uart_
  */
 static inline void hal_mchp_uart_enable_tx_ready_interrupt(const hal_mchp_uart_t *hal, bool enable)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_DRE_Msk;
 		} else {
@@ -532,7 +531,7 @@ static inline void hal_mchp_uart_enable_tx_ready_interrupt(const hal_mchp_uart_t
  */
 static inline bool hal_mchp_uart_is_tx_ready(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_DRE_Msk) !=
 			0);
 	} else {
@@ -552,7 +551,7 @@ static inline bool hal_mchp_uart_is_tx_ready(const hal_mchp_uart_t *hal)
 static inline void hal_mchp_uart_enable_tx_complete_interrupt(const hal_mchp_uart_t *hal,
 							      bool enable)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_TXC_Msk;
 		} else {
@@ -577,7 +576,7 @@ static inline void hal_mchp_uart_enable_tx_complete_interrupt(const hal_mchp_uar
  */
 static inline bool hal_mchp_uart_is_tx_complete(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_TXC_Msk) !=
 			0);
 	} else {
@@ -596,7 +595,7 @@ static inline bool hal_mchp_uart_is_tx_complete(const hal_mchp_uart_t *hal)
  */
 static inline void hal_mchp_uart_tx_char(const hal_mchp_uart_t *hal, unsigned char data)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_DATA = data;
 	} else {
 		hal->regs->USART_EXT.SERCOM_DATA = data;
@@ -613,7 +612,7 @@ static inline void hal_mchp_uart_tx_char(const hal_mchp_uart_t *hal, unsigned ch
  */
 static inline void *hal_mchp_uart_get_dma_source_addr(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((void *)&(hal->regs->USART_INT.SERCOM_DATA));
 	} else {
 		return ((void *)&(hal->regs->USART_EXT.SERCOM_DATA));
@@ -630,7 +629,7 @@ static inline void *hal_mchp_uart_get_dma_source_addr(const hal_mchp_uart_t *hal
  */
 static inline void *hal_mchp_uart_get_dma_dest_addr(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((void *)&(hal->regs->USART_INT.SERCOM_DATA));
 	} else {
 		return ((void *)&(hal->regs->USART_EXT.SERCOM_DATA));
@@ -646,7 +645,7 @@ static inline void *hal_mchp_uart_get_dma_dest_addr(const hal_mchp_uart_t *hal)
  */
 static inline void hal_mchp_uart_clear_interrupts(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_INTFLAG =
 			SERCOM_USART_INT_INTFLAG_ERROR_Msk | SERCOM_USART_INT_INTFLAG_RXBRK_Msk |
 			SERCOM_USART_INT_INTFLAG_CTSIC_Msk | SERCOM_USART_INT_INTFLAG_RXS_Msk |
@@ -669,7 +668,7 @@ static inline void hal_mchp_uart_clear_interrupts(const hal_mchp_uart_t *hal)
  */
 static inline bool hal_mchp_uart_is_interrupt_pending(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_INTENSET &
 			 hal->regs->USART_INT.SERCOM_INTFLAG) != 0);
 	} else {
@@ -688,7 +687,7 @@ static inline bool hal_mchp_uart_is_interrupt_pending(const hal_mchp_uart_t *hal
  */
 static inline void hal_mchp_uart_enable_err_interrupt(const hal_mchp_uart_t *hal, bool enable)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_ERROR_Msk;
 		} else {
@@ -713,7 +712,7 @@ static inline void hal_mchp_uart_enable_err_interrupt(const hal_mchp_uart_t *hal
  */
 static inline bool hal_mchp_uart_is_err_buffer_overflow(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_BUFOVF_Msk) !=
 			0);
 	} else {
@@ -732,7 +731,7 @@ static inline bool hal_mchp_uart_is_err_buffer_overflow(const hal_mchp_uart_t *h
  */
 static inline bool hal_mchp_uart_is_err_frame(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_FERR_Msk) !=
 			0);
 	} else {
@@ -751,7 +750,7 @@ static inline bool hal_mchp_uart_is_err_frame(const hal_mchp_uart_t *hal)
  */
 static inline bool hal_mchp_uart_is_err_parity(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_PERR_Msk) !=
 			0);
 	} else {
@@ -771,7 +770,7 @@ static inline bool hal_mchp_uart_is_err_parity(const hal_mchp_uart_t *hal)
  */
 static inline bool hal_mchp_uart_is_err_autobaud_sync(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_ISF_Msk) !=
 			0);
 	} else {
@@ -790,7 +789,7 @@ static inline bool hal_mchp_uart_is_err_autobaud_sync(const hal_mchp_uart_t *hal
  */
 static inline bool hal_mchp_uart_is_err_collision(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		return ((hal->regs->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_COLL_Msk) !=
 			0);
 	} else {
@@ -808,7 +807,7 @@ static inline bool hal_mchp_uart_is_err_collision(const hal_mchp_uart_t *hal)
  */
 static inline void hal_mchp_uart_err_clear_all(const hal_mchp_uart_t *hal)
 {
-	if (hal->is_clock_internal == true) {
+	if (hal->clock_external == 1) {
 		hal->regs->USART_INT.SERCOM_STATUS |=
 			SERCOM_USART_INT_STATUS_BUFOVF_Msk | SERCOM_USART_INT_STATUS_FERR_Msk |
 			SERCOM_USART_INT_STATUS_PERR_Msk | SERCOM_USART_INT_STATUS_ISF_Msk |
