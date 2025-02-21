@@ -13,8 +13,8 @@
  * controllers, including the MCLK, OSCCTRL, OSC32KCTRL and GCLK.
  */
 
-#ifndef MICROCHIP_HAL_MCHP_CLOCK_H_
-#define MICROCHIP_HAL_MCHP_CLOCK_H_
+#ifndef MICROCHIP_HAL_MCHP_CLOCK_SAM_D5X_E5X_H_
+#define MICROCHIP_HAL_MCHP_CLOCK_SAM_D5X_E5X_H_
 
 /**
  * @brief Defines the resolution for the fractional part of the clock
@@ -720,4 +720,4 @@ static inline clock_control_mchp_state_t hal_mchp_clock_status(uint32_t clk_addr
 	return state;
 }
 
-#endif /* MICROCHIP_HAL_MCHP_CLOCK_H_ */
+#endif /* MICROCHIP_HAL_MCHP_CLOCK_SAM_D5X_E5X_H_ */

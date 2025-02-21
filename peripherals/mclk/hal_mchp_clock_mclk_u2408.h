@@ -21,7 +21,7 @@
  *
  * This structure maps the AHB clocks to their respective mask values.
  */
-static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_ahb[] = {
+static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_ahb[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_HPB0, MCLK_AHBMASK_HPB0_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_HPB1, MCLK_AHBMASK_HPB1_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_HPB2, MCLK_AHBMASK_HPB2_Msk},
@@ -53,7 +53,7 @@ static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_ahb[] = {
  * @brief Structure to map clock control identifiers to their respective mask
  * values.
  */
-static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apba[] = {
+static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apba[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBA_PAC, MCLK_APBAMASK_PAC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBA_PM, MCLK_APBAMASK_PM_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBA_MCLK, MCLK_APBAMASK_MCLK_Msk},
@@ -79,7 +79,7 @@ static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apba[] = {
  * @brief Structure to map clock control identifiers to their respective mask
  * values.
  */
-static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbb[] = {
+static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbb[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBB_USB, MCLK_APBBMASK_USB_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBB_DSU, MCLK_APBBMASK_DSU_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBB_NVMCTRL, MCLK_APBBMASK_NVMCTRL_Msk},
@@ -101,7 +101,7 @@ static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbb[] = {
  * @brief Structure to map clock control identifiers to their respective mask
  * values.
  */
-static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbc[] = {
+static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbc[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_GMAC, MCLK_APBCMASK_GMAC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TCC2, MCLK_APBCMASK_TCC2_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TCC3, MCLK_APBCMASK_TCC3_Msk},
@@ -123,7 +123,7 @@ static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbc[] = {
  * @brief Structure to map clock control identifiers to their respective mask
  * values.
  */
-static const struct clock_control_mchp_msk_map hal_mchp_msk_map_mclk_apbd[] = {
+static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbd[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM4, MCLK_APBDMASK_SERCOM4_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM5, MCLK_APBDMASK_SERCOM5_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM6, MCLK_APBDMASK_SERCOM6_Msk},
