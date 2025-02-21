@@ -1,4 +1,4 @@
 # Copyright (c) 2025 Microchip Technology Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-zephyr_include_directories(${CONFIG_SOC_SERIES}/include)
+add_subdirectory_ifdef(CONFIG_SOC_FAMILY_MCHP_SAM_D5X_E5X sam_d5x_e5x)
