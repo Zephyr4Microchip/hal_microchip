@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#ifndef MICROCHIP_HAL_MCHP_I2C_SERCOM_U2201_H_
-#define MICROCHIP_HAL_MCHP_I2C_SERCOM_U2201_H_
+ #ifndef MICROCHIP_HAL_MCHP_I2C_SERCOM_U2201_H_
+ #define MICROCHIP_HAL_MCHP_I2C_SERCOM_U2201_H_
 
 /* Macro to define the source address for I2C DMA transfers */
-#define I2C_MCHP_DMA_SRC_ADDR (&(i2c->regs->I2CM.SERCOM_DATA))
+#define I2C_MCHP_DMA_SRC_ADDR  (&(i2c->regs->I2CM.SERCOM_DATA))
 
 /* Macro to define the destination address for I2C DMA transfers */
 #define I2C_MCHP_DMA_DEST_ADDR (&(i2c->regs->I2CM.SERCOM_DATA))
@@ -65,7 +65,7 @@ static inline void hal_mchp_i2c_feature_config(const struct hal_mchp_i2c *hal)
 	hal_mchp_i2c_wait_sync(hal);
 }
 
-/* API to configure the I2C peripheral in controller mode */
+/* API to configure the I2C peripheral to operate in controller mode */
 static inline bool hal_mchp_i2c_master_mode(const struct hal_mchp_i2c *hal)
 {
 	/* Enable i2c device specific features */
@@ -159,10 +159,11 @@ static inline bool hal_mchp_i2c_error_check(const struct hal_mchp_i2c *hal)
 /* API to write the address of target in address register */
 static inline void hal_mchp_i2c_addr_write(const struct hal_mchp_i2c *hal, uint32_t addr)
 {
-	if ((addr & 1) == 1) {
+	if ((addr & 1) == 1)
+	{
 		hal_mchp_i2c_set_auto_ack(hal);
 	}
-
+	
 	hal->regs->I2CM.SERCOM_ADDR = addr;
 
 	hal_mchp_i2c_wait_sync(hal);
@@ -345,4 +346,4 @@ end:
 	return retVal;
 }
 
-#endif /* MICROCHIP_HAL_MCHP_I2C_SERCOM_U2201_H_ */
+#endif /* _HAL_MCHP_I2C_H_ */
