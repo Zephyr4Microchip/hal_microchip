@@ -113,7 +113,7 @@ static inline void hal_mchp_spi_config_pinout(const hal_mchp_spi_t *hal)
 }
 
 /*Select the pads for the SPI Transmission for loopback mode*/
-static inline void hal_mchp_spi_mode_loop(const hal_mchp_spi_t *hal)
+static inline void hal_mchp_spi_mode_loopback(const hal_mchp_spi_t *hal)
 {
 	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DIPO_PAD0;
 	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DOPO_PAD0;
