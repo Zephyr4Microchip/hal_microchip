@@ -505,6 +505,15 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 			state = CLOCK_CONTROL_MCHP_STATE_OFF;
 		}
 	}
+
+	/* Check whether clock state is on */
+	if (state == CLOCK_CONTROL_MCHP_STATE_ON) {
+		/* Check clock ready flag to make sure clock is ready */
+		if ((regs->MCLK_INTFLAG & MCLK_INTFLAG_CKRDY_Msk) != MCLK_INTFLAG_CKRDY_Msk) {
+			state = CLOCK_CONTROL_MCHP_STATE_STARTING;
+		}
+	}
+
 	/* Return the state of the clock */
 	return state;
 }
@@ -522,11 +531,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 static inline clock_control_mchp_state_t hal_mchp_mclk_enable_interrupt(mclk_registers_t *regs,
 									uint32_t clk)
 {
-	/* Enable the interrupt for the specified clock group */
-	regs->MCLK_INTENSET |= MCLK_INTENSET_Msk;
-
-	/* Return the state indicating the operation was successful */
-	return CLOCK_CONTROL_MCHP_STATE_OK;
+	/* No interrupt support */
+	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 }
 
 /**
@@ -542,11 +548,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_enable_interrupt(mclk_reg
 static inline clock_control_mchp_state_t hal_mchp_mclk_clear_interrupt(mclk_registers_t *regs,
 								       uint32_t clk)
 {
-	/* Clear the interrupt for the specified clock group */
-	regs->MCLK_INTFLAG |= MCLK_INTFLAG_Msk;
-
-	/* Return the state indicating the operation was successful */
-	return CLOCK_CONTROL_MCHP_STATE_OK;
+	/* No interrupt support */
+	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 }
 
 /**
@@ -563,11 +566,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_clear_interrupt(mclk_regi
 static inline clock_control_mchp_state_t hal_mchp_mclk_disable_interrupt(mclk_registers_t *regs,
 									 uint32_t clk)
 {
-	/* Set the register to disable the interrupt for the specified clock */
-	regs->MCLK_INTENCLR |= MCLK_INTENCLR_Msk;
-
-	/* Return the state indicating the operation was successful */
-	return CLOCK_CONTROL_MCHP_STATE_OK;
+	/* No interrupt support */
+	return CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 }
 
 /**
@@ -761,7 +761,7 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
  *
  * @param regs Pointer to the MCLK registers.
  * @param clk Clock identifier for which the rate is to be set.
- * @param clk_rate Pointer to the structure containing the clock rate
+ * @param rate Pointer to the structure containing the clock rate
  * information.
  * @return The state of the clock after setting the rate.
  */

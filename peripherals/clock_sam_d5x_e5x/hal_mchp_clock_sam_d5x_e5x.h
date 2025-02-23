@@ -311,6 +311,7 @@ hal_mchp_clock_configure(uint32_t clk_addr, uint32_t clk,
 			/* Call the appropriate clock configuration function */
 			state = hal_mchp_clock_configure_functions[index]((void *)clk_addr, clk,
 									  (void *)configuration);
+			break;
 		}
 	}
 
@@ -349,6 +350,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_clear_interrupt(uint32_t
 			/* Call the appropriate function to clear the interrupt */
 			state = hal_mchp_clock_clear_interrupt_functions[index]((void *)clk_addr,
 										clk);
+			break;
 		}
 	}
 
@@ -387,6 +389,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_enable_interrupt(uint32_
 			/* Call the appropriate function to enable the interrupt */
 			state = hal_mchp_clock_enable_interrupt_functions[index]((void *)clk_addr,
 										 clk);
+			break;
 		}
 	}
 
@@ -425,6 +428,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_disable_interrupt(uint32
 			/* Call the appropriate function to disable the interrupt */
 			state = hal_mchp_clock_disable_interrupt_functions[index]((void *)clk_addr,
 										  clk);
+			break;
 		}
 	}
 
@@ -598,6 +602,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_off(uint32_t clk_addr, u
 		if (clk_addr == hal_mchp_clock_base_addresses[index]) {
 			/* Call the function to turn off the clock and store the state */
 			state = hal_mchp_clock_off_functions[index]((void *)clk_addr, clk);
+			break;
 		}
 	}
 
@@ -634,6 +639,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_on(uint32_t clk_addr, ui
 		if (clk_addr == hal_mchp_clock_base_addresses[index]) {
 			/* Call the function to turn on the clock */
 			state = hal_mchp_clock_on_functions[index]((void *)clk_addr, clk);
+			break;
 		}
 	}
 
@@ -675,6 +681,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_set_rate(uint32_t clk_ad
 			/* Call the function to set the clock rate state */
 			state = hal_mchp_clock_set_rate_functions[index]((void *)clk_addr, clk,
 									 rate);
+			break;
 		}
 	}
 
@@ -713,6 +720,7 @@ static inline clock_control_mchp_state_t hal_mchp_clock_status(uint32_t clk_addr
 		if (clk_addr == hal_mchp_clock_base_addresses[index]) {
 			/* Call the function to retrieve the clock status */
 			state = hal_mchp_clock_status_functions[index]((void *)clk_addr, clk);
+			break;
 		}
 	}
 
