@@ -504,11 +504,11 @@ static inline void hal_mchp_uart_enable_tx_ready_interrupt(const hal_mchp_uart_t
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_DRE_Msk;
 		} else {
-			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_DRE_Msk;
+			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_DRE_Msk;
 		}
 	} else {
 		if (enable == true) {
-			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_DRE_Msk;
+			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_EXT_INTENSET_DRE_Msk;
 		} else {
 			hal->regs->USART_EXT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_DRE_Msk;
 		}
@@ -535,6 +535,25 @@ static inline bool hal_mchp_uart_is_tx_ready(const hal_mchp_uart_t *hal)
 }
 
 /**
+ * @brief Check if the UART transmit interrupt is enabled.
+ *
+ * This function checks if transmit interrupt is enabled for the specified UART instance.
+ *
+ * @param hal Pointer to the UART instance.
+ * @return True if interrupt is enabled, false otherwise.
+ */
+static inline bool hal_mchp_uart_is_tx_interrupt_enabled(const hal_mchp_uart_t *hal)
+{
+	if (hal->clock_external == false) {
+		return ((hal->regs->USART_INT.SERCOM_INTENSET &
+			 SERCOM_USART_INT_INTENSET_DRE_Msk) != 0);
+	} else {
+		return ((hal->regs->USART_EXT.SERCOM_INTENSET &
+			 SERCOM_USART_EXT_INTENSET_DRE_Msk) != 0);
+	}
+}
+
+/**
  * @brief Enable or disable the UART TX complete interrupt.
  *
  * This function enables or disables the TX complete interrupt for the specified UART instance.
@@ -549,11 +568,11 @@ static inline void hal_mchp_uart_enable_tx_complete_interrupt(const hal_mchp_uar
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_TXC_Msk;
 		} else {
-			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_TXC_Msk;
+			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_TXC_Msk;
 		}
 	} else {
 		if (enable == true) {
-			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_TXC_Msk;
+			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_EXT_INTENSET_TXC_Msk;
 		} else {
 			hal->regs->USART_EXT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_TXC_Msk;
 		}
@@ -685,11 +704,11 @@ static inline void hal_mchp_uart_enable_err_interrupt(const hal_mchp_uart_t *hal
 		if (enable == true) {
 			hal->regs->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_ERROR_Msk;
 		} else {
-			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_ERROR_Msk;
+			hal->regs->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_ERROR_Msk;
 		}
 	} else {
 		if (enable == true) {
-			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_ERROR_Msk;
+			hal->regs->USART_EXT.SERCOM_INTENSET = SERCOM_USART_EXT_INTENSET_ERROR_Msk;
 		} else {
 			hal->regs->USART_EXT.SERCOM_INTENCLR = SERCOM_USART_EXT_INTENCLR_ERROR_Msk;
 		}
