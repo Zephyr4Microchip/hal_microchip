@@ -11,15 +11,15 @@
  * using the SERCOM peripheral.
  */
 
-#ifndef MICROCHIP_HAL_SPI_SERCOM_U2201_H_
-#define MICROCHIP_HAL_SPI_SERCOM_U2201_H_
+#ifndef MICROCHIP_HAL_MCHP_SPI_SERCOM_U2201_H_
+#define MICROCHIP_HAL_MCHP_SPI_SERCOM_U2201_H_
 
 /*Wait synchronization*/
 static inline void hal_mchp_spi_wait_sync(const hal_mchp_spi_t *hal,
 					  uint32_t sync_flag)
 {
 	/* Wait for synchronization */
-	while ((SERCOM6_REGS->SPIM.SERCOM_SYNCBUSY & sync_flag) != 0U) {
+	while ((hal->regs->SPIM.SERCOM_SYNCBUSY & sync_flag) != 0U) {
 		/* Do nothing */
 	}
 }
@@ -259,7 +259,8 @@ hal_mchp_spi_disable_data_empty_interrupt(const hal_mchp_spi_t *hal)
 }
 
 /*Return true if receive complete flag is set*/
-static inline bool hal_mchp_spi_is_rx_comp_set(const hal_mchp_spi_t *hal)
+static inline bool
+hal_mchp_spi_is_rx_comp_flag_set(const hal_mchp_spi_t *hal)
 {
 	return ((hal->regs->SPIM.SERCOM_INTFLAG &
 		 SERCOM_SPIM_INTFLAG_RXC_Msk) ==
@@ -268,7 +269,7 @@ static inline bool hal_mchp_spi_is_rx_comp_set(const hal_mchp_spi_t *hal)
 
 /*Return true if Data register empty flag is set*/
 static inline bool
-hal_mchp_spi_is_data_empty_set(const hal_mchp_spi_t *hal)
+hal_mchp_spi_is_data_empty_flag_set(const hal_mchp_spi_t *hal)
 {
 	return ((hal->regs->SPIM.SERCOM_INTFLAG &
 		 SERCOM_SPIM_INTFLAG_DRE_Msk) ==
@@ -276,7 +277,8 @@ hal_mchp_spi_is_data_empty_set(const hal_mchp_spi_t *hal)
 }
 
 /*Return true if transmit complete flag is set*/
-static inline bool hal_mchp_spi_is_tx_comp_set(const hal_mchp_spi_t *hal)
+static inline bool
+hal_mchp_spi_is_tx_comp_flag_set(const hal_mchp_spi_t *hal)
 {
 	return ((hal->regs->SPIM.SERCOM_INTFLAG &
 		 SERCOM_SPIM_INTFLAG_TXC_Msk) ==
@@ -297,4 +299,10 @@ hal_mchp_spi_get_dma_dest_addr(const hal_mchp_spi_t *hal)
 	return ((void *)&(hal->regs->SPIM.SERCOM_DATA));
 }
 
-#endif /* MICROCHIP_HAL_SPI_SERCOM_U2201_H_ */
+/*Return true if Data register empty flag is set*/
+static inline bool hal_mchp_spi_is_interrupt_set(const hal_mchp_spi_t *hal)
+{
+	return (hal->regs->SPIM.SERCOM_INTENSET != 0);
+}
+
+#endif /* MICROCHIP_HAL_MCHP_SPI_SERCOM_U2201_H_ */
