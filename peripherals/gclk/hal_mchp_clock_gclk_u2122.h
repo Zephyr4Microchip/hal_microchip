@@ -39,75 +39,127 @@ static const struct clock_control_mchp_sync_map hal_mchp_sync_map_gclk_gen[] = {
 };
 
 /**
- * @brief Size of the global clock generator sync map array.
+ * @brief Size of the generic clock generator sync map array.
  */
 #define HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE (ARRAY_SIZE(hal_mchp_sync_map_gclk_gen))
 
 /**
- * @brief Mapping of global clock generators to peripheral IDs.
+ * @brief Mapping of generic clock generators to peripheral IDs.
  *
- * This array maps each global clock generator to a unique peripheral ID.
+ * This array maps each generic clock generator to a unique peripheral ID.
  */
 static const struct clock_control_mchp_id_map hal_mchp_id_map_gclk_periph[] = {
-	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_DFLL48, 0},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL0, 1},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL1, 2},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SLOW, 3},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EIC, 4},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_FREQM_MSR, 5},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_FREQM_REF, 6},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM0_CORE, 7},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM1_CORE, 8},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TC0_TC1, 9},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_USB, 10},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS0, 11},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS1, 12},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS2, 13},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS3, 14},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS4, 15},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS5, 16},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS6, 17},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS7, 18},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS8, 19},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS9, 20},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS10, 21},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS11, 22},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM2_CORE, 23},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM3_CORE, 24},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC0_TCC1, 25},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TC2_TC3, 26},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN0, 27},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN1, 28},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC2_TCC3, 29},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TC4_TC5, 30},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_PDEC, 31},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_AC, 32},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_CCL, 33},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM4_CORE, 34},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM5_CORE, 35},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM6_CORE, 36},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM7_CORE, 37},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC4, 38},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_TC6_TC7, 39},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_ADC0, 40},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_ADC1, 41},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_DAC, 42},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_I2S0, 43},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_I2S1, 44},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SDHC0, 45},
-	{CLOCK_CONTROL_MCHP_V1_GCLK_SDHC1, 46},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_DFLL48, OSCCTRL_GCLK_ID_DFLL48},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL0, OSCCTRL_GCLK_ID_FDPLL0},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL1, OSCCTRL_GCLK_ID_FDPLL1},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL032K, OSCCTRL_GCLK_ID_FDPLL032K},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_FDPLL132K, OSCCTRL_GCLK_ID_FDPLL132K},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SDHC0_SLOW, SDHC0_GCLK_ID_SLOW},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SDHC1_SLOW, SDHC1_GCLK_ID_SLOW},
+#endif
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM0_SLOW, SERCOM0_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM1_SLOW, SERCOM1_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM2_SLOW, SERCOM2_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM3_SLOW, SERCOM3_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM4_SLOW, SERCOM4_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM5_SLOW, SERCOM5_GCLK_ID_SLOW},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM6_SLOW, SERCOM6_GCLK_ID_SLOW},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_OSCCTRL_SERCOM7_SLOW, SERCOM7_GCLK_ID_SLOW},
+#endif
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EIC, EIC_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_FREQM_MSR, FREQM_GCLK_ID_MSR},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_FREQM_REF, FREQM_GCLK_ID_REF},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM0_CORE, SERCOM0_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM1_CORE, SERCOM1_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM2_CORE, SERCOM2_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM3_CORE, SERCOM3_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM4_CORE, SERCOM4_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM5_CORE, SERCOM5_GCLK_ID_CORE},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM6_CORE, SERCOM6_GCLK_ID_CORE},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM7_CORE, SERCOM7_GCLK_ID_CORE},
+#endif
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_USB, USB_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS0, EVSYS_GCLK_ID_0},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS1, EVSYS_GCLK_ID_1},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS2, EVSYS_GCLK_ID_2},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS3, EVSYS_GCLK_ID_3},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS4, EVSYS_GCLK_ID_4},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS5, EVSYS_GCLK_ID_5},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS6, EVSYS_GCLK_ID_6},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS7, EVSYS_GCLK_ID_7},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS8, EVSYS_GCLK_ID_8},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS9, EVSYS_GCLK_ID_9},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS10, EVSYS_GCLK_ID_10},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_EVSYS11, EVSYS_GCLK_ID_11},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC0, TC0_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC1, TC1_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC2, TC2_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC3, TC3_GCLK_ID},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TC_5_4_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC4, TC4_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC5, TC5_GCLK_ID},
+#endif
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TC_7_6_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC6, TC6_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TC7, TC7_GCLK_ID},
+#endif
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC0, TCC0_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC1, TCC1_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC2, TCC2_GCLK_ID},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC3, TCC3_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC4, TCC4_GCLK_ID},
+#endif
+
+/* CAN Peripheral is available in E54 and E51 series only */
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_CAN_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN0, CAN0_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN1, CAN1_GCLK_ID},
+#endif
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_PDEC, PDEC_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_AC, AC_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_CCL, CCL_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_ADC0, ADC0_GCLK_ID},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_ADC1, ADC1_GCLK_ID},
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_DAC, DAC_GCLK_ID},
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_I2S_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_I2S0, I2S_GCLK_ID_0},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_I2S1, I2S_GCLK_ID_1},
+#endif
+
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SDHC0, SDHC0_GCLK_ID},
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP)
+	{CLOCK_CONTROL_MCHP_V1_GCLK_SDHC1, SDHC1_GCLK_ID},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_GCLK_CM4_TRACE, 47},
 };
 
 /**
- * @brief Size of the global clock generator to peripheral ID map array.
+ * @brief Size of the generic clock generator to peripheral ID map array.
  */
 #define HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE (ARRAY_SIZE(hal_mchp_id_map_gclk_periph))
 
 /**
- * @brief Turns off a specific global clock.
+ * @brief Turns off a specific generic clock.
  *
- * This function disables the global clock specified by the `clk` parameter.
+ * This function disables the generic clock specified by the `clk` parameter.
  * It checks for the clock generator or peripheral in the
  * `hal_mchp_sync_map_gclk_gen` and `hal_mchp_id_map_gclk_periph` arrays and
  * turns off the corresponding clock by clearing the relevant control bits in
@@ -157,9 +209,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_off(gclk_registers_t *reg
 }
 
 /**
- * @brief Turns on a specific global clock.
+ * @brief Turns on a specific generic clock.
  *
- * This function enables the specified global clock by setting the corresponding
+ * This function enables the specified generic clock by setting the corresponding
  * control bit in the GCLK registers. It first checks if the clock is a
  * supported clock generator (excluding GCLK_GEN0, which is always on) and
  * enables it. If the clock is not a generator, it checks the peripheral clock
@@ -210,9 +262,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_on(gclk_registers_t *regs
 }
 
 /**
- * @brief Retrieves the current status of a specific global clock.
+ * @brief Retrieves the current status of a specific generic clock.
  *
- * This function checks the status of the specified global clock and determines
+ * This function checks the status of the specified generic clock and determines
  * if it is on, off, or in the process of starting based on the state of the
  * associated registers. It first checks if the clock is a valid generator or
  * peripheral and then reads the corresponding control registers to determine
@@ -279,9 +331,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_status(gclk_registers_t *
 }
 
 /**
- * @brief Enables interrupt for a specific global clock.
+ * @brief Enables interrupt for a specific generic clock.
  *
- * This function attempts to enable the interrupt for the specified global
+ * This function attempts to enable the interrupt for the specified generic
  * clock. However, interrupt support is not available for this clock system, so
  * the function returns `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`.
  *
@@ -300,9 +352,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_enable_interrupt(gclk_reg
 }
 
 /**
- * @brief Clears interrupt for a specific global clock.
+ * @brief Clears interrupt for a specific generic clock.
  *
- * This function attempts to clear the interrupt for the specified global clock.
+ * This function attempts to clear the interrupt for the specified generic clock.
  * However, interrupt support is not available for this clock system, so the
  * function returns `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`.
  *
@@ -321,9 +373,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_clear_interrupt(gclk_regi
 }
 
 /**
- * @brief Disables interrupt for a specific global clock.
+ * @brief Disables interrupt for a specific generic clock.
  *
- * This function attempts to disable the interrupt for the specified global
+ * This function attempts to disable the interrupt for the specified generic
  * clock. However, interrupt support is not available for this clock system, so
  * the function returns `CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT`.
  *
@@ -342,9 +394,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_disable_interrupt(gclk_re
 }
 
 /**
- * @brief Retrieves the clock rate of a specified global clock.
+ * @brief Retrieves the clock rate of a specified generic clock.
  *
- * This function checks the source and divider settings for a specified global
+ * This function checks the source and divider settings for a specified generic
  * clock and returns the corresponding rate or frequency. If the clock is not
  * supported or the rate cannot be determined, the function returns a state
  * indicating no rate is available.
@@ -366,7 +418,7 @@ hal_mchp_gclk_get_rate(gclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 	uint32_t gen_index;
 	clock_control_mchp_state_t state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
-	/* Iterate through the global clock generator mapping */
+	/* Iterate through the generic clock generator mapping */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
 		/* Check if the clock matches any known generator */
 		if (clk == hal_mchp_sync_map_gclk_gen[index].clk) {
@@ -499,9 +551,9 @@ hal_mchp_gclk_get_rate(gclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 }
 
 /**
- * @brief Sets the rate for a specified global clock.
+ * @brief Sets the rate for a specified generic clock.
  *
- * This function modifies the global clock generator control registers to set
+ * This function modifies the generic clock generator control registers to set
  * the clock rate by applying the appropriate divider settings as specified in
  * the rate structure. The function checks the clock generator and updates the
  * divider selection and division values accordingly.
@@ -522,7 +574,7 @@ static inline int hal_mchp_gclk_set_rate(gclk_registers_t *regs, uint32_t clk,
 	/* Pointer to the gclk_rate field in the rate structure. */
 	clock_control_mchp_gclk_rate_t *gclk_rate = rate->gclk_rate;
 
-	/* Iterate through the global clock generator mapping */
+	/* Iterate through the generic clock generator mapping */
 	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
 		/* Check if the clock matches any known generator */
 		if (clk == hal_mchp_sync_map_gclk_gen[index].clk) {
@@ -547,12 +599,12 @@ static inline int hal_mchp_gclk_set_rate(gclk_registers_t *regs, uint32_t clk,
 }
 
 /**
- * @brief Configures the global clock based on the provided configuration
+ * @brief Configures the generic clock based on the provided configuration
  * structure.
  *
  * This function configures either the entire clock system or a specific clock
  * generator or peripheral based on the input parameters. It applies settings
- * such as the generator control and peripheral control registers to the global
+ * such as the generator control and peripheral control registers to the generic
  * clock control hardware.
  *
  * @param regs Pointer to the GCLK register structure.
@@ -581,8 +633,9 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 				GCLK_GENCTRL_Msk & gclk_configuration->genctrl[index];
 		}
 		for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-			regs->GCLK_PCHCTRL[index] =
-				GCLK_PCHCTRL_Msk & gclk_configuration->pchctrl[index];
+			regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
+				GCLK_PCHCTRL_Msk &
+				gclk_configuration->pchctrl[hal_mchp_id_map_gclk_periph[index].id];
 		}
 		state = CLOCK_CONTROL_MCHP_STATE_OK;
 	} else {
@@ -603,9 +656,10 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 			/* No match in GCLK generators, check for peripherals. */
 			for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
 				if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
-					regs->GCLK_PCHCTRL[index] =
+					regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
 						GCLK_PCHCTRL_Msk &
-						gclk_configuration->pchctrl[index];
+						gclk_configuration->pchctrl
+							[hal_mchp_id_map_gclk_periph[index].id];
 					state = CLOCK_CONTROL_MCHP_STATE_OK;
 					break;
 				}

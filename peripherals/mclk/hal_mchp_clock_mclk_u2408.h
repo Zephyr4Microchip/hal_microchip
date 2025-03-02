@@ -33,11 +33,24 @@ static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_ahb[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_USB, MCLK_AHBMASK_USB_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_PAC, MCLK_AHBMASK_PAC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_QSPI, MCLK_AHBMASK_QSPI_Msk},
+
+/* GMAC Peripheral is available in E54 and E53 series only */
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_GMAC_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_GMAC, MCLK_AHBMASK_GMAC_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_SDHC0, MCLK_AHBMASK_SDHC0_Msk},
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_SDHC1, MCLK_AHBMASK_SDHC1_Msk},
+#endif
+
+/* CAN Peripheral is available in E54 and E51 series only */
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_CAN_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_CAN0, MCLK_AHBMASK_CAN0_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_CAN1, MCLK_AHBMASK_CAN1_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_PUKCC, MCLK_AHBMASK_PUKCC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_QSPI_2X, MCLK_AHBMASK_QSPI_2X_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_AHB_NVMCTRL_SMEEPROM, MCLK_AHBMASK_NVMCTRL_SMEEPROM_Msk},
@@ -102,11 +115,22 @@ static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbb[] = {
  * values.
  */
 static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbc[] = {
+/* GMAC Peripheral is available in E54 and E53 series only */
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_GMAC_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_GMAC, MCLK_APBCMASK_GMAC_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TCC2, MCLK_APBCMASK_TCC2_Msk},
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TCC3, MCLK_APBCMASK_TCC3_Msk},
+#endif
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TC_5_4_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TC4, MCLK_APBCMASK_TC4_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_TC5, MCLK_APBCMASK_TC5_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_PDEC, MCLK_APBCMASK_PDEC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_AC, MCLK_APBCMASK_AC_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBC_AES, MCLK_APBCMASK_AES_Msk},
@@ -126,15 +150,29 @@ static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbc[] = {
 static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbd[] = {
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM4, MCLK_APBDMASK_SERCOM4_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM5, MCLK_APBDMASK_SERCOM5_Msk},
+
+#if (defined(MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP))
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM6, MCLK_APBDMASK_SERCOM6_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_SERCOM7, MCLK_APBDMASK_SERCOM7_Msk},
+#endif
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_TCC4, MCLK_APBDMASK_TCC4_Msk},
+#endif
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_TC_7_6_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_TC6, MCLK_APBDMASK_TC6_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_TC7, MCLK_APBDMASK_TC7_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_ADC0, MCLK_APBDMASK_ADC0_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_ADC1, MCLK_APBDMASK_ADC1_Msk},
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_DAC, MCLK_APBDMASK_DAC_Msk},
+
+#if defined(MCHP_CLOCK_SAM_D5X_E5X_I2S_IP)
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_I2S, MCLK_APBDMASK_I2S_Msk},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_MCLK_APBD_PCC, MCLK_APBDMASK_PCC_Msk},
 };
 
@@ -393,7 +431,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 				/* Check if the clock is in the AHB mask map */
 				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
 					if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
-						/* Check if the corresponding mask bit is set */
+						/* Check if the corresponding mask bit is set
+						 */
 						if ((regs->MCLK_AHBMASK &
 						     hal_mchp_msk_map_mclk_ahb[index].msk) ==
 						    hal_mchp_msk_map_mclk_ahb[index].msk) {
@@ -414,7 +453,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 					for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE;
 					     index++) {
 						if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
-							/* Check if the corresponding bit is set */
+							/* Check if the corresponding bit is
+							 * set */
 							if ((regs->MCLK_APBAMASK &
 							     hal_mchp_msk_map_mclk_apba[index]
 								     .msk) ==
@@ -437,7 +477,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 					for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE;
 					     index++) {
 						if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
-							/* Check if the corresponding bit is set */
+							/* Check if the corresponding bit is
+							 * set */
 							if ((regs->MCLK_APBBMASK &
 							     hal_mchp_msk_map_mclk_apbb[index]
 								     .msk) ==
@@ -460,7 +501,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 					for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE;
 					     index++) {
 						if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
-							/* Check if the corresponding bit is set */
+							/* Check if the corresponding bit is
+							 * set */
 							if ((regs->MCLK_APBCMASK &
 							     hal_mchp_msk_map_mclk_apbc[index]
 								     .msk) ==
@@ -483,7 +525,8 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_status(mclk_registers_t *
 					for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE;
 					     index++) {
 						if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
-							/* Check if the corresponding bit is set */
+							/* Check if the corresponding bit is
+							 * set */
 							if ((regs->MCLK_APBDMASK &
 							     hal_mchp_msk_map_mclk_apbd[index]
 								     .msk) ==
@@ -625,7 +668,8 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 			if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
 				/* Check if the clock is the QSPI 2X clock */
 				if (clk == CLOCK_CONTROL_MCHP_V1_MCLK_AHB_QSPI_2X) {
-					/* Calculate the division factor for the high-speed clock */
+					/* Calculate the division factor for the high-speed
+					 * clock */
 					src->div *= ((regs->MCLK_HSDIV & MCLK_HSDIV_DIV_Msk) >>
 						     MCLK_HSDIV_DIV_Pos);
 				} else {
@@ -640,7 +684,8 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 				/* Set the target clock address to the base address of GCLK */
 				src->target_clk_addr = GCLK_BASE_ADDRESS;
 
-				/* Set the state to indicate that the clock is not the source */
+				/* Set the state to indicate that the clock is not the source
+				 */
 				state = CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE;
 
 				/* Exit the loop */
@@ -664,7 +709,8 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 					/* Set the target clock to the base address of GCLK */
 					src->target_clk_addr = GCLK_BASE_ADDRESS;
 
-					/* Set the state to indicate that clock is not source */
+					/* Set the state to indicate that clock is not source
+					 */
 					state = CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE;
 
 					/* Exit the loop */
@@ -689,7 +735,8 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 					/* Set the target clock to the base address of GCLK */
 					src->target_clk_addr = GCLK_BASE_ADDRESS;
 
-					/* Set state to indicate that clock is not the source */
+					/* Set state to indicate that clock is not the source
+					 */
 					state = CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE;
 
 					/* Exit the loop */
@@ -714,7 +761,8 @@ hal_mchp_mclk_get_rate(mclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 					/* Set the target clock to the base address of GCLK */
 					src->target_clk_addr = GCLK_BASE_ADDRESS;
 
-					/* Set state to indicate that clock is not the source */
+					/* Set state to indicate that clock is not the source
+					 */
 					state = CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE;
 
 					/* Exit the loop */
@@ -902,14 +950,16 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
 				/* Loop through each index */
 				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
-					/* Check if the current clock matches the desired clock */
+					/* Check if the current clock matches the desired clock
+					 */
 					if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
 						/* Update MCLK_APBAMASK register */
 						regs->MCLK_APBAMASK =
 							(regs->MCLK_APBAMASK &
 							 ~(hal_mchp_msk_map_mclk_apba[index].msk)) |
 							(mclk_configuration->apba[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK */
+						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
+						 */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
 						/* Exit loop as the clock has been updated */
 						break;
@@ -921,16 +971,20 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
 				/* Loop through each index */
 				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
-					/* Check if the current clock matches the desired clock */
+					/* Check if the current clock matches the desired clock
+					 */
 					if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
-						/* Update MCLK_APBBMASK with new configuration */
+						/* Update MCLK_APBBMASK with new configuration
+						 */
 						regs->MCLK_APBBMASK =
 							(regs->MCLK_APBBMASK &
 							 ~(hal_mchp_msk_map_mclk_apbb[index].msk)) |
 							(mclk_configuration->apbb[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK */
+						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
+						 */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit loop as desired clock has been updated */
+						/* Exit loop as desired clock has been updated
+						 */
 						break;
 					}
 				}
@@ -940,16 +994,20 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
 				/* Loop through each index */
 				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
-					/* Check if the current clock matches the desired clock */
+					/* Check if the current clock matches the desired clock
+					 */
 					if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
-						/* Update MCLK_APBCMASK with new configuration */
+						/* Update MCLK_APBCMASK with new configuration
+						 */
 						regs->MCLK_APBCMASK =
 							(regs->MCLK_APBCMASK &
 							 ~(hal_mchp_msk_map_mclk_apbc[index].msk)) |
 							(mclk_configuration->apbc[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK */
+						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
+						 */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit loop as desired clock has been updated */
+						/* Exit loop as desired clock has been updated
+						 */
 						break;
 					}
 				}
@@ -959,16 +1017,20 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
 				/* Loop through each index */
 				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
-					/* Check if the current clock matches the desired clock */
+					/* Check if the current clock matches the desired clock
+					 */
 					if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
-						/* Update MCLK_APBDMASK with new configuration */
+						/* Update MCLK_APBDMASK with new configuration
+						 */
 						regs->MCLK_APBDMASK =
 							(regs->MCLK_APBDMASK &
 							 ~(hal_mchp_msk_map_mclk_apbd[index].msk)) |
 							(mclk_configuration->apbd[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK */
+						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
+						 */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit the loop as the clock has been updated */
+						/* Exit the loop as the clock has been updated
+						 */
 						break;
 					}
 				}
