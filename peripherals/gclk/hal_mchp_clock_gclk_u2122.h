@@ -76,8 +76,13 @@ static const struct clock_control_mchp_id_map hal_mchp_id_map_gclk_periph[] = {
 	{CLOCK_CONTROL_MCHP_V1_GCLK_SERCOM3_CORE, 24},
 	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC0_TCC1, 25},
 	{CLOCK_CONTROL_MCHP_V1_GCLK_TC2_TC3, 26},
+
+/* CAN Peripheral is available in E54 and E51 series only */
+#if (defined(HAL_SERIES_MCHP_SAM_E54) || defined(HAL_SERIES_MCHP_SAM_E51))
 	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN0, 27},
 	{CLOCK_CONTROL_MCHP_V1_GCLK_CAN1, 28},
+#endif
+
 	{CLOCK_CONTROL_MCHP_V1_GCLK_TCC2_TCC3, 29},
 	{CLOCK_CONTROL_MCHP_V1_GCLK_TC4_TC5, 30},
 	{CLOCK_CONTROL_MCHP_V1_GCLK_PDEC, 31},
@@ -581,8 +586,9 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 				GCLK_GENCTRL_Msk & gclk_configuration->genctrl[index];
 		}
 		for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-			regs->GCLK_PCHCTRL[index] =
-				GCLK_PCHCTRL_Msk & gclk_configuration->pchctrl[index];
+			regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
+				GCLK_PCHCTRL_Msk &
+				gclk_configuration->pchctrl[hal_mchp_id_map_gclk_periph[index].id];
 		}
 		state = CLOCK_CONTROL_MCHP_STATE_OK;
 	} else {
@@ -603,9 +609,10 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 			/* No match in GCLK generators, check for peripherals. */
 			for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
 				if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
-					regs->GCLK_PCHCTRL[index] =
+					regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
 						GCLK_PCHCTRL_Msk &
-						gclk_configuration->pchctrl[index];
+						gclk_configuration->pchctrl
+							[hal_mchp_id_map_gclk_periph[index].id];
 					state = CLOCK_CONTROL_MCHP_STATE_OK;
 					break;
 				}
