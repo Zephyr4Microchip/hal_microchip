@@ -39,101 +39,138 @@ static inline void hal_mchp_spi_disable(const hal_mchp_spi_t *hal)
 	hal_mchp_spi_wait_sync(hal, SERCOM_SPIM_SYNCBUSY_ENABLE_Msk);
 }
 
-/*Select the SPI Master Mode*/
+/*Set the SPI Master Mode*/
 static inline int hal_mchp_spi_master_mode(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_MODE_SPI_MASTER;
+	/* Clear the MODE bit field and set it to SPI Master mode */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_MODE_Msk) |
+		SERCOM_SPIM_CTRLA_MODE_SPI_MASTER;
+
 	return 0;
 }
 
-/*Select the SPI Slave Mode*/
+/*Set the SPI Slave Mode*/
 static inline int hal_mchp_spi_slave_mode(const hal_mchp_spi_t *hal)
 {
 	return -1;
 }
 
-/*Select the SPI Data Order, MSB first*/
+/*Set the SPI Data Order, MSB first*/
 static inline void hal_mchp_spi_msb_first(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DORD_MSB;
+	/* Clear the DORD bit field and set it to MSB first */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_DORD_Msk) |
+		SERCOM_SPIM_CTRLA_DORD_MSB;
 }
 
-/*Select the SPI Data Order,LSB first*/
+/*Set the SPI Data Order,LSB first*/
 static inline void hal_mchp_spi_lsb_first(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DORD_LSB;
+	/* Clear the DORD bit field and set it to LSB first */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_DORD_Msk) |
+		SERCOM_SPIM_CTRLA_DORD_LSB;
 }
 
-/*Select the SPI Clock Polarity Idle Low*/
+/*Set the SPI Clock Polarity Idle Low*/
 static inline void hal_mchp_spi_cpol_idle_low(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_CPOL_IDLE_LOW;
+	/* Clear the CPOL bit field and set clock polarity to Idle Low */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_CPOL_Msk) |
+		SERCOM_SPIM_CTRLA_CPOL_IDLE_LOW;
 }
 
-/*Select the SPI Clock Polarity Idle High*/
+/*Set the SPI Clock Polarity Idle High*/
 static inline void hal_mchp_spi_cpol_idle_high(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_CPOL_IDLE_HIGH;
+	/* Clear the CPOL bit field and set clock polarity to Idle High */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_CPOL_Msk) |
+		SERCOM_SPIM_CTRLA_CPOL_IDLE_HIGH;
 }
 
-/*Select the SPI Clock Phase leading Edge*/
+/*Set the SPI Clock Phase leading Edge*/
 static inline void hal_mchp_spi_cpha_lead_edge(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_CPHA_LEADING_EDGE;
+	/* Clear the CPHA bit field and set clock phase to Leading Edge */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_CPHA_Msk) |
+		SERCOM_SPIM_CTRLA_CPHA_LEADING_EDGE;
 }
 
-/*Select the SPI Clock Phase Trailing Edge*/
+/*Set the SPI Clock Phase Trailing Edge*/
 static inline void hal_mchp_spi_cpha_trail_edge(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_CPHA_TRAILING_EDGE;
+	/* Clear the CPHA bit field and set clock phase to Trailing Edge */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA & ~SERCOM_SPIM_CTRLA_CPHA_Msk) |
+		SERCOM_SPIM_CTRLA_CPHA_TRAILING_EDGE;
 }
 
-/*Select the SPI Half Duplex Mode*/
+/*Set the SPI Half Duplex Mode*/
 static inline int hal_mchp_spi_half_duplex_mode(const hal_mchp_spi_t *hal)
 {
 	return -1;
 }
 
-/*Select the SPI Full Duplex Mode*/
+/*Set the SPI Full Duplex Mode*/
 static inline int hal_mchp_spi_full_duplex_mode(const hal_mchp_spi_t *hal)
 {
 	return 0;
 }
 
-/*Select the pads for the SPI Transmission*/
+/*Set the pads for the SPI Transmission*/
 static inline void hal_mchp_spi_config_pinout(const hal_mchp_spi_t *hal)
 {
+	/* Clear the DIPO and DOPO bit fields and apply the new pad configuration */
 	hal->regs->SPIM.SERCOM_CTRLA =
-		(hal->pads) | (hal->regs->SPIM.SERCOM_CTRLA &
-			       ~(SERCOM_SPIM_CTRLA_DIPO_Msk | SERCOM_SPIM_CTRLA_DOPO_Msk));
+		(hal->regs->SPIM.SERCOM_CTRLA &
+		 ~(SERCOM_SPIM_CTRLA_DIPO_Msk | SERCOM_SPIM_CTRLA_DOPO_Msk)) |
+		(hal->pads);
 }
 
-/*Select the pads for the SPI Transmission for loopback mode*/
+/*Set the pads for the SPI Transmission for loopback mode*/
 static inline void hal_mchp_spi_mode_loopback(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DIPO_PAD0;
-	hal->regs->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_DOPO_PAD0;
+	/* Clear the DIPO and DOPO bit fields and set them to PAD0 */
+	hal->regs->SPIM.SERCOM_CTRLA =
+		(hal->regs->SPIM.SERCOM_CTRLA &
+		 ~(SERCOM_SPIM_CTRLA_DIPO_Msk | SERCOM_SPIM_CTRLA_DOPO_Msk)) |
+		(SERCOM_SPIM_CTRLA_DIPO_PAD0 | SERCOM_SPIM_CTRLA_DOPO_PAD0);
 }
 
 /*Enable the Receiver in SPI peripheral*/
 static inline void hal_mchp_spi_rx_enable(const hal_mchp_spi_t *hal)
 {
 	hal_mchp_spi_wait_sync(hal, SERCOM_SPIM_SYNCBUSY_CTRLB_Msk);
-	hal->regs->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_RXEN_Msk;
+	/* Clear the RXEN bit field and enable Receiver */
+	hal->regs->SPIM.SERCOM_CTRLB =
+		(hal->regs->SPIM.SERCOM_CTRLB & ~SERCOM_SPIM_CTRLB_RXEN_Msk) |
+		SERCOM_SPIM_CTRLB_RXEN_Msk;
+
 	hal_mchp_spi_wait_sync(hal, SERCOM_SPIM_SYNCBUSY_CTRLB_Msk);
 }
 
-/*Select the 8 BIT Character Size  in SPI peripheral*/
+/*Set the 8 BIT Character Size  in SPI peripheral*/
 static inline int hal_mchp_spi_8bit_ch_size(const hal_mchp_spi_t *hal)
 {
-	hal->regs->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+	/* Clear the CHSIZE bit field and set character size to 8-bit */
+	hal->regs->SPIM.SERCOM_CTRLB =
+		(hal->regs->SPIM.SERCOM_CTRLB & ~SERCOM_SPIM_CTRLB_CHSIZE_Msk) |
+		SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
 	return 0;
 }
 
-/*Select the 9 BIT Character Size  in SPI peripheral*/
+/*Set the 9 BIT Character Size  in SPI peripheral*/
 static inline int hal_mchp_spi_9bit_ch_size(const hal_mchp_spi_t *hal)
 {
-	/* hal->regs->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_CHSIZE_9_BIT;*/
+	/* Clear the CHSIZE bit field and set character size to 9-bit */
+	/* hal->regs->SPIM.SERCOM_CTRLB =
+		(hal->regs->SPIM.SERCOM_CTRLB & ~SERCOM_SPIM_CTRLB_CHSIZE_Msk) |
+		SERCOM_SPIM_CTRLB_CHSIZE_9_BIT; */
 	return -1;
 }
 
@@ -156,9 +193,9 @@ static inline void hal_mchp_spi_disable_interrupts(const hal_mchp_spi_t *hal)
 }
 
 /*Write Data into DATA register*/
-static inline void hal_mchp_spi_write_data(const hal_mchp_spi_t *hal, uint8_t c)
+static inline void hal_mchp_spi_write_data(const hal_mchp_spi_t *hal, uint8_t data)
 {
-	hal->regs->SPIM.SERCOM_DATA = c;
+	hal->regs->SPIM.SERCOM_DATA = data;
 }
 
 /*Read Data from the DATA register*/
@@ -167,23 +204,18 @@ static inline uint8_t hal_mchp_spi_read_data(const hal_mchp_spi_t *hal)
 	return (uint8_t)hal->regs->SPIM.SERCOM_DATA;
 }
 
-/*Wait for receive complete*/
-static inline bool hal_mchp_spi_rx_comp(const hal_mchp_spi_t *hal)
+/*Return true if receive complete flag is set*/
+static inline bool hal_mchp_spi_is_rx_comp(const hal_mchp_spi_t *hal)
 {
-	while ((hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk) !=
-	       SERCOM_SPIM_INTFLAG_RXC_Msk) {
-		/*Wait until the RXC Flag is set*/
-	};
-	return true;
+	return (hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk) ==
+	       SERCOM_SPIM_INTFLAG_RXC_Msk;
 }
 
-/*Wait for transmit complete*/
-static inline bool hal_mchp_spi_tx_comp(const hal_mchp_spi_t *hal)
+/*Return true if transmit complete flag is set*/
+static inline bool hal_mchp_spi_is_tx_comp(const hal_mchp_spi_t *hal)
 {
-	while (!(hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk)) {
-		/*Wait until the TXC Flag is set*/
-	};
-	return true;
+	return (hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk) ==
+	       SERCOM_SPIM_INTFLAG_TXC_Msk;
 }
 
 /*Clear the DATA register*/
@@ -196,14 +228,11 @@ static inline void hal_mchp_spi_clr_data(const hal_mchp_spi_t *hal)
 	};
 }
 
-/*Wait for Data Register Empty*/
-static inline bool hal_mchp_spi_data_empty(const hal_mchp_spi_t *hal)
+/*Return true if data register empty flag is set*/
+static inline bool hal_mchp_spi_is_data_empty(const hal_mchp_spi_t *hal)
 {
-	while ((hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk) !=
-	       SERCOM_SPIM_INTFLAG_DRE_Msk) {
-		/*Wait until the DRE Flag is set*/
-	};
-	return true;
+	return (hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk) ==
+	       SERCOM_SPIM_INTFLAG_DRE_Msk;
 }
 
 /*Enable the Receive Complete Interrupt*/
@@ -224,43 +253,22 @@ static inline void hal_mchp_spi_enable_data_empty_interrupt(const hal_mchp_spi_t
 	hal->regs->SPIM.SERCOM_INTENSET = SERCOM_SPIM_INTENSET_DRE_Msk;
 }
 
-/*Disbale the Receive Complete Interrupt*/
+/*Disable the Receive Complete Interrupt*/
 static inline void hal_mchp_spi_disable_rxc_interrupt(const hal_mchp_spi_t *hal)
 {
 	hal->regs->SPIM.SERCOM_INTENCLR = SERCOM_SPIM_INTENCLR_RXC_Msk;
 }
 
-/*Disbale the Transmit Complete Interrupt*/
+/*Disable the Transmit Complete Interrupt*/
 static inline void hal_mchp_spi_disable_txc_interrupt(const hal_mchp_spi_t *hal)
 {
 	hal->regs->SPIM.SERCOM_INTENCLR = SERCOM_SPIM_INTENCLR_TXC_Msk;
 }
 
-/*Disbale the Data Register Empty Interrupt*/
+/*Disable the Data Register Empty Interrupt*/
 static inline void hal_mchp_spi_disable_data_empty_interrupt(const hal_mchp_spi_t *hal)
 {
 	hal->regs->SPIM.SERCOM_INTENCLR = SERCOM_SPIM_INTENCLR_DRE_Msk;
-}
-
-/*Return true if receive complete flag is set*/
-static inline bool hal_mchp_spi_is_rx_comp_flag_set(const hal_mchp_spi_t *hal)
-{
-	return ((hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk) ==
-		SERCOM_SPIM_INTFLAG_RXC_Msk);
-}
-
-/*Return true if Data register empty flag is set*/
-static inline bool hal_mchp_spi_is_data_empty_flag_set(const hal_mchp_spi_t *hal)
-{
-	return ((hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk) ==
-		SERCOM_SPIM_INTFLAG_DRE_Msk);
-}
-
-/*Return true if transmit complete flag is set*/
-static inline bool hal_mchp_spi_is_tx_comp_flag_set(const hal_mchp_spi_t *hal)
-{
-	return ((hal->regs->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk) ==
-		SERCOM_SPIM_INTFLAG_TXC_Msk);
 }
 
 /*Return the source address*/
@@ -275,17 +283,20 @@ static inline void *hal_mchp_spi_get_dma_dest_addr(const hal_mchp_spi_t *hal)
 	return ((void *)&(hal->regs->SPIM.SERCOM_DATA));
 }
 
-/*Return true if Data register empty flag is set*/
+/*Return true if any of the interrupt is enabled is set*/
 static inline bool hal_mchp_spi_is_interrupt_set(const hal_mchp_spi_t *hal)
 {
 	return (hal->regs->SPIM.SERCOM_INTENSET != 0);
 }
 
 /* Set the Hardware slave select*/
-static inline void hal_mchp_spi_select_line(const hal_mchp_spi_t *hal)
+static inline void hal_mchp_spi_slave_select_enable(const hal_mchp_spi_t *hal)
 {
 	hal_mchp_spi_wait_sync(hal, SERCOM_SPIM_SYNCBUSY_CTRLB_Msk);
-	hal->regs->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_MSSEN_Msk;
+	/* Clear the MSSEN bit field and enable Master Slave Select */
+	hal->regs->SPIM.SERCOM_CTRLB =
+		(hal->regs->SPIM.SERCOM_CTRLB & ~SERCOM_SPIM_CTRLB_MSSEN_Msk) |
+		SERCOM_SPIM_CTRLB_MSSEN_Msk;
 	hal_mchp_spi_wait_sync(hal, SERCOM_SPIM_SYNCBUSY_CTRLB_Msk);
 }
 
