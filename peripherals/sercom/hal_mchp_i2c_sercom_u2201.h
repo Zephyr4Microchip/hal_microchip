@@ -38,7 +38,9 @@ typedef enum {
 	I2C_MCHP_CONTROLLER_INTERRUPT_ERROR = 4,
 
 	/* Indicates that all interrupt */
-	I2C_MCHP_CONTROLLER_INTERRUPT_ALL = 8,
+	I2C_MCHP_CONTROLLER_INTERRUPT_ALL =
+		(I2C_MCHP_CONTROLLER_INTERRUPT_CONTROLLER_ON_BUS |
+		 I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS | I2C_MCHP_CONTROLLER_INTERRUPT_ERROR),
 
 } i2c_mchp_controller_interrupt_t;
 
@@ -57,7 +59,9 @@ typedef enum {
 	I2C_MCHP_TARGET_INTERRUPT_ERROR = 8,
 
 	/* Indicates that all interrupt */
-	I2C_MCHP_TARGET_INTERRUPT_ALL = 16,
+	I2C_MCHP_TARGET_INTERRUPT_ALL =
+		(I2C_MCHP_TARGET_INTERRUPT_STOP | I2C_MCHP_TARGET_INTERRUPT_ADDR_MATCH |
+		 I2C_MCHP_TARGET_INTERRUPT_ERROR | I2C_MCHP_TARGET_INTERRUPT_DATA_READY),
 
 } i2c_mchp_target_interrupt_t;
 
@@ -76,7 +80,9 @@ typedef enum {
 	I2C_MCHP_CONTROLLER_INTFLAG_ERROR = 4,
 
 	/* Indicates that all the interrupt flags */
-	I2C_MCHP_CONTROLLER_INTFLAG_ALL = 8,
+	I2C_MCHP_CONTROLLER_INTFLAG_ALL =
+		(I2C_MCHP_CONTROLLER_INTFLAG_CONTROLLER_ON_BUS |
+		 I2C_MCHP_CONTROLLER_INTFLAG_TARGET_ON_BUS | I2C_MCHP_CONTROLLER_INTFLAG_ERROR),
 
 } i2c_mchp_controller_intflag_t;
 
@@ -98,7 +104,9 @@ typedef enum {
 	I2C_MCHP_TARGET_INTFLAG_ERROR = 8,
 
 	/* Indicates that all the interrupt flags */
-	I2C_MCHP_TARGET_INTFLAG_ALL = 16,
+	I2C_MCHP_TARGET_INTFLAG_ALL =
+		(I2C_MCHP_TARGET_INTFLAG_STOP | I2C_MCHP_TARGET_INTFLAG_ADDR_MATCH |
+		 I2C_MCHP_TARGET_INTFLAG_DATA_READY | I2C_MCHP_TARGET_INTFLAG_ERROR),
 
 } i2c_mchp_target_intflag_t;
 
@@ -129,7 +137,13 @@ typedef enum {
 	I2C_MCHP_CONTROLLER_STATUS_FLAG_LENERR = 64,
 
 	/* Indicates that all status bits */
-	I2C_MCHP_CONTROLLER_STATUS_FLAG_ALL = 128,
+	I2C_MCHP_CONTROLLER_STATUS_FLAG_ALL =
+		(I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_ERROR |
+		 I2C_MCHP_CONTROLLER_STATUS_FLAG_ARBITRATION_LOST |
+		 I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_STATE_BUSY |
+		 I2C_MCHP_CONTROLLER_STATUS_FLAG_MEXTTOUT |
+		 I2C_MCHP_CONTROLLER_STATUS_FLAG_SEXTTOUT |
+		 I2C_MCHP_CONTROLLER_STATUS_FLAG_LOWTOUT | I2C_MCHP_CONTROLLER_STATUS_FLAG_LENERR),
 
 } i2c_mchp_controller_status_flag_t;
 
@@ -154,7 +168,9 @@ typedef enum {
 	I2C_MCHP_TARGET_STATUS_FLAG_SEXTTOUT = 32,
 
 	/* Indicates that all status bits */
-	I2C_MCHP_TARGET_STATUS_FLAG_ALL = 128,
+	I2C_MCHP_TARGET_STATUS_FLAG_ALL =
+		(I2C_MCHP_TARGET_STATUS_FLAG_BUS_ERROR | I2C_MCHP_TARGET_STATUS_FLAG_COLL |
+		 I2C_MCHP_TARGET_STATUS_FLAG_LOWTOUT | I2C_MCHP_TARGET_STATUS_FLAG_SEXTTOUT),
 
 } i2c_mchp_target_status_flag_t;
 
@@ -340,42 +356,38 @@ static inline void
 hal_mchp_i2c_controller_status_clear(const hal_mchp_i2c_t *hal,
 				     i2c_mchp_controller_status_flag_t status_flags)
 {
+	uint16_t status_clear = 0;
+
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_ERROR) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_ERROR) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_BUSERR(1);
+		status_clear |= SERCOM_I2CM_STATUS_BUSERR(1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_ARBITRATION_LOST) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_ARBITRATION_LOST) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_ARBLOST(1);
+		status_clear |= SERCOM_I2CM_STATUS_ARBLOST(1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_STATE_BUSY) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_BUS_STATE_BUSY) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_BUSSTATE(0x1);
+		status_clear |= SERCOM_I2CM_STATUS_BUSSTATE(0x1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_MEXTTOUT) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_MEXTTOUT) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_MEXTTOUT(1);
+		status_clear |= SERCOM_I2CM_STATUS_MEXTTOUT(1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_SEXTTOUT) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_SEXTTOUT) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_SEXTTOUT(1);
+		status_clear |= SERCOM_I2CM_STATUS_SEXTTOUT(1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_LOWTOUT) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_LOWTOUT) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_LOWTOUT(1);
+		status_clear |= SERCOM_I2CM_STATUS_LOWTOUT(1);
 	}
 	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_LENERR) ==
 	    I2C_MCHP_CONTROLLER_STATUS_FLAG_LENERR) {
-		hal->regs->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_LENERR(1);
+		status_clear |= SERCOM_I2CM_STATUS_LENERR(1);
 	}
-	if ((status_flags & I2C_MCHP_CONTROLLER_STATUS_FLAG_ALL) ==
-	    I2C_MCHP_CONTROLLER_STATUS_FLAG_ALL) {
-		hal->regs->I2CM.SERCOM_STATUS =
-			(SERCOM_I2CM_STATUS_BUSERR(1) | SERCOM_I2CM_STATUS_ARBLOST(1) |
-			 SERCOM_I2CM_STATUS_BUSSTATE(0x1) | SERCOM_I2CM_STATUS_MEXTTOUT(1) |
-			 SERCOM_I2CM_STATUS_SEXTTOUT(1) | SERCOM_I2CM_STATUS_LOWTOUT(1) |
-			 SERCOM_I2CM_STATUS_LENERR(1));
-	}
+
+	hal->regs->I2CM.SERCOM_STATUS = status_clear;
 }
 
 /* API to enable I2C interrupts in controller mode */
@@ -383,24 +395,21 @@ static inline void
 hal_mchp_i2c_controller_int_enable(const hal_mchp_i2c_t *hal,
 				   i2c_mchp_controller_interrupt_t controller_int)
 {
+	uint8_t int_set = 0;
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_CONTROLLER_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_CONTROLLER_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTENSET = SERCOM_I2CM_INTENSET_MB(1);
+		int_set |= SERCOM_I2CM_INTENSET_MB(1);
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTENSET = SERCOM_I2CM_INTENSET_SB(1);
+			int_set |= SERCOM_I2CM_INTENSET_SB(1);
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) {
-		hal->regs->I2CM.SERCOM_INTENSET = SERCOM_I2CM_INTENSET_ERROR(1);
+			int_set |= SERCOM_I2CM_INTENSET_ERROR(1);
 	}
-	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_ALL) ==
-	    I2C_MCHP_CONTROLLER_INTERRUPT_ALL) {
-		hal->regs->I2CM.SERCOM_INTENSET =
-			(SERCOM_I2CM_INTENSET_MB(1) | SERCOM_I2CM_INTENSET_SB(1) |
-			 SERCOM_I2CM_INTENSET_ERROR(1));
-	}
+
+	hal->regs->I2CM.SERCOM_INTENSET = int_set;
 }
 
 /* API to disable I2C interrupts in controller mode */
@@ -408,24 +417,21 @@ static inline void
 hal_mchp_i2c_controller_int_disable(const hal_mchp_i2c_t *hal,
 				    i2c_mchp_controller_interrupt_t controller_int)
 {
+	uint8_t int_clear = 0;
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_CONTROLLER_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_CONTROLLER_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTENCLR = SERCOM_I2CM_INTENCLR_MB(1);
+		int_clear |= SERCOM_I2CM_INTENCLR_MB(1);
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTENCLR = SERCOM_I2CM_INTENCLR_SB(1);
+		int_clear |= SERCOM_I2CM_INTENCLR_SB(1);
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) {
-		hal->regs->I2CM.SERCOM_INTENCLR = SERCOM_I2CM_INTENCLR_ERROR(1);
+		int_clear |= SERCOM_I2CM_INTENCLR_ERROR(1);
 	}
-	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_ALL) ==
-	    I2C_MCHP_CONTROLLER_INTERRUPT_ALL) {
-		hal->regs->I2CM.SERCOM_INTENCLR =
-			(SERCOM_I2CM_INTENCLR_MB(1) | SERCOM_I2CM_INTENCLR_SB(1) |
-			 SERCOM_I2CM_INTENCLR_ERROR(1));
-	}
+
+	hal->regs->I2CM.SERCOM_INTENCLR = int_clear;
 }
 
 /* API to get the controller I2C interrupt flag status */
@@ -455,24 +461,22 @@ static inline void
 hal_mchp_i2c_controller_int_flag_clear(const hal_mchp_i2c_t *hal,
 				       i2c_mchp_controller_intflag_t controller_intflag)
 {
+	uint8_t flag_clear = 0;
+
 	if ((controller_intflag & I2C_MCHP_CONTROLLER_INTFLAG_CONTROLLER_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTFLAG_CONTROLLER_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTFLAG = SERCOM_I2CM_INTFLAG_MB(1);
+		flag_clear |= SERCOM_I2CM_INTFLAG_MB(1);
 	}
 	if ((controller_intflag & I2C_MCHP_CONTROLLER_INTFLAG_TARGET_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTFLAG_TARGET_ON_BUS) {
-		hal->regs->I2CM.SERCOM_INTFLAG = SERCOM_I2CM_INTFLAG_SB(1);
+		flag_clear |= SERCOM_I2CM_INTFLAG_SB(1);
 	}
 	if ((controller_intflag & I2C_MCHP_CONTROLLER_INTFLAG_ERROR) ==
 	    I2C_MCHP_CONTROLLER_INTFLAG_ERROR) {
-		hal->regs->I2CM.SERCOM_INTFLAG = SERCOM_I2CM_INTFLAG_ERROR(1);
+		flag_clear |= SERCOM_I2CM_INTFLAG_ERROR(1);
 	}
-	if ((controller_intflag & I2C_MCHP_CONTROLLER_INTFLAG_ALL) ==
-	    I2C_MCHP_CONTROLLER_INTFLAG_ALL) {
-		hal->regs->I2CM.SERCOM_INTFLAG =
-			(SERCOM_I2CM_INTFLAG_MB(1) | SERCOM_I2CM_INTFLAG_SB(1) |
-			 SERCOM_I2CM_INTFLAG_ERROR(1));
-	}
+
+	hal->regs->I2CM.SERCOM_INTFLAG = flag_clear;
 }
 /* API to write the address of target in address register */
 static inline void hal_mchp_i2c_controller_addr_write(const hal_mchp_i2c_t *hal, uint32_t addr)
@@ -534,25 +538,24 @@ static inline i2c_mchp_target_intflag_t hal_mchp_i2c_target_int_flag_get(const h
 static inline void hal_mchp_i2c_target_int_flag_clear(const hal_mchp_i2c_t *hal,
 						      i2c_mchp_target_intflag_t target_intflag)
 {
+	uint8_t flag_clear = 0;
+
 	if ((target_intflag & I2C_MCHP_TARGET_INTFLAG_STOP) == I2C_MCHP_TARGET_INTFLAG_STOP) {
-		hal->regs->I2CS.SERCOM_INTFLAG = SERCOM_I2CS_INTFLAG_PREC(1);
+		flag_clear |= SERCOM_I2CS_INTFLAG_PREC(1);
 	}
 	if ((target_intflag & I2C_MCHP_TARGET_INTFLAG_ADDR_MATCH) ==
 	    I2C_MCHP_TARGET_INTFLAG_ADDR_MATCH) {
-		hal->regs->I2CS.SERCOM_INTFLAG = SERCOM_I2CS_INTFLAG_AMATCH(1);
+		flag_clear |= SERCOM_I2CS_INTFLAG_AMATCH(1);
 	}
 	if ((target_intflag & I2C_MCHP_TARGET_INTFLAG_DATA_READY) ==
 	    I2C_MCHP_TARGET_INTFLAG_DATA_READY) {
-		hal->regs->I2CS.SERCOM_INTFLAG = SERCOM_I2CS_INTFLAG_DRDY(1);
+		flag_clear |= SERCOM_I2CS_INTFLAG_DRDY(1);
 	}
 	if ((target_intflag & I2C_MCHP_TARGET_INTFLAG_ERROR) == I2C_MCHP_TARGET_INTFLAG_ERROR) {
-		hal->regs->I2CS.SERCOM_INTFLAG = SERCOM_I2CS_INTFLAG_ERROR(1);
+		flag_clear |= SERCOM_I2CS_INTFLAG_ERROR(1);
 	}
-	if ((target_intflag & I2C_MCHP_TARGET_INTFLAG_ALL) == I2C_MCHP_TARGET_INTFLAG_ALL) {
-		hal->regs->I2CS.SERCOM_INTFLAG =
-			(SERCOM_I2CS_INTFLAG_PREC(1) | SERCOM_I2CS_INTFLAG_AMATCH(1) |
-			 SERCOM_I2CS_INTFLAG_DRDY(1) | SERCOM_I2CS_INTFLAG_ERROR(1));
-	}
+
+	hal->regs->I2CS.SERCOM_INTFLAG = flag_clear;
 }
 
 /* API to configure the i2c in target mode */
@@ -564,7 +567,7 @@ static inline void hal_mchp_i2c_set_target_mode(const hal_mchp_i2c_t *hal)
 		 SERCOM_I2CS_CTRLB_SMEN(1));
 
 	hal->regs->I2CS.SERCOM_CTRLA =
-		(hal->regs->I2CM.SERCOM_CTRLA & ~SERCOM_I2CM_CTRLA_MODE_Msk) |
+		(hal->regs->I2CS.SERCOM_CTRLA & ~SERCOM_I2CS_CTRLA_MODE_Msk) |
 		(SERCOM_I2CS_CTRLA_MODE(0x4) | SERCOM_I2CS_CTRLA_SDAHOLD(0x1) |
 		 SERCOM_I2CS_CTRLA_SPEED(0x1));
 }
@@ -600,82 +603,81 @@ hal_mchp_i2c_target_status_get(const hal_mchp_i2c_t *hal)
 	if ((status_reg_val & SERCOM_I2CS_STATUS_SEXTTOUT_Msk) == SERCOM_I2CS_STATUS_SEXTTOUT_Msk) {
 		status_flags |= I2C_MCHP_TARGET_STATUS_FLAG_SEXTTOUT;
 	}
+
+	return status_flags;
 }
 
 /* API to clear the current I2C status in target mode */
 static inline void hal_mchp_i2c_target_status_clear(const hal_mchp_i2c_t *hal,
 						    i2c_mchp_target_status_flag_t status_flags)
 {
+	uint16_t status_clear = 0;
+
 	if ((status_flags & I2C_MCHP_TARGET_STATUS_FLAG_BUS_ERROR) ==
 	    I2C_MCHP_TARGET_STATUS_FLAG_BUS_ERROR) {
-		hal->regs->I2CS.SERCOM_STATUS = SERCOM_I2CS_STATUS_BUSERR(1);
+		status_clear |= SERCOM_I2CS_STATUS_BUSERR(1);
 	}
-	if ((status_flags & SERCOM_I2CS_STATUS_COLL_Msk) == SERCOM_I2CS_STATUS_COLL_Msk) {
-		hal->regs->I2CS.SERCOM_STATUS = SERCOM_I2CS_STATUS_COLL(1);
+	if ((status_flags & I2C_MCHP_TARGET_STATUS_FLAG_COLL) == I2C_MCHP_TARGET_STATUS_FLAG_COLL) {
+		status_clear |= SERCOM_I2CS_STATUS_COLL(1);
 	}
 	if ((status_flags & I2C_MCHP_TARGET_STATUS_FLAG_LOWTOUT) ==
 	    I2C_MCHP_TARGET_STATUS_FLAG_LOWTOUT) {
-		hal->regs->I2CS.SERCOM_STATUS = SERCOM_I2CS_STATUS_LOWTOUT(1);
+		status_clear |= SERCOM_I2CS_STATUS_LOWTOUT(1);
 	}
 	if ((status_flags & I2C_MCHP_TARGET_STATUS_FLAG_SEXTTOUT) ==
 	    I2C_MCHP_TARGET_STATUS_FLAG_SEXTTOUT) {
-		hal->regs->I2CS.SERCOM_STATUS = SERCOM_I2CS_STATUS_SEXTTOUT(1);
+		status_clear |= SERCOM_I2CS_STATUS_SEXTTOUT(1);
 	}
-	if ((status_flags & I2C_MCHP_TARGET_STATUS_FLAG_ALL) == I2C_MCHP_TARGET_STATUS_FLAG_ALL) {
-		hal->regs->I2CS.SERCOM_STATUS =
-			(SERCOM_I2CS_STATUS_BUSERR(1) | SERCOM_I2CS_STATUS_COLL(1) |
-			 SERCOM_I2CS_STATUS_LOWTOUT(1) | SERCOM_I2CS_STATUS_SEXTTOUT(1));
-	}
+
+	hal->regs->I2CS.SERCOM_STATUS = status_clear;
 }
 
 /* API to Enable i2c target interrupts */
 static inline void hal_mchp_i2c_target_int_enable(const hal_mchp_i2c_t *hal,
 						  i2c_mchp_target_interrupt_t target_int)
 {
+	uint8_t int_set = 0;
+
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_STOP) == I2C_MCHP_TARGET_INTERRUPT_STOP) {
-		hal->regs->I2CS.SERCOM_INTENSET = SERCOM_I2CS_INTENSET_PREC(1);
+		int_set |= SERCOM_I2CS_INTENSET_PREC(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ADDR_MATCH) ==
 	    I2C_MCHP_TARGET_INTERRUPT_ADDR_MATCH) {
-		hal->regs->I2CS.SERCOM_INTENSET = SERCOM_I2CS_INTENSET_AMATCH(1);
+		int_set |= SERCOM_I2CS_INTENSET_AMATCH(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_DATA_READY) ==
 	    I2C_MCHP_TARGET_INTERRUPT_DATA_READY) {
-		hal->regs->I2CS.SERCOM_INTENSET = SERCOM_I2CS_INTENSET_DRDY(1);
+		int_set |= SERCOM_I2CS_INTENSET_DRDY(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ERROR) == I2C_MCHP_TARGET_INTERRUPT_ERROR) {
-		hal->regs->I2CS.SERCOM_INTENSET = SERCOM_I2CS_INTENSET_ERROR(1);
+		int_set |= SERCOM_I2CS_INTENSET_ERROR(1);
 	}
-	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ALL) == I2C_MCHP_TARGET_INTERRUPT_ALL) {
-		hal->regs->I2CS.SERCOM_INTENSET =
-			(SERCOM_I2CS_INTENSET_PREC(1) | SERCOM_I2CS_INTENSET_DRDY(1) |
-			 SERCOM_I2CS_INTENSET_AMATCH(1) | SERCOM_I2CS_INTENSET_ERROR(1));
-	}
+
+	hal->regs->I2CS.SERCOM_INTENSET = int_set;
 }
 
 /* API to Disable i2c target interrupts */
 static inline void hal_mchp_i2c_target_int_disable(const hal_mchp_i2c_t *hal,
 						   i2c_mchp_target_interrupt_t target_int)
 {
+	uint8_t int_clear = 0;
+
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_STOP) == I2C_MCHP_TARGET_INTERRUPT_STOP) {
-		hal->regs->I2CS.SERCOM_INTENCLR = SERCOM_I2CS_INTENCLR_PREC(1);
+		int_clear |= SERCOM_I2CS_INTENCLR_PREC(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ADDR_MATCH) ==
 	    I2C_MCHP_TARGET_INTERRUPT_ADDR_MATCH) {
-		hal->regs->I2CS.SERCOM_INTENCLR = SERCOM_I2CS_INTENCLR_AMATCH(1);
+		int_clear |= SERCOM_I2CS_INTENCLR_AMATCH(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_DATA_READY) ==
 	    I2C_MCHP_TARGET_INTERRUPT_DATA_READY) {
-		hal->regs->I2CS.SERCOM_INTENCLR = SERCOM_I2CS_INTENCLR_DRDY(1);
+		int_clear |= SERCOM_I2CS_INTENCLR_DRDY(1);
 	}
 	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ERROR) == I2C_MCHP_TARGET_INTERRUPT_ERROR) {
-		hal->regs->I2CS.SERCOM_INTENCLR = SERCOM_I2CS_INTENCLR_ERROR(1);
+		int_clear |= SERCOM_I2CS_INTENCLR_ERROR(1);
 	}
-	if ((target_int & I2C_MCHP_TARGET_INTERRUPT_ALL) == I2C_MCHP_TARGET_INTERRUPT_ALL) {
-		hal->regs->I2CS.SERCOM_INTENCLR =
-			(SERCOM_I2CS_INTENCLR_PREC(1) | SERCOM_I2CS_INTENCLR_AMATCH(1) |
-			 SERCOM_I2CS_INTENCLR_DRDY(1) | SERCOM_I2CS_INTENCLR_ERROR(1));
-	}
+
+	hal->regs->I2CS.SERCOM_INTENCLR = int_clear;
 }
 
 /* API to set its own unique address in target mode. */
