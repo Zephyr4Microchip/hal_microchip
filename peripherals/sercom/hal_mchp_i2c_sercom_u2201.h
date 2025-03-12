@@ -402,11 +402,11 @@ hal_mchp_i2c_controller_int_enable(const hal_mchp_i2c_t *hal,
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_TARGET_ON_BUS) {
-			int_set |= SERCOM_I2CM_INTENSET_SB(1);
+		int_set |= SERCOM_I2CM_INTENSET_SB(1);
 	}
 	if ((controller_int & I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) ==
 	    I2C_MCHP_CONTROLLER_INTERRUPT_ERROR) {
-			int_set |= SERCOM_I2CM_INTENSET_ERROR(1);
+		int_set |= SERCOM_I2CM_INTENSET_ERROR(1);
 	}
 
 	hal->regs->I2CM.SERCOM_INTENSET = int_set;
@@ -685,6 +685,12 @@ static inline void hal_mchp_i2c_set_target_addr(const hal_mchp_i2c_t *hal, uint3
 {
 	hal->regs->I2CS.SERCOM_ADDR = (hal->regs->I2CS.SERCOM_ADDR & ~SERCOM_I2CS_ADDR_ADDR_Msk) |
 				      SERCOM_I2CS_ADDR_ADDR(addr);
+}
+
+/* API to stop communication by sending NACK in target mode. */
+static inline void hal_mchp_i2c_target_transfer_stop(const hal_mchp_i2c_t *hal)
+{
+	hal->regs->I2CS.SERCOM_CTRLB |= SERCOM_I2CS_CTRLB_ACKACT(1);
 }
 
 /* API to calculate i2c baud rate */
