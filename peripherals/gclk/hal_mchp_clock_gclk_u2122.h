@@ -148,13 +148,130 @@ static const struct clock_control_mchp_id_map hal_mchp_id_map_gclk_periph[] = {
 	{CLOCK_CONTROL_MCHP_V1_GCLK_SDHC1, SDHC1_GCLK_ID},
 #endif
 
-	{CLOCK_CONTROL_MCHP_V1_GCLK_CM4_TRACE, 47},
+	{CLOCK_CONTROL_MCHP_V1_GCLK_CM4_TRACE, GCLK_NUM - 1},
 };
 
 /**
  * @brief Size of the generic clock generator to peripheral ID map array.
  */
 #define HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE (ARRAY_SIZE(hal_mchp_id_map_gclk_periph))
+
+/**
+ * @brief Sets or clears the GCLK channel enable for a specified clock.
+ *
+ * This function modifies the GCLK channel enable bit for the given clock (specified by `clk`) in
+ * the GCLK registers. The channel enable is set or cleared based on the value of the `is_set`
+ * parameter.
+ *
+ * @param[in] regs Pointer to the GCLK register structure.
+ * @param[in] clk The clock identifier to modify the GCLK channel enable for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the channel
+ * enable.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the GCLK register to enable or disable
+ *       the specified clock channel.
+ */
+static int hal_mchp_gclk_chen_set_clear(gclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	int error = -1;
+	uint32_t index;
+
+	/* Iterate through all GCLK peripherals to find match with clk */
+	for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
+		if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
+			if (is_set == true) {
+				regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] |=
+					GCLK_PCHCTRL_CHEN_Msk;
+			} else {
+				regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] &=
+					~GCLK_PCHCTRL_CHEN_Msk;
+			}
+			error = 0;
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Configures the PCHCTRL (Peripheral Channel Control) for a specified clock.
+ *
+ * This function configures the PCHCTRL register to enable or disable the channel for the given
+ * clock (specified by `clk`), based on the value of `is_chen`, and associates the specified GCLK
+ * generator (`gen_sel`).
+ *
+ * @param[in] regs Pointer to the GCLK register structure.
+ * @param[in] clk The clock identifier to configure the PCHCTRL for.
+ * @param[in] is_chen A boolean flag indicating whether to enable (true) or disable (false) the
+ * channel.
+ * @param[in] gen_sel The GCLK generator selection to associate with the specified clock.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function modifies the PCHCTRL register to configure the peripheral channel control for
+ * the clock. The configuration includes enabling or disabling the channel and associating a GCLK
+ * generator.
+ */
+static int hal_mchp_gclk_configure_pchctrl(gclk_registers_t *regs, uint32_t clk, bool is_chen,
+					   uint8_t gen_sel)
+{
+	uint32_t reg_val;
+	uint32_t index;
+	int error = -1;
+
+	/* Iterate through all GCLK peripherals to find match with clk */
+	for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
+		if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
+			reg_val = regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id];
+			if (is_chen == true) {
+				reg_val |= GCLK_PCHCTRL_CHEN_Msk;
+			} else {
+				reg_val &= ~GCLK_PCHCTRL_CHEN_Msk;
+			}
+			reg_val &= ~GCLK_PCHCTRL_GEN_Msk;
+			regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
+				reg_val | gen_sel;
+			error = 0;
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Configures the GENCTRL (Generator Control) register for a specified clock.
+ *
+ * This function configures the GENCTRL register for the given clock (specified by `clk`) by setting
+ * the GCLK generator value (specified by `gen_val`). It enables the appropriate control settings
+ * for the specified clock generator.
+ *
+ * @param[in] regs Pointer to the GCLK register structure.
+ * @param[in] clk The clock identifier to configure the GENCTRL for.
+ * @param[in] gen_val The GCLK generator value to associate with the specified clock.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function modifies the GENCTRL register to configure the specified GCLK generator for
+ * the given clock.
+ */
+static int hal_mchp_gclk_configure_genctrl(gclk_registers_t *regs, uint32_t clk, uint8_t gen_val)
+{
+	uint32_t index;
+	int error = -1;
+
+	/* Iterate through all GCLK generators to find match with clk */
+	for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
+		if (clk == hal_mchp_sync_map_gclk_gen[index].clk) {
+			regs->GCLK_GENCTRL[index] = GCLK_GENCTRL_Msk & gen_val;
+			error = 0;
+			break;
+		}
+	}
+
+	return error;
+}
 
 /**
  * @brief Turns off a specific generic clock.
@@ -193,15 +310,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_off(gclk_registers_t *reg
 
 	/* If no match found in GCLK Gen, check the GCLK peripheral map */
 	if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-		/* Loop peripheral map to check for a matching peripheral clock */
-		for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-			/* If a match is found, turn off the peripheral clock */
-			if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
-				regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] &=
-					~GCLK_PCHCTRL_CHEN_Msk;
-				state = CLOCK_CONTROL_MCHP_STATE_OK;
-				break;
-			}
+		/* Loop through GCLK peripheral map and clear CHEN, if found */
+		if (hal_mchp_gclk_chen_set_clear(regs, clk, false) == 0) {
+			state = CLOCK_CONTROL_MCHP_STATE_OK;
 		}
 	}
 
@@ -246,15 +357,9 @@ static inline clock_control_mchp_state_t hal_mchp_gclk_on(gclk_registers_t *regs
 
 	/* If no match found in GCLK Gen, check the GCLK peripheral map */
 	if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-		/* Loop through the GCLK peripheral map to check for a peripheral clock */
-		for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-			/* If a match is found, enable the corresponding peripheral clock */
-			if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
-				regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] |=
-					GCLK_PCHCTRL_CHEN_Msk;
-				state = CLOCK_CONTROL_MCHP_STATE_OK;
-				break;
-			}
+		/* Loop through GCLK peripheral map and set CHEN if found */
+		if (hal_mchp_gclk_chen_set_clear(regs, clk, true) == 0) {
+			state = CLOCK_CONTROL_MCHP_STATE_OK;
 		}
 	}
 
@@ -628,14 +733,20 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 
 	if (clk == 0) {
 		/* No specific clock given, apply settings to all available clocks. */
-		for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
-			regs->GCLK_GENCTRL[index] =
-				GCLK_GENCTRL_Msk & gclk_configuration->genctrl[index];
+		for (index = 0; index < gclk_configuration->genctrl_count; index++) {
+			if (gclk_configuration->genctrl != NULL) {
+				hal_mchp_gclk_configure_genctrl(
+					regs, gclk_configuration->genctrl[index].clk,
+					gclk_configuration->genctrl[index].gen_val);
+			}
 		}
-		for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-			regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
-				GCLK_PCHCTRL_Msk &
-				gclk_configuration->pchctrl[hal_mchp_id_map_gclk_periph[index].id];
+		if (gclk_configuration->pchctrl != NULL) {
+			for (index = 0; index < gclk_configuration->pchctrl_count; index++) {
+				hal_mchp_gclk_configure_pchctrl(
+					regs, gclk_configuration->pchctrl[index].clk,
+					gclk_configuration->pchctrl[index].is_on,
+					gclk_configuration->pchctrl[index].gen_sel);
+			}
 		}
 		state = CLOCK_CONTROL_MCHP_STATE_OK;
 	} else {
@@ -643,25 +754,20 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 		state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
 		/* Check if the clock matches a known GCLK generator. */
-		for (index = 0; index < HAL_MCHP_SYNC_MAP_GCLK_GEN_SIZE; index++) {
-			if (clk == hal_mchp_sync_map_gclk_gen[index].clk) {
-				regs->GCLK_GENCTRL[index] =
-					GCLK_GENCTRL_Msk & gclk_configuration->genctrl[index];
+		if (gclk_configuration->genctrl != NULL) {
+			if (hal_mchp_gclk_configure_genctrl(
+				    regs, clk, gclk_configuration->genctrl[0].gen_val) == 0) {
 				state = CLOCK_CONTROL_MCHP_STATE_OK;
-				break;
 			}
 		}
 
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			/* No match in GCLK generators, check for peripherals. */
-			for (index = 0; index < HAL_MCHP_ID_MAP_GCLK_PERIPH_SIZE; index++) {
-				if (clk == hal_mchp_id_map_gclk_periph[index].clk) {
-					regs->GCLK_PCHCTRL[hal_mchp_id_map_gclk_periph[index].id] =
-						GCLK_PCHCTRL_Msk &
-						gclk_configuration->pchctrl
-							[hal_mchp_id_map_gclk_periph[index].id];
+			if (gclk_configuration->pchctrl != NULL) {
+				/* No match in GCLK generators, check for peripherals. */
+				if (hal_mchp_gclk_configure_pchctrl(
+					    regs, clk, gclk_configuration->pchctrl[0].is_on,
+					    gclk_configuration->pchctrl[0].gen_sel) == 0) {
 					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					break;
 				}
 			}
 		}

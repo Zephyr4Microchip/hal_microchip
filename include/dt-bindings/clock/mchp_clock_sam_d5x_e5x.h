@@ -218,25 +218,27 @@
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_SERIES_MCHP_SAME51))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_CAN_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_CAN_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_CAN_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_SERIES_MCHP_SAME51 */
 
 /* GMAC Peripheral is available in E54 and E53 series only */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_SERIES_MCHP_SAME53))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_GMAC_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_GMAC_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_GMAC_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_SERIES_MCHP_SAME53 */
 
-#if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_SERIES_MCHP_SAME51) ||           \
-     defined(CONFIG_SOC_ATSAME53N20) || defined(CONFIG_SOC_ATSAME53N19) ||                         \
-     defined(CONFIG_SOC_ATSAMD51P20) || defined(CONFIG_SOC_ATSAMD51P19) ||                         \
-     defined(CONFIG_SOC_ATSAMD51N20) || defined(CONFIG_SOC_ATSAMD51N19))
+/* SDHC_1 Peripheral is available for the specified microcontroller series */
+#if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_ATSAME53N20) ||                  \
+     defined(CONFIG_SOC_ATSAME53N19) || defined(CONFIG_SOC_ATSAMD51P20) ||                         \
+     defined(CONFIG_SOC_ATSAMD51P19) || defined(CONFIG_SOC_ATSAMD51N20) ||                         \
+     defined(CONFIG_SOC_ATSAMD51N19))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_SDHC_1_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_ATSAME53N20 || .. */
 
+/* I2S Peripheral is available for the specified microcontroller series */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_SERIES_MCHP_SAME53) ||           \
      defined(CONFIG_SOC_ATSAMD51P20) || defined(CONFIG_SOC_ATSAMD51P19) ||                         \
      defined(CONFIG_SOC_ATSAMD51N20) || defined(CONFIG_SOC_ATSAMD51N19) ||                         \
@@ -246,9 +248,10 @@
      defined(CONFIG_SOC_ATSAME51J19) || defined(CONFIG_SOC_ATSAME51J18))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_I2S_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_I2S_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_I2S_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_SERIES_MCHP_SAME53 || .. */
 
+/* SERCOM 7/6 Peripheral is available for the specified microcontroller series */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_ATSAME53N20) ||                  \
      defined(CONFIG_SOC_ATSAME53N19) || defined(CONFIG_SOC_ATSAMD51P20) ||                         \
      defined(CONFIG_SOC_ATSAMD51P19) || defined(CONFIG_SOC_ATSAMD51N20) ||                         \
@@ -256,9 +259,10 @@
      defined(CONFIG_SOC_ATSAME51N19))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_SERCOM_7_6_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_ATSAME53N20 || .. */
 
+/* TC 7/6 Peripheral is available for the specified microcontroller series */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_ATSAME53N20) ||                  \
      defined(CONFIG_SOC_ATSAME53N19) || defined(CONFIG_SOC_ATSAMD51P20) ||                         \
      defined(CONFIG_SOC_ATSAMD51P19) || defined(CONFIG_SOC_ATSAMD51N20) ||                         \
@@ -266,9 +270,10 @@
      defined(CONFIG_SOC_ATSAME51N19))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_TC_7_6_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_TC_7_6_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_TC_7_6_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_ATSAME53N20 || .. */
 
+/* TC 5/4 Peripheral is available for the specified microcontroller series */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_ATSAME53N20) ||                  \
      defined(CONFIG_SOC_ATSAME53N19) || defined(CONFIG_SOC_ATSAMD51P20) ||                         \
      defined(CONFIG_SOC_ATSAMD51P19) || defined(CONFIG_SOC_ATSAMD51N20) ||                         \
@@ -280,9 +285,10 @@
      defined(CONFIG_SOC_ATSAME51J19) || defined(CONFIG_SOC_ATSAME51J18))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_TC_5_4_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_TC_5_4_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_TC_5_4_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_ATSAME53N20 || .. */
 
+/* TCC 4/3 Peripheral is available for the specified microcontroller series */
 #if (defined(CONFIG_SOC_SERIES_MCHP_SAME54) || defined(CONFIG_SOC_SERIES_MCHP_SAME53) ||           \
      defined(CONFIG_SOC_ATSAMD51P20) || defined(CONFIG_SOC_ATSAMD51P19) ||                         \
      defined(CONFIG_SOC_ATSAMD51N20) || defined(CONFIG_SOC_ATSAMD51N19) ||                         \
@@ -292,7 +298,7 @@
      defined(CONFIG_SOC_ATSAME51J19) || defined(CONFIG_SOC_ATSAME51J18))
 #ifndef MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP
 #define MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP
-#endif
-#endif
+#endif /* MCHP_CLOCK_SAM_D5X_E5X_TCC_4_3_IP */
+#endif /* CONFIG_SOC_SERIES_MCHP_SAME54 || CONFIG_SOC_SERIES_MCHP_SAME53 || .. */
 
 #endif /* MICROCHIP_MCHP_CLOCK_SAM_D5X_E5X_H_ */

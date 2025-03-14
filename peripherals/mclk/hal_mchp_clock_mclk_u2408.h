@@ -180,6 +180,214 @@ static const clock_control_mchp_msk_map_t hal_mchp_msk_map_mclk_apbd[] = {
 #define HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE (ARRAY_SIZE(hal_mchp_msk_map_mclk_apbd))
 
 /**
+ * @brief Sets or clears the AHB mask for a specified clock in the MCLK registers.
+ *
+ * This function modifies the AHB mask for the given clock (specified by `clk`) in the
+ * MCLK registers. The mask is set or cleared based on the value of the `is_set` parameter.
+ *
+ * @param[in] regs Pointer to the MCLK register structure.
+ * @param[in] clk The clock identifier to modify the AHB mask for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the mask.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the clock mask register to enable or disable
+ *       specific clocks for the AHB bus.
+ */
+static int hal_mchp_mclk_ahbmask_set_clear(mclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	/* Initialize error to -1 (indicating failure). */
+	int error = -1;
+	/* Variable to iterate through the clock mask maps */
+	uint32_t index;
+
+	/* Check if the clock is in the AHB mask map */
+	for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
+		if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
+			if (is_set == true) {
+				/* Set the corresponding mask bit */
+				regs->MCLK_AHBMASK |= hal_mchp_msk_map_mclk_ahb[index].msk;
+			} else {
+				/* Clear the corresponding mask bit */
+				regs->MCLK_AHBMASK &= ~(hal_mchp_msk_map_mclk_ahb[index].msk);
+			}
+			error = 0;
+			/* Exit the loop */
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Sets or clears the APBA mask for a specified clock in the MCLK registers.
+ *
+ * This function modifies the APBA mask for the given clock (specified by `clk`) in the
+ * MCLK registers. The mask is set or cleared based on the value of the `is_set` parameter.
+ *
+ * @param[in] regs Pointer to the MCLK register structure.
+ * @param[in] clk The clock identifier to modify the APBA mask for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the mask.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the clock mask register to enable or disable
+ *       specific clocks for the APBA bus.
+ */
+static int hal_mchp_mclk_apbamask_set_clear(mclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	/* Initialize error to -1 (indicating failure). */
+	int error = -1;
+	/* Variable to iterate through the clock mask maps */
+	uint32_t index;
+
+	/* Check if the clock is in the APBA mask map */
+	for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
+		if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
+
+			if (is_set == true) {
+				/* Set the corresponding mask bit */
+				regs->MCLK_APBAMASK |= hal_mchp_msk_map_mclk_apba[index].msk;
+
+			} else {
+				/* Clear the corresponding mask bit */
+				regs->MCLK_APBAMASK &= ~(hal_mchp_msk_map_mclk_apba[index].msk);
+			}
+			error = 0;
+			/* Exit the loop */
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Sets or clears the APBB mask for a specified clock in the MCLK registers.
+ *
+ * This function modifies the APBB mask for the given clock (specified by `clk`) in the
+ * MCLK registers. The mask is set or cleared based on the value of the `is_set` parameter.
+ *
+ * @param[in] regs Pointer to the MCLK register structure.
+ * @param[in] clk The clock identifier to modify the APBB mask for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the mask.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the clock mask register to enable or disable
+ *       specific clocks for the APBB bus.
+ */
+static int hal_mchp_mclk_apbbmask_set_clear(mclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	/* Initialize error to -1 (indicating failure). */
+	int error = -1;
+	/* Variable to iterate through the clock mask maps */
+	uint32_t index;
+
+	/* Check if the clock is in the APBB mask map */
+	for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
+		if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
+
+			if (is_set == true) {
+				/* Set the corresponding mask bit */
+				regs->MCLK_APBBMASK |= hal_mchp_msk_map_mclk_apbb[index].msk;
+
+			} else {
+				/* Clear the corresponding mask bit */
+				regs->MCLK_APBBMASK &= ~(hal_mchp_msk_map_mclk_apbb[index].msk);
+			}
+			error = 0;
+			/* Exit the loop */
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Sets or clears the APBC mask for a specified clock in the MCLK registers.
+ *
+ * This function modifies the APBC mask for the given clock (specified by `clk`) in the
+ * MCLK registers. The mask is set or cleared based on the value of the `is_set` parameter.
+ *
+ * @param[in] regs Pointer to the MCLK register structure.
+ * @param[in] clk The clock identifier to modify the APBC mask for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the mask.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the clock mask register to enable or disable
+ *       specific clocks for the APBC bus.
+ */
+static int hal_mchp_mclk_apbcmask_set_clear(mclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	/* Initialize error to -1 (indicating failure). */
+	int error = -1;
+	/* Variable to iterate through the clock mask maps */
+	uint32_t index;
+
+	/* Check if the clock is in the APBC mask map */
+	for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
+		if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
+
+			if (is_set == true) {
+				/* Set the corresponding mask bit */
+				regs->MCLK_APBCMASK |= hal_mchp_msk_map_mclk_apbc[index].msk;
+
+			} else {
+				/* Clear the corresponding mask bit */
+				regs->MCLK_APBCMASK &= ~(hal_mchp_msk_map_mclk_apbc[index].msk);
+			}
+			error = 0;
+			/* Exit the loop */
+			break;
+		}
+	}
+	return error;
+}
+
+/**
+ * @brief Sets or clears the APBD mask for a specified clock in the MCLK registers.
+ *
+ * This function modifies the APBD mask for the given clock (specified by `clk`) in the
+ * MCLK registers. The mask is set or cleared based on the value of the `is_set` parameter.
+ *
+ * @param[in] regs Pointer to the MCLK register structure.
+ * @param[in] clk The clock identifier to modify the APBD mask for.
+ * @param[in] is_set A boolean flag indicating whether to set (true) or clear (false) the mask.
+ *
+ * @return int Returns 0 on success, or a negative value on failure.
+ *
+ * @note This function directly manipulates the clock mask register to enable or disable
+ *       specific clocks for the APBD bus.
+ */
+static int hal_mchp_mclk_apbdmask_set_clear(mclk_registers_t *regs, uint32_t clk, bool is_set)
+{
+	/* Initialize error to -1 (indicating failure). */
+	int error = -1;
+	/* Variable to iterate through the clock mask maps */
+	uint32_t index;
+
+	/* Check if the clock is in the APBD mask map */
+	for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
+		if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
+
+			if (is_set == true) {
+				/* Set the corresponding mask bit */
+				regs->MCLK_APBDMASK |= hal_mchp_msk_map_mclk_apbd[index].msk;
+
+			} else {
+				/* Clear the corresponding mask bit */
+				regs->MCLK_APBDMASK &= ~(hal_mchp_msk_map_mclk_apbd[index].msk);
+			}
+			error = 0;
+			/* Exit the loop */
+			break;
+		}
+	}
+	return error;
+}
+
+/**
  * @brief Turn off the specified clock.
  *
  * This function disables the specified clock by clearing the corresponding mask
@@ -194,9 +402,6 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_off(mclk_registers_t *reg
 	/* Variable to store the state of the clock */
 	clock_control_mchp_state_t state;
 
-	/* Variable to iterate through the clock mask maps */
-	uint32_t index;
-
 	/* Check if the clock is HS, which is not supported for turning off */
 	if (clk == CLOCK_CONTROL_MCHP_V1_MCLK_HS) {
 		/* Set state to no support */
@@ -208,75 +413,45 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_off(mclk_registers_t *reg
 		/* Initialize state to no support */
 		state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
-		/* Check if the clock is in the AHB mask map */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
-			if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
-				/* Clear the corresponding mask bit */
-				regs->MCLK_AHBMASK &= ~(hal_mchp_msk_map_mclk_ahb[index].msk);
-				/* Set state to off */
-				state = CLOCK_CONTROL_MCHP_STATE_OK;
-				/* Exit the loop */
-				break;
-			}
+		/* Check if the clock is in the AHB mask map and clear it if present */
+		if (hal_mchp_mclk_ahbmask_set_clear(regs, clk, false) == 0) {
+			/* Set state to off */
+			state = CLOCK_CONTROL_MCHP_STATE_OK;
 		}
 
 		/* If not found in AHB, check the APBA mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
-					/* Clear the corresponding mask bit */
-					regs->MCLK_APBAMASK &=
-						~(hal_mchp_msk_map_mclk_apba[index].msk);
-					/* Set state to off */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBA mask map and clear it if present */
+			if (hal_mchp_mclk_apbamask_set_clear(regs, clk, false) == 0) {
+				/* Set state to off */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBA, check the APBB mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
-					/* Clear the corresponding mask bit */
-					regs->MCLK_APBBMASK &=
-						~(hal_mchp_msk_map_mclk_apbb[index].msk);
-					/* Set state to off */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBB mask map and clear it if present */
+			if (hal_mchp_mclk_apbbmask_set_clear(regs, clk, false) == 0) {
+				/* Set state to off */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBB, check the APBC mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
-					/* Clear the corresponding mask bit */
-					regs->MCLK_APBCMASK &=
-						~(hal_mchp_msk_map_mclk_apbc[index].msk);
-					/* Set state to off */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBC mask map and clear it if present */
+			if (hal_mchp_mclk_apbcmask_set_clear(regs, clk, false) == 0) {
+				/* Set state to off */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBC, check the APBD mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
-					/* Clear the corresponding mask bit */
-					regs->MCLK_APBDMASK &=
-						~(hal_mchp_msk_map_mclk_apbd[index].msk);
-					/* Set state to off */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBD mask map and clear it if present */
+			if (hal_mchp_mclk_apbdmask_set_clear(regs, clk, false) == 0) {
+				/* Set state to off */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 	}
@@ -299,9 +474,6 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_on(mclk_registers_t *regs
 	/* Variable to store the state of the clock */
 	clock_control_mchp_state_t state;
 
-	/* Variable to iterate through the clock mask maps */
-	uint32_t index;
-
 	/* Check if the clock is HS, which is not supported for turning on */
 	if (clk == CLOCK_CONTROL_MCHP_V1_MCLK_HS) {
 		/* Set state to no support */
@@ -315,79 +487,45 @@ static inline clock_control_mchp_state_t hal_mchp_mclk_on(mclk_registers_t *regs
 		/* Initialize state to no support */
 		state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
-		/* Check if the clock is in the AHB mask map */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
-			if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
-				/* Set the corresponding mask bit */
-				regs->MCLK_AHBMASK |= hal_mchp_msk_map_mclk_ahb[index].msk;
-				/* Set state to on */
-				state = CLOCK_CONTROL_MCHP_STATE_OK;
-				/* Exit the loop */
-				break;
-			}
+		/* Check if the clock is in the AHB mask map and set it if present */
+		if (hal_mchp_mclk_ahbmask_set_clear(regs, clk, true) == 0) {
+			/* Set state to ok */
+			state = CLOCK_CONTROL_MCHP_STATE_OK;
 		}
 
 		/* If not found in AHB, check the APBA mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			/* No match in AHB */
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
-					/* Set the corresponding mask bit */
-					regs->MCLK_APBAMASK |=
-						hal_mchp_msk_map_mclk_apba[index].msk;
-					/* Set state to on */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBA mask map and set it if present */
+			if (hal_mchp_mclk_apbamask_set_clear(regs, clk, true) == 0) {
+				/* Set state to ok */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBA, check the APBB mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			/* No match in APBA */
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
-					/* Set the corresponding mask bit */
-					regs->MCLK_APBBMASK |=
-						hal_mchp_msk_map_mclk_apbb[index].msk;
-					/* Set state to on */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBB mask map and set it if present */
+			if (hal_mchp_mclk_apbbmask_set_clear(regs, clk, true) == 0) {
+				/* Set state to ok */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBB, check the APBC mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			/* No match in APBB */
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
-					/* Set the corresponding mask bit */
-					regs->MCLK_APBCMASK |=
-						hal_mchp_msk_map_mclk_apbc[index].msk;
-					/* Set state to on */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBC mask map and set it if present */
+			if (hal_mchp_mclk_apbcmask_set_clear(regs, clk, true) == 0) {
+				/* Set state to ok */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 
 		/* If not found in APBC, check the APBD mask map */
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-			/* No match in APBC */
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
-				if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
-					/* Set the corresponding mask bit */
-					regs->MCLK_APBDMASK |=
-						hal_mchp_msk_map_mclk_apbd[index].msk;
-					/* Set state to on */
-					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit the loop */
-					break;
-				}
+			/* Check if the clock is in the APBD mask map and set it if present */
+			if (hal_mchp_mclk_apbdmask_set_clear(regs, clk, true) == 0) {
+				/* Set state to ok */
+				state = CLOCK_CONTROL_MCHP_STATE_OK;
 			}
 		}
 	}
@@ -871,43 +1009,53 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 		regs->MCLK_CPUDIV = MCLK_CPUDIV_DIV(mclk_configuration->cpu_div) & MCLK_CPUDIV_Msk;
 
 		/* Configure the AHB mask registers */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
-			/* Clear mask bits for the clock and set the new configuration */
-			regs->MCLK_AHBMASK =
-				(regs->MCLK_AHBMASK & ~(hal_mchp_msk_map_mclk_ahb[index].msk)) |
-				(mclk_configuration->ahb[index]);
+		for (index = 0; index < mclk_configuration->ahb_count; index++) {
+			if (mclk_configuration->ahb != NULL) {
+				/* Configure the AHB mask bits */
+				hal_mchp_mclk_ahbmask_set_clear(
+					regs, mclk_configuration->ahb[index].clk,
+					mclk_configuration->ahb[index].is_on);
+			}
 		}
 
 		/* Configure the APBA mask registers */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
-			/* Clear mask bits for clock and set new configuration */
-			regs->MCLK_APBAMASK =
-				(regs->MCLK_APBAMASK & ~(hal_mchp_msk_map_mclk_apba[index].msk)) |
-				(mclk_configuration->apba[index]);
+		for (index = 0; index < mclk_configuration->apba_count; index++) {
+			if (mclk_configuration->apba != NULL) {
+				/* Configure the APBA mask bits */
+				hal_mchp_mclk_apbamask_set_clear(
+					regs, mclk_configuration->apba[index].clk,
+					mclk_configuration->apba[index].is_on);
+			}
 		}
 
 		/* Configure the APBB mask registers */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
-			/* Clear mask bits for clock and set new configuration */
-			regs->MCLK_APBBMASK =
-				(regs->MCLK_APBBMASK & ~(hal_mchp_msk_map_mclk_apbb[index].msk)) |
-				(mclk_configuration->apbb[index]);
+		for (index = 0; index < mclk_configuration->apbb_count; index++) {
+			if (mclk_configuration->apbb != NULL) {
+				/* Configure the APBB mask bits */
+				hal_mchp_mclk_apbbmask_set_clear(
+					regs, mclk_configuration->apbb[index].clk,
+					mclk_configuration->apbb[index].is_on);
+			}
 		}
 
 		/* Configure the APBC mask registers */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
-			/* Clear mask bits for current clock and set new configuration */
-			regs->MCLK_APBCMASK =
-				(regs->MCLK_APBCMASK & ~(hal_mchp_msk_map_mclk_apbc[index].msk)) |
-				(mclk_configuration->apbc[index]);
+		for (index = 0; index < mclk_configuration->apbc_count; index++) {
+			if (mclk_configuration->apbc != NULL) {
+				/* Configure the APBC mask bits */
+				hal_mchp_mclk_apbcmask_set_clear(
+					regs, mclk_configuration->apbc[index].clk,
+					mclk_configuration->apbc[index].is_on);
+			}
 		}
 
 		/* Configure the APBD mask registers */
-		for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
-			/* Clear mask bits for the clock and set new configuration */
-			regs->MCLK_APBDMASK =
-				(regs->MCLK_APBDMASK & ~(hal_mchp_msk_map_mclk_apbd[index].msk)) |
-				(mclk_configuration->apbd[index]);
+		for (index = 0; index < mclk_configuration->apbd_count; index++) {
+			if (mclk_configuration->apbd != NULL) {
+				/* Configure the APBD mask bits */
+				hal_mchp_mclk_apbdmask_set_clear(
+					regs, mclk_configuration->apbd[index].clk,
+					mclk_configuration->apbd[index].is_on);
+			}
 		}
 
 		/* Set the state to indicate that clock configuration is successful */
@@ -930,108 +1078,65 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 			/* Set state to indicate clock configuration is successful */
 			state = CLOCK_CONTROL_MCHP_STATE_OK;
 		} else {
-			/* Loop through the AHB mask map to find a match */
-			for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_AHB_SIZE; index++) {
-				/* Check if the current clock matches the desired clock */
-				if (clk == hal_mchp_msk_map_mclk_ahb[index].clk) {
-					/* Update MCLK_AHBMASK with the new configuration */
-					regs->MCLK_AHBMASK =
-						(regs->MCLK_AHBMASK &
-						 ~(hal_mchp_msk_map_mclk_ahb[index].msk)) |
-						(mclk_configuration->ahb[index]);
-					/* Update the state to CLOCK_CONTROL_MCHP_STATE_OK */
+			if (mclk_configuration->ahb != NULL) {
+				/* Configure the AHB mask bits */
+				if (hal_mchp_mclk_ahbmask_set_clear(
+					    regs, mclk_configuration->ahb[0].clk,
+					    mclk_configuration->ahb[0].is_on) == 0) {
+					/* Set state to indicate clock configuration is successful
+					 */
 					state = CLOCK_CONTROL_MCHP_STATE_OK;
-					/* Exit loop as the desired clock has been updated */
-					break;
 				}
 			}
 
 			/* If no match found in AHB, check APBA */
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-				/* Loop through each index */
-				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBA_SIZE; index++) {
-					/* Check if the current clock matches the desired clock
-					 */
-					if (clk == hal_mchp_msk_map_mclk_apba[index].clk) {
-						/* Update MCLK_APBAMASK register */
-						regs->MCLK_APBAMASK =
-							(regs->MCLK_APBAMASK &
-							 ~(hal_mchp_msk_map_mclk_apba[index].msk)) |
-							(mclk_configuration->apba[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
-						 */
+				if (mclk_configuration->apba != NULL) {
+					/* Configure the APBA mask bits */
+					if (hal_mchp_mclk_apbamask_set_clear(
+						    regs, mclk_configuration->apba[0].clk,
+						    mclk_configuration->apba[0].is_on) == 0) {
+						/* Set state to ok */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit loop as the clock has been updated */
-						break;
 					}
 				}
 			}
 
 			/* If no match found in APBA, check APBB */
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-				/* Loop through each index */
-				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBB_SIZE; index++) {
-					/* Check if the current clock matches the desired clock
-					 */
-					if (clk == hal_mchp_msk_map_mclk_apbb[index].clk) {
-						/* Update MCLK_APBBMASK with new configuration
-						 */
-						regs->MCLK_APBBMASK =
-							(regs->MCLK_APBBMASK &
-							 ~(hal_mchp_msk_map_mclk_apbb[index].msk)) |
-							(mclk_configuration->apbb[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
-						 */
+				if (mclk_configuration->apbb != NULL) {
+					/* Configure the APBB mask bits */
+					if (hal_mchp_mclk_apbbmask_set_clear(
+						    regs, mclk_configuration->apbb[0].clk,
+						    mclk_configuration->apbb[0].is_on) == 0) {
+						/* Set state to ok */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit loop as desired clock has been updated
-						 */
-						break;
 					}
 				}
 			}
 
 			/* If no match found in APBB, check APBC */
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-				/* Loop through each index */
-				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBC_SIZE; index++) {
-					/* Check if the current clock matches the desired clock
-					 */
-					if (clk == hal_mchp_msk_map_mclk_apbc[index].clk) {
-						/* Update MCLK_APBCMASK with new configuration
-						 */
-						regs->MCLK_APBCMASK =
-							(regs->MCLK_APBCMASK &
-							 ~(hal_mchp_msk_map_mclk_apbc[index].msk)) |
-							(mclk_configuration->apbc[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
-						 */
+				if (mclk_configuration->apbc != NULL) {
+					/* Configure the APBC mask bits */
+					if (hal_mchp_mclk_apbcmask_set_clear(
+						    regs, mclk_configuration->apbc[0].clk,
+						    mclk_configuration->apbc[0].is_on) == 0) {
+						/* Set state to ok */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit loop as desired clock has been updated
-						 */
-						break;
 					}
 				}
 			}
 
 			/* If no match found in APBC, check APBD */
 			if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
-				/* Loop through each index */
-				for (index = 0; index < HAL_MCHP_MSK_MAP_MCLK_APBD_SIZE; index++) {
-					/* Check if the current clock matches the desired clock
-					 */
-					if (clk == hal_mchp_msk_map_mclk_apbd[index].clk) {
-						/* Update MCLK_APBDMASK with new configuration
-						 */
-						regs->MCLK_APBDMASK =
-							(regs->MCLK_APBDMASK &
-							 ~(hal_mchp_msk_map_mclk_apbd[index].msk)) |
-							(mclk_configuration->apbd[index]);
-						/* Update state to CLOCK_CONTROL_MCHP_STATE_OK
-						 */
+				if (mclk_configuration->apbd != NULL) {
+					/* Configure the APBD mask bits */
+					if (hal_mchp_mclk_apbdmask_set_clear(
+						    regs, mclk_configuration->apbd[0].clk,
+						    mclk_configuration->apbd[0].is_on) == 0) {
+						/* Set state to ok */
 						state = CLOCK_CONTROL_MCHP_STATE_OK;
-						/* Exit the loop as the clock has been updated
-						 */
-						break;
 					}
 				}
 			}
