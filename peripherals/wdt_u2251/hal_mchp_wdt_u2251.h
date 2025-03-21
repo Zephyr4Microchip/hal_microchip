@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2025 Microchip Technology Inc.
+ *
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -24,17 +25,18 @@
 #define DBG_WDT(format, ...)
 #endif
 
-#define PERIOD_VALUE(n) (8 << n)
 /**
- * @brief Enable this flag if only one timeout value is supported
- * for all the available watchdog timeouts in the system.
+ * @brief Macro to calculate the period value.
  *
- * When this flag is set to 1, it indicates that the system
- * supports a single, uniform timeout value for all watchdog
- * timeouts, rather than allowing individual timeout values
- * for each watchdog timeout.
+ * This macro takes an integer input `n` and calculates the period value by
+ * left-shifting the number 8 by `n` positions.
+ *
+ * @param n The number of positions to left-shift the number 8.
+ * @return The calculated period value.
+ *
+ * @note The result of this macro is 8 * 2^n.
  */
-#define WDT_FLAG_ONLY_ONE_TIMEOUT_VALUE_SUPPORTED 1
+#define PERIOD_VALUE(n) (8 << n)
 
 /**< Either of these bits will be set in case watchdog is turned on */
 #define WDT_ENABLED_BITS_POS (WDT_CTRLA_ENABLE(1) | WDT_CTRLA_ALWAYSON(1))
@@ -62,7 +64,10 @@ static inline bool hal_mchp_wdt_is_enabled(const hal_mchp_wdt_t *hal) {
  * @return Always returns WDT_MCHP_SUCCESS indicating that window mode is
  * supported.
  */
-static inline int hal_mchp_wdt_win_mode_supported() { return WDT_MCHP_SUCCESS; }
+static inline int hal_mchp_wdt_win_mode_supported(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
+  return WDT_MCHP_SUCCESS;
+}
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to not trigger a reset.
@@ -72,7 +77,11 @@ static inline int hal_mchp_wdt_win_mode_supported() { return WDT_MCHP_SUCCESS; }
  * @return Always returns WDT_MCHP_FAIL indicating that setting the WDT to not
  * trigger a reset is not supported.
  */
-static inline int hal_mchp_wdt_set_reset_none() { return WDT_MCHP_FAIL; }
+static inline int
+hal_mchp_wdt_use_flag_set_reset_none(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
+  return WDT_MCHP_FAIL;
+}
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a CPU core reset.
@@ -83,7 +92,11 @@ static inline int hal_mchp_wdt_set_reset_none() { return WDT_MCHP_FAIL; }
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger a CPU core reset is supported.
  */
-static inline int hal_mchp_wdt_set_reset_cpu_core() { return WDT_MCHP_SUCCESS; }
+static inline int
+hal_mchp_wdt_use_flag_set_reset_cpu_core(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
+  return WDT_MCHP_SUCCESS;
+}
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a system-on-chip
@@ -95,7 +108,11 @@ static inline int hal_mchp_wdt_set_reset_cpu_core() { return WDT_MCHP_SUCCESS; }
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger an SoC reset is supported.
  */
-static inline int hal_mchp_wdt_set_reset_soc() { return WDT_MCHP_SUCCESS; }
+static inline int
+hal_mchp_wdt_use_flag_set_reset_soc(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
+  return WDT_MCHP_SUCCESS;
+}
 
 /**
  * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) during
@@ -107,7 +124,9 @@ static inline int hal_mchp_wdt_set_reset_soc() { return WDT_MCHP_SUCCESS; }
  * @return Always returns WDT_MCHP_FAIL indicating that pausing the WDT during
  * sleep mode is not supported.
  */
-static inline int hal_mchp_wdt_apply_opt_pause_in_sleep() {
+static inline int
+hal_mchp_wdt_apply_opt_pause_in_sleep(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 
@@ -118,11 +137,13 @@ static inline int hal_mchp_wdt_apply_opt_pause_in_sleep() {
  * This function attempts to apply the option to pause the Microchip Watchdog
  * Timer (WDT) when the system is halted by a debugger.
  *
- * @return Always returns WDT_MCHP_FAIL indicating that pausing the WDT when the
- * system is halted by a debugger is not supported.
+ * @return Always returns WDT_MCHP_SUCCESS indicating that pausing the WDT when
+ * the system is halted by a debugger is supported by default.
  */
-static inline int hal_mchp_wdt_apply_opt_pause_halted_by_debug() {
-  return WDT_MCHP_FAIL;
+static inline int
+hal_mchp_wdt_apply_opt_pause_halted_by_debug(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
+  return WDT_MCHP_SUCCESS;
 }
 
 /**
@@ -132,6 +153,7 @@ static inline int hal_mchp_wdt_apply_opt_pause_halted_by_debug() {
  * @return Error code.
  */
 static inline int hal_mchp_wdt_interrupt_enable(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 /**
@@ -141,6 +163,7 @@ static inline int hal_mchp_wdt_interrupt_enable(const hal_mchp_wdt_t *hal) {
  * @return Error code.
  */
 static inline int hal_mchp_wdt_interrupt_flag_clear(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 /**
@@ -150,6 +173,7 @@ static inline int hal_mchp_wdt_interrupt_flag_clear(const hal_mchp_wdt_t *hal) {
  * @return Error code.
  */
 static inline int hal_mchp_wdt_interrupt_disable(const hal_mchp_wdt_t *hal) {
+  ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 /**
@@ -275,8 +299,7 @@ static inline void hal_mchp_wdt_reset_timer(const hal_mchp_wdt_t *hal,
  * @param timeout_val Timeout value in milliseconds.
  * @return period value msb.
  */
-static uint32_t
-hal_mchp_wdt_find_nearest_period_val_index(uint32_t timeout_ms) {
+static inline uint32_t hal_mchp_wdt_get_period_idx(uint32_t timeout_ms) {
   uint32_t next_period;
   uint32_t cycles;
 
@@ -305,13 +328,11 @@ hal_mchp_wdt_set_timeout(const hal_mchp_wdt_t *hal, uint32_t window_closed_time,
                          uint32_t timeout_max) {
 
   hal_wdt_mchp_channel_data_t set_timeout = {0};
-  uint8_t window =
-      hal_mchp_wdt_find_nearest_period_val_index(window_closed_time);
+  uint8_t window = hal_mchp_wdt_get_period_idx(window_closed_time);
   /* The difference is taken as the total time of WDT
    * defined by the CONFIG.window + CONFIG.per register value
    */
-  uint8_t per = hal_mchp_wdt_find_nearest_period_val_index(timeout_max -
-                                                           window_closed_time);
+  uint8_t per = hal_mchp_wdt_get_period_idx(timeout_max - window_closed_time);
 
   DBG_WDT("window = %d : 0x%x per = %d : 0x%x\n\r", window,
           WDT_CONFIG_WINDOW(window), per, WDT_CONFIG_PER(per));
@@ -339,10 +360,9 @@ static inline hal_wdt_mchp_channel_data_t
 hal_mchp_wdt_get_available_timeout_val(uint32_t window_closed_time,
                                        uint32_t timeout_max) {
   hal_wdt_mchp_channel_data_t new_timeout = {0};
-  uint8_t window_index =
-      hal_mchp_wdt_find_nearest_period_val_index(window_closed_time);
-  uint8_t per_index = hal_mchp_wdt_find_nearest_period_val_index(
-      timeout_max - window_closed_time);
+  uint8_t window_index = hal_mchp_wdt_get_period_idx(window_closed_time);
+  uint8_t per_index =
+      hal_mchp_wdt_get_period_idx(timeout_max - window_closed_time);
 
   new_timeout.min = (window_closed_time ? PERIOD_VALUE(window_index) : 0);
   new_timeout.max =
@@ -351,4 +371,5 @@ hal_mchp_wdt_get_available_timeout_val(uint32_t window_closed_time,
            : PERIOD_VALUE(per_index));
   return new_timeout;
 }
+
 #endif /* MICROCHIP_HAL_WDT_U2251_H_ */
