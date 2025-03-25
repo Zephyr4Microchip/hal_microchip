@@ -77,8 +77,7 @@ static inline int hal_mchp_wdt_win_mode_supported(const hal_mchp_wdt_t *hal) {
  * @return Always returns WDT_MCHP_FAIL indicating that setting the WDT to not
  * trigger a reset is not supported.
  */
-static inline int
-hal_mchp_wdt_use_flag_set_reset_none(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_use_flag_reset_none(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
@@ -93,7 +92,7 @@ hal_mchp_wdt_use_flag_set_reset_none(const hal_mchp_wdt_t *hal) {
  * trigger a CPU core reset is supported.
  */
 static inline int
-hal_mchp_wdt_use_flag_set_reset_cpu_core(const hal_mchp_wdt_t *hal) {
+hal_mchp_wdt_use_flag_reset_cpu_core(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }
@@ -108,8 +107,7 @@ hal_mchp_wdt_use_flag_set_reset_cpu_core(const hal_mchp_wdt_t *hal) {
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger an SoC reset is supported.
  */
-static inline int
-hal_mchp_wdt_use_flag_set_reset_soc(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_use_flag_reset_soc(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }

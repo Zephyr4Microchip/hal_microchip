@@ -28,41 +28,6 @@
 #define WDT_MCHP_FAIL -1
 
 /**
- * @def MAX_INSTALLABLE_TIMEOUT_COUNT
- * @brief Macro to get the maximum installable timeout count from the device
- * tree.
- */
-#define MAX_INSTALLABLE_TIMEOUT_COUNT                                          \
-  (DT_PROP(DT_NODELABEL(wdog), max_installable_timeout_count))
-
-/**
- * @def MAX_TIMEOUT_WINDOW
- * @brief Macro to get the maximum timeout window from the device tree.
- */
-#define MAX_TIMEOUT_WINDOW (DT_PROP(DT_NODELABEL(wdog), max_timeout_window))
-
-/**
- * @def MAX_TIMEOUT_WINDOW_MODE
- * @brief Macro to get the maximum timeout window mode from the device tree.
- */
-#define MAX_TIMEOUT_WINDOW_MODE                                                \
-  (DT_PROP(DT_NODELABEL(wdog), max_timeout_window_mode))
-
-/**
- * @def MIN_WINDOW_LIMIT
- * @brief Macro to get the min window limit from the device tree.
- */
-#define MIN_WINDOW_LIMIT (DT_PROP(DT_NODELABEL(wdog), min_window_limit))
-
-/**
- * @def WDT_FLAG_ONLY_ONE_TIMEOUT_VALUE_SUPPORTED
- * @brief Macro to get the value of "only_one_timeout_val_supported_flag" from
- * the device tree.
- */
-#define WDT_FLAG_ONLY_ONE_TIMEOUT_VALUE_SUPPORTED                              \
-  (DT_PROP(DT_NODELABEL(wdog), only_one_timeout_val_supported_flag))
-
-/**
  * @enum hal_mchp_wdt_mode_t
  * @brief Enumeration for WDT modes.
  */
@@ -111,7 +76,7 @@ static inline int hal_mchp_wdt_win_mode_supported();
  * @return Always returns WDT_MCHP_FAIL indicating that setting the WDT to not
  * trigger a reset is not supported.
  */
-static inline int hal_mchp_wdt_use_flag_set_reset_none();
+static inline int hal_mchp_wdt_use_flag_reset_none();
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a CPU core reset.
@@ -122,7 +87,7 @@ static inline int hal_mchp_wdt_use_flag_set_reset_none();
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger a CPU core reset is supported.
  */
-static inline int hal_mchp_wdt_use_flag_set_reset_cpu_core();
+static inline int hal_mchp_wdt_use_flag_reset_cpu_core();
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a system-on-chip
@@ -134,7 +99,7 @@ static inline int hal_mchp_wdt_use_flag_set_reset_cpu_core();
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger an SoC reset is supported.
  */
-static inline int hal_mchp_wdt_use_flag_set_reset_soc();
+static inline int hal_mchp_wdt_use_flag_reset_soc();
 
 /**
  * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) during
