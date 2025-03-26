@@ -42,10 +42,11 @@
 #define WDT_ENABLED_BITS_POS (WDT_CTRLA_ENABLE(1) | WDT_CTRLA_ALWAYSON(1))
 
 /**
- * @brief Check if the WDT is enabled.
+ * Function to check if the watchdog timer is enabled.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @return non-zero value if enabled, 0 otherwise.
+ * This function checks the control register of the watchdog timer to see if
+ * either the enable bit or the always-on bit is set. If either bit is set,
+ * the function returns true, indicating that the watchdog timer is enabled.
  */
 static inline bool hal_mchp_wdt_is_enabled(const hal_mchp_wdt_t *hal) {
   /* the significance of 0x82 is that it
@@ -55,141 +56,121 @@ static inline bool hal_mchp_wdt_is_enabled(const hal_mchp_wdt_t *hal) {
 }
 
 /**
- * @brief Check if window mode is supported by the Microchip Watchdog Timer
- * (WDT).
+ * Function to check if window mode is supported.
  *
- * This function checks if the window mode is supported by the Microchip
- * Watchdog Timer (WDT).
- *
- * @return Always returns WDT_MCHP_SUCCESS indicating that window mode is
+ * This function always returns success, indicating that window mode is
  * supported.
  */
 static inline int hal_mchp_wdt_win_mode_supported(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }
-
 /**
- * @brief Set the Microchip Watchdog Timer (WDT) to not trigger a reset.
+ * Function to indicate that resetnone is not supported.
  *
- * This function sets the Microchip Watchdog Timer (WDT) to not trigger a reset.
- *
- * @return Always returns WDT_MCHP_FAIL indicating that setting the WDT to not
- * trigger a reset is not supported.
+ * This function always returns failure, indicating that reset none flag is not
+ * supported.
  */
-static inline int hal_mchp_wdt_use_flag_reset_none(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_reset_none(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 
 /**
- * @brief Set the Microchip Watchdog Timer (WDT) to trigger a CPU core reset.
+ * Function to indicate that CPU core reset is supported.
  *
- * This function sets the Microchip Watchdog Timer (WDT) to trigger a reset of
- * the CPU core.
- *
- * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
- * trigger a CPU core reset is supported.
+ * This function always returns success, indicating that CPU core reset is
+ * supported.
  */
-static inline int
-hal_mchp_wdt_use_flag_reset_cpu_core(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_reset_cpu_core(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }
 
 /**
- * @brief Set the Microchip Watchdog Timer (WDT) to trigger a system-on-chip
- * (SoC) reset.
+ * Function to indicate that SoC reset is supported.
  *
- * This function sets the Microchip Watchdog Timer (WDT) to trigger a reset of
- * the entire system-on-chip (SoC).
- *
- * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
- * trigger an SoC reset is supported.
+ * This function always returns success, indicating that SoC reset is supported.
  */
-static inline int hal_mchp_wdt_use_flag_reset_soc(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_reset_soc(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }
 
 /**
- * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) during
- * sleep mode.
+ * Function to indicate that pausing in sleep mode is not supported.
  *
- * This function attempts to apply the option to pause the Microchip Watchdog
- * Timer (WDT) when the system enters sleep mode.
- *
- * @return Always returns WDT_MCHP_FAIL indicating that pausing the WDT during
- * sleep mode is not supported.
+ * This function always returns failure, indicating that pausing in sleep mode
+ * is not supported.
  */
-static inline int
-hal_mchp_wdt_apply_opt_pause_in_sleep(const hal_mchp_wdt_t *hal) {
+static inline int hal_mchp_wdt_pause_in_sleep(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 
 /**
- * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) when the
- * system is halted by a debugger.
+ * Function to indicate that pausing when halted by debug is supported.
  *
- * This function attempts to apply the option to pause the Microchip Watchdog
- * Timer (WDT) when the system is halted by a debugger.
- *
- * @return Always returns WDT_MCHP_SUCCESS indicating that pausing the WDT when
- * the system is halted by a debugger is supported by default.
+ * This function always returns success, indicating that pausing when halted by
+ * debug is supported. This is supported by default by the peripheral
  */
 static inline int
-hal_mchp_wdt_apply_opt_pause_halted_by_debug(const hal_mchp_wdt_t *hal) {
+hal_mchp_wdt_pause_halted_by_debug(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_SUCCESS;
 }
 
 /**
- * @brief Interrupt triggered when the WDT window opens.
+ * Function to enable watchdog timer interrupts.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @return Error code.
+ * This function always returns failure, indicating that enabling watchdog timer
+ * interrupts is not supported.
  */
 static inline int hal_mchp_wdt_interrupt_enable(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
+
 /**
- * @brief Clear the WDT interrupt flag.
+ * Function to clear the watchdog timer interrupt flag.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @return Error code.
+ * This function always returns failure, indicating that clearing the watchdog
+ * timer interrupt flag is not supported.
  */
 static inline int hal_mchp_wdt_interrupt_flag_clear(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
 /**
- * @brief Disable the WDT interrupt.
+ * Function to disable watchdog timer interrupts.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @return Error code.
+ * This function always returns failure, indicating that disabling watchdog
+ * timer interrupts is not supported.
  */
 static inline int hal_mchp_wdt_interrupt_disable(const hal_mchp_wdt_t *hal) {
   ARG_UNUSED(hal);
   return WDT_MCHP_FAIL;
 }
+
 /**
- * @brief Wait for WDT synchronization.
+ * Function to wait for the watchdog timer synchronization.
  *
- * @param hal Pointer to the HAL WDT structure.
+ * This function waits until the synchronization busy bit in the watchdog timer
+ * control register is cleared, indicating that the synchronization is complete.
  */
 static inline void hal_mchp_wdt_sync_wait(const hal_mchp_wdt_t *hal) {
   while (hal->regs->WDT_SYNCBUSY) {
     DBG_WDT("waiting syncbsy\n\r");
   }
 }
+
 /**
- * @brief Enable or disable the WDT.
+ * Function to enable or disable the watchdog timer.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @param enable Boolean to enable or disable.
- * @return WDT_MCHP_SUCCESS on success, error code otherwise.
+ * This function enables or disables the watchdog timer based on the input
+ * parameter.
+ *
+ * It wont be able to disable if the always on bit is turned on
  */
 static inline int hal_mchp_wdt_enable(const hal_mchp_wdt_t *hal, bool enable) {
   int ret = WDT_MCHP_SUCCESS;
@@ -208,11 +189,12 @@ static inline int hal_mchp_wdt_enable(const hal_mchp_wdt_t *hal, bool enable) {
   DBG_WDT("ctrl reg = 0x%x\n", hal->regs->WDT_CTRLA);
   return ret;
 }
+
 /**
- * @brief Enable or disable the WDT window mode.
+ * Function to enable or disable the watchdog timer window mode.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @param enable Boolean to enable or disable.
+ * This function enables or disables the watchdog timer window mode based on the
+ * input parameter.
  */
 static inline void hal_mchp_wdt_window_enable(const hal_mchp_wdt_t *hal,
                                               bool enable) {
@@ -227,11 +209,13 @@ static inline void hal_mchp_wdt_window_enable(const hal_mchp_wdt_t *hal,
 }
 
 /**
- * @brief Validate the WDT window.
+ * Function to validate the watchdog timer window configuration.
  *
- * @param timeout_min Minimum timeout value in milliseconds.
- * @param timeout_max Maximum timeout value in milliseconds.
- * @return WDT_MCHP_SUCCESS on success, error code otherwise.
+ * This function checks the validity of the minimum and maximum timeout values
+ * for the watchdog timer window mode. It performs various checks to ensure that
+ * the timeout values are within the allowed range and that the window
+ * configuration is valid. If any of the checks fail, the function returns
+ * failure.
  */
 static inline int hal_mchp_wdt_validate_window(uint32_t timeout_min,
                                                uint32_t timeout_max) {
@@ -279,23 +263,24 @@ static inline int hal_mchp_wdt_validate_window(uint32_t timeout_min,
 }
 
 /**
- * @brief Reset timer of WDT.
+ * Function to reset the watchdog timer.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @param channel_id Channel ID (unused).
+ * This function resets the watchdog timer by writing the clear key value to the
+ * clear register.
  */
 static inline void hal_mchp_wdt_reset_timer(const hal_mchp_wdt_t *hal,
                                             int channel_id) {
   ARG_UNUSED(channel_id);
   hal->regs->WDT_CLEAR = WDT_CLEAR_CLEAR_KEY_Val;
 }
+
 /**
- * @brief Find the nearest period value for the given timeout.
- * This function will round up the given timeout value to the
- * nearest possible timeout value and return i
+ * Function to get the period index for a given timeout value.
  *
- * @param timeout_val Timeout value in milliseconds.
- * @return period value msb.
+ * This function calculates the number of clock cycles required for the given
+ * timeout value in milliseconds. It then determines the appropriate period
+ * index based on the number of clock cycles. The function returns the period
+ * index.
  */
 static inline uint32_t hal_mchp_wdt_get_period_idx(uint32_t timeout_ms) {
   uint32_t next_period;
@@ -313,13 +298,15 @@ static inline uint32_t hal_mchp_wdt_get_period_idx(uint32_t timeout_ms) {
   next_period = (1ULL << 32) >> __builtin_clz(cycles - 1);
   return find_msb_set(next_period >> 4);
 }
+
 /**
- * @brief Set the WDT timeout.
+ * Function to set the watchdog timer timeout values.
  *
- * @param hal Pointer to the HAL WDT structure.
- * @param window_closed_time Window closed time in milliseconds.
- * @param timeout_max Maximum timeout value in milliseconds.
- * @return Structure with minimum and maximum timeout values.
+ * This function sets the minimum and maximum timeout values for the watchdog
+ * timer based on the input parameters. It calculates the appropriate period
+ * indices for the window closed time and the maximum timeout value. The
+ * function then sets the window and period values in the watchdog timer
+ * configuration register.
  */
 static inline hal_wdt_mchp_channel_data_t
 hal_mchp_wdt_set_timeout(const hal_mchp_wdt_t *hal, uint32_t window_closed_time,
@@ -348,15 +335,17 @@ hal_mchp_wdt_set_timeout(const hal_mchp_wdt_t *hal, uint32_t window_closed_time,
 }
 
 /**
- * @brief Get the available timeout value for the WDT.
+ * Function to get the watchdog timer timeout values.
  *
- * @param window_closed_time Window closed time in milliseconds.
- * @param timeout_max Maximum timeout value in milliseconds.
- * @return Structure with minimum and maximum timeout values.
+ * This function calculates the minimum and maximum timeout values for the
+ * watchdog timer based on the input parameters. It calculates the appropriate
+ * period indices for the window closed time and the maximum timeout value. The
+ * function returns the calculated timeout values.
+ *
  */
 static inline hal_wdt_mchp_channel_data_t
-hal_mchp_wdt_get_available_timeout_val(uint32_t window_closed_time,
-                                       uint32_t timeout_max) {
+hal_mchp_wdt_get_timeout_val(uint32_t window_closed_time,
+                             uint32_t timeout_max) {
   hal_wdt_mchp_channel_data_t new_timeout = {0};
   uint8_t window_index = hal_mchp_wdt_get_period_idx(window_closed_time);
   uint8_t per_index =

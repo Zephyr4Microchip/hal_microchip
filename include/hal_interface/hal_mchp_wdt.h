@@ -76,7 +76,7 @@ static inline int hal_mchp_wdt_win_mode_supported();
  * @return Always returns WDT_MCHP_FAIL indicating that setting the WDT to not
  * trigger a reset is not supported.
  */
-static inline int hal_mchp_wdt_use_flag_reset_none();
+static inline int hal_mchp_wdt_reset_none();
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a CPU core reset.
@@ -87,7 +87,7 @@ static inline int hal_mchp_wdt_use_flag_reset_none();
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger a CPU core reset is supported.
  */
-static inline int hal_mchp_wdt_use_flag_reset_cpu_core();
+static inline int hal_mchp_wdt_reset_cpu_core();
 
 /**
  * @brief Set the Microchip Watchdog Timer (WDT) to trigger a system-on-chip
@@ -99,7 +99,7 @@ static inline int hal_mchp_wdt_use_flag_reset_cpu_core();
  * @return Always returns WDT_MCHP_SUCCESS indicating that setting the WDT to
  * trigger an SoC reset is supported.
  */
-static inline int hal_mchp_wdt_use_flag_reset_soc();
+static inline int hal_mchp_wdt_reset_soc();
 
 /**
  * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) during
@@ -111,7 +111,7 @@ static inline int hal_mchp_wdt_use_flag_reset_soc();
  * @return Always returns WDT_MCHP_FAIL indicating that pausing the WDT during
  * sleep mode is not supported.
  */
-static inline int hal_mchp_wdt_apply_opt_pause_in_sleep();
+static inline int hal_mchp_wdt_pause_in_sleep();
 
 /**
  * @brief Apply the option to pause the Microchip Watchdog Timer (WDT) when the
@@ -123,7 +123,7 @@ static inline int hal_mchp_wdt_apply_opt_pause_in_sleep();
  * @return Always returns WDT_MCHP_FAIL indicating that pausing the WDT when the
  * system is halted by a debugger is not supported.
  */
-static inline int hal_mchp_wdt_apply_opt_pause_halted_by_debug();
+static inline int hal_mchp_wdt_pause_halted_by_debug();
 
 /**
  * @brief Interrupt triggered when the WDT window opens.
@@ -216,7 +216,6 @@ hal_mchp_wdt_set_timeout(const hal_mchp_wdt_t *hal, uint32_t window_closed_time,
  * @return Structure with minimum and maximum timeout values.
  */
 static inline hal_wdt_mchp_channel_data_t
-hal_mchp_wdt_get_available_timeout_val(uint32_t window_closed_time,
-                                       uint32_t timeout_max);
+hal_mchp_wdt_get_timeout_val(uint32_t window_closed_time, uint32_t timeout_max);
 
 #endif /* MICROCHIP_HAL_WDT_H_ */
