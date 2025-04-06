@@ -1003,6 +1003,12 @@ hal_mchp_mclk_configure(mclk_registers_t *regs, uint32_t clk,
 	clock_control_mchp_mclk_configuration_t *mclk_configuration =
 		configuration->mclk_configuration;
 
+	/* Check whether configuration data is present or not. */
+	if (mclk_configuration == NULL) {
+		/* Return no config to indicate configuration data is not present. */
+		return CLOCK_CONTROL_MCHP_STATE_NO_CONFIG;
+	}
+
 	/* Check if the clock identifier is zero */
 	if (clk == 0) {
 		/* Set the CPU clock division factor */

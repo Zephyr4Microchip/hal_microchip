@@ -397,6 +397,12 @@ hal_mchp_osc32kctrl_configure(osc32kctrl_registers_t *regs, uint32_t clk,
 	clock_control_mchp_osc32kctrl_configuration_t *osc32kctrl_configuration =
 		configuration->osc32kctrl_configuration;
 
+	/* Check whether configuration data is present or not. */
+	if (osc32kctrl_configuration == NULL) {
+		/* Return no config to indicate configuration data is not present. */
+		return CLOCK_CONTROL_MCHP_STATE_NO_CONFIG;
+	}
+
 	if (clk == 0) {
 		/* If no clock is specified, configure all clocks */
 		regs->OSC32KCTRL_XOSC32K =

@@ -280,6 +280,32 @@ static const hal_mchp_clock_set_rate_function_t
 };
 
 /**
+ * @brief Safely divides two 64-bit unsigned integers.
+ *
+ * This function performs a 64-bit unsigned division using bitwise operations
+ * to calculate the quotient and remainder without relying on division operators.
+ *
+ * @param dividend The 64-bit unsigned integer to be divided.
+ * @param divisor The 64-bit unsigned integer divisor.
+ *
+ * @return The quotient of the division (dividend / divisor).
+ */
+static uint64_t hal_mchp_clock_udiv64(uint64_t dividend, uint64_t divisor)
+{
+	uint64_t quotient = 0;
+	uint64_t remainder = 0;
+
+	for (uint8_t i = 0; i < 64; i++) {
+		remainder = (remainder << 1) | ((dividend >> (63 - i)) & 1);
+		if (remainder >= divisor) {
+			remainder = remainder - divisor;
+			quotient = quotient | (1ULL << (63 - i));
+		}
+	}
+	return quotient;
+}
+
+/**
  * @brief Configures a clock based on the provided clock address and
  * configuration.
  *
@@ -463,6 +489,8 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 {
 	/* Loop index for clock base addresses */
 	uint32_t index;
+	uint32_t divisor;
+	uint8_t res_count;
 
 	/* Stores the state of the clock operation */
 	clock_control_mchp_state_t state;
@@ -479,7 +507,7 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 		/* Fractional resolution */
 		.mul_frac_res = HAL_MCHP_CLOCK_MULTIPLIER_FRACTION_RESOLUTION,
 		/* Fractional multiplier */
-		.mul_frac = 10 ^ HAL_MCHP_CLOCK_MULTIPLIER_FRACTION_RESOLUTION,
+		.mul_frac = 1,
 		/* Default frequency */
 		.frequency = 0,
 		/* Target clock */
@@ -491,6 +519,12 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 	};
 
 	clock_control_mchp_source_t *src = &source;
+
+	divisor = 1;
+	for (res_count = 0; res_count < src->mul_frac_res; res_count++) {
+		divisor = divisor * 10;
+	}
+	source.mul_frac = divisor;
 
 	/* Search for the corresponding clock base address and get its rate */
 	do {
@@ -564,11 +598,13 @@ hal_mchp_clock_get_rate(uint32_t clk_addr, uint32_t clk, uint32_t *rate,
 	}
 
 	/* Calculate rate using the multiplier, fractional multiplier, and divisor */
-	calc_rate =
-		((source.frequency * source.mul) * source.mul_frac) / (10 ^ source.mul_frac_res);
+	calc_rate = (uint64_t)(source.frequency * source.mul) * source.mul_frac;
 
-	/* Store the final calculated rate */
-	*rate = (uint32_t)(calc_rate / source.div);
+	/* Perform safe 64bit division calc_rate = calc_rate / divisor */
+	calc_rate = hal_mchp_clock_udiv64(calc_rate, (uint64_t)divisor);
+
+	/* Perform safe 64bit division and Store the final calculated rate */
+	*rate = (uint32_t)hal_mchp_clock_udiv64(calc_rate, (uint64_t)source.div);
 
 	return state;
 }

@@ -256,7 +256,7 @@ static int hal_mchp_gclk_configure_pchctrl(gclk_registers_t *regs, uint32_t clk,
  * @note This function modifies the GENCTRL register to configure the specified GCLK generator for
  * the given clock.
  */
-static int hal_mchp_gclk_configure_genctrl(gclk_registers_t *regs, uint32_t clk, uint8_t gen_val)
+static int hal_mchp_gclk_configure_genctrl(gclk_registers_t *regs, uint32_t clk, uint32_t gen_val)
 {
 	uint32_t index;
 	int error = -1;
@@ -534,7 +534,8 @@ hal_mchp_gclk_get_rate(gclk_registers_t *regs, uint32_t clk, clock_control_mchp_
 			/* Apply the appropriate value based on the divider selection */
 			if ((regs->GCLK_GENCTRL[index] & GCLK_GENCTRL_DIVSEL_Msk) ==
 			    GCLK_GENCTRL_DIVSEL_Msk) {
-				divider = 2 ^ (divider + 1);
+				/* Calculate 2 ^ (divider + 1) */
+				divider = 1 << (divider + 1);
 			} else {
 				/* If divider is 0, use 1 */
 				if (divider == 0) {
@@ -730,6 +731,12 @@ hal_mchp_gclk_configure(gclk_registers_t *regs, uint32_t clk,
 	/* Pointer to the gclk_configuration in the configuration structure. */
 	clock_control_mchp_gclk_configuration_t *gclk_configuration =
 		configuration->gclk_configuration;
+
+	/* Check whether configuration data is present or not. */
+	if (gclk_configuration == NULL) {
+		/* Return no config to indicate configuration data is not present. */
+		return CLOCK_CONTROL_MCHP_STATE_NO_CONFIG;
+	}
 
 	if (clk == 0) {
 		/* No specific clock given, apply settings to all available clocks. */

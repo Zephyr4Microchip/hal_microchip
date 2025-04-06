@@ -377,6 +377,8 @@ hal_mchp_oscctrl_get_rate(oscctrl_registers_t *regs, uint32_t clk, clock_control
 	uint32_t index;
 	uint32_t divider;
 	uint32_t mul_frac;
+	uint32_t multiplier;
+	uint8_t res_count;
 
 	state = CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT;
 
@@ -423,16 +425,20 @@ hal_mchp_oscctrl_get_rate(oscctrl_registers_t *regs, uint32_t clk, clock_control
 		for (index = 0; index < HAL_MCHP_ID_MAP_OSCCTRL_DPLL_SIZE; index++) {
 			if (clk == hal_mchp_id_map_oscctrl_dpll[index].clk) {
 				state = CLOCK_CONTROL_MCHP_STATE_NOT_SOURCE;
+				multiplier = 1;
+				for (res_count = 0; res_count < src->mul_frac_res; res_count++) {
+					multiplier = multiplier * 10;
+				}
 				/* Calculate DPLL multiplication factor */
 				mul_frac = (((regs->DPLL[index].OSCCTRL_DPLLRATIO &
 					      OSCCTRL_DPLLRATIO_LDR_Msk) >>
 					     OSCCTRL_DPLLRATIO_LDR_Pos) +
 					    1) *
-					   (10 ^ src->mul_frac_res);
+					   multiplier;
 				src->mul_frac = mul_frac + ((((regs->DPLL[index].OSCCTRL_DPLLRATIO &
 							       OSCCTRL_DPLLRATIO_LDRFRAC_Msk) >>
 							      OSCCTRL_DPLLRATIO_LDRFRAC_Pos) *
-							     (10 ^ src->mul_frac_res)) /
+							     multiplier) /
 							    32);
 
 				/* Determine target clock based on reference clock of DPLL */
@@ -582,6 +588,12 @@ hal_mchp_oscctrl_configure(oscctrl_registers_t *regs, uint32_t clk,
 	clock_control_mchp_oscctrl_configuration_t *oscctrl_configuration =
 		configuration->oscctrl_configuration;
 
+	/* Check whether configuration data is present or not. */
+	if (oscctrl_configuration == NULL) {
+		/* Return no config to indicate configuration data is not present. */
+		return CLOCK_CONTROL_MCHP_STATE_NO_CONFIG;
+	}
+
 	if (clk == 0) {
 		/* No specific clock given, configure all clocks. */
 		for (index = 0; index < HAL_MCHP_ID_INT_MAP_OSCCTRL_XOSC_SIZE; index++) {
@@ -638,15 +650,17 @@ hal_mchp_oscctrl_configure(oscctrl_registers_t *regs, uint32_t clk,
 		if (state == CLOCK_CONTROL_MCHP_STATE_NO_SUPPORT) {
 			for (index = 0; index < HAL_MCHP_ID_MAP_OSCCTRL_DPLL_SIZE; index++) {
 				if (clk == hal_mchp_id_map_oscctrl_dpll[index].clk) {
-					regs->DPLL[index].OSCCTRL_DPLLCTRLA =
-						OSCCTRL_DPLLCTRLA_Msk &
-						oscctrl_configuration->dpllctrla[index];
-					regs->DPLL[index].OSCCTRL_DPLLRATIO =
-						OSCCTRL_DPLLRATIO_Msk &
-						oscctrl_configuration->dpllctrla[index];
+					/* Disable DPLL before configuring */
+					OSCCTRL_REGS->DPLL[0].OSCCTRL_DPLLCTRLA = OSCCTRL_DPLLCTRLA_ENABLE(0);
 					regs->DPLL[index].OSCCTRL_DPLLCTRLB =
 						OSCCTRL_DPLLCTRLB_Msk &
 						oscctrl_configuration->dpllctrlb[index];
+					regs->DPLL[index].OSCCTRL_DPLLRATIO =
+						OSCCTRL_DPLLRATIO_Msk &
+						oscctrl_configuration->dpllratio[index];
+					regs->DPLL[index].OSCCTRL_DPLLCTRLA =
+						OSCCTRL_DPLLCTRLA_Msk &
+						oscctrl_configuration->dpllctrla[index];
 					state = CLOCK_CONTROL_MCHP_STATE_OK;
 					break;
 				}
