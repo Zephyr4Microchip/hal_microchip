@@ -27,10 +27,10 @@
  */
 #define HAL_MCHP_GPIO_SUCCESS    0
 /**
- * @def HAL_BIT(n)
+ * @def HAL_MCHP_GPIO_BIT(n)
  * @brief Unsigned integer with bit position 'n' set.
  */
-#define HAL_BIT(n)               (1UL << (n))
+#define HAL_MCHP_GPIO_BIT(n)     (1UL << (n))
 
 /** GPIO HAL Function prototypes */
 
@@ -48,8 +48,8 @@ static inline void hal_mchp_gpio_port_get(hal_gpio_port_reg *regs, uint32_t *por
  * @param mask Mask to apply to the port.
  * @param value Value to set on the port.
  */
-static inline void hal_mchp_gpio_port_set_masked(hal_gpio_port_reg *regs, uint32_t mask,
-						 uint32_t value);
+static inline void hal_mchp_gpio_port_outset_masked(hal_gpio_port_reg *regs, uint32_t mask,
+						    uint32_t value);
 /**
  * @brief Enable input on a specific GPIO pin.
  *
@@ -117,21 +117,21 @@ static inline bool hal_mchp_gpio_is_pullup(hal_gpio_port_reg *regs, const uint32
  * @param regs Pointer to the port group registers.
  * @param pins Bitmask of pins to set high.
  */
-static inline void hal_mchp_gpio_set_pins_high(hal_gpio_port_reg *regs, const uint32_t pins);
+static inline void hal_mchp_gpio_port_set_pins_high(hal_gpio_port_reg *regs, const uint32_t pins);
 /**
  * @brief Set multiple GPIO pins to low.
  *
  * @param regs Pointer to the port group registers.
  * @param pins Bitmask of pins to clear low.
  */
-static inline void hal_mchp_gpio_set_pins_low(hal_gpio_port_reg *regs, const uint32_t pins);
+static inline void hal_mchp_gpio_port_set_pins_low(hal_gpio_port_reg *regs, const uint32_t pins);
 /**
  * @brief Toggle multiple GPIO pins.
  *
  * @param regs Pointer to the port group registers.
  * @param pins Bitmask of pins to toggle.
  */
-static inline void hal_mchp_gpio_toggle_pins(hal_gpio_port_reg *regs, const uint32_t pins);
+static inline void hal_mchp_gpio_port_toggle_pins(hal_gpio_port_reg *regs, const uint32_t pins);
 /**
  * @brief Check if a specific GPIO pin is set to high.
  *
@@ -185,7 +185,7 @@ static inline uint32_t hal_mchp_gpio_port_get_output_pins(hal_gpio_port_reg *reg
  * @retval 0 If successful
  * @retval HAL_MCHP_GPIO_ERR_NOTSUP if the feature is not supported.
  */
-static inline int hal_mchp_gpio_set_open_drain(hal_gpio_port_reg *regs, const uint32_t pins);
+static inline int hal_mchp_gpio_port_set_open_drain(hal_gpio_port_reg *regs, const uint32_t pins);
 /**
  * @brief Set the GPIO pins to open-source mode.
  *
@@ -194,7 +194,7 @@ static inline int hal_mchp_gpio_set_open_drain(hal_gpio_port_reg *regs, const ui
  * @retval 0 If successful
  * @retval HAL_MCHP_GPIO_ERR_NOTSUP if the feature is not supported.
  */
-static inline int hal_mchp_gpio_set_open_source(hal_gpio_port_reg *regs, const uint32_t pins);
+static inline int hal_mchp_gpio_port_set_open_source(hal_gpio_port_reg *regs, const uint32_t pins);
 /**
  * @brief Check if a specific GPIO pin is configured as open-drain.
  *

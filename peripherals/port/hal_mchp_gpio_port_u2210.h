@@ -29,8 +29,8 @@ static inline void hal_mchp_gpio_port_get(hal_gpio_port_reg *regs, uint32_t *por
 /**
  * Set the GPIO port output value with a mask.
  */
-static inline void hal_mchp_gpio_port_set_masked(hal_gpio_port_reg *regs, uint32_t mask,
-						 uint32_t value)
+static inline void hal_mchp_gpio_port_outset_masked(hal_gpio_port_reg *regs, uint32_t mask,
+						    uint32_t value)
 {
 	regs->PORT_OUT = (regs->PORT_OUT & ~(mask)) | (value & mask);
 }
@@ -48,7 +48,7 @@ static inline void hal_mchp_gpio_enable_input(hal_gpio_port_reg *regs, const uin
  */
 static inline void hal_mchp_gpio_outset(hal_gpio_port_reg *regs, const uint32_t pin)
 {
-	regs->PORT_OUTSET = HAL_BIT(pin);
+	regs->PORT_OUTSET = HAL_MCHP_GPIO_BIT(pin);
 }
 
 /**
@@ -56,7 +56,7 @@ static inline void hal_mchp_gpio_outset(hal_gpio_port_reg *regs, const uint32_t 
  */
 static inline void hal_mchp_gpio_outclr(hal_gpio_port_reg *regs, const uint32_t pin)
 {
-	regs->PORT_OUTCLR = HAL_BIT(pin);
+	regs->PORT_OUTCLR = HAL_MCHP_GPIO_BIT(pin);
 }
 
 /**
@@ -65,7 +65,7 @@ static inline void hal_mchp_gpio_outclr(hal_gpio_port_reg *regs, const uint32_t 
 static inline void hal_mchp_gpio_set_dir_output(hal_gpio_port_reg *regs, const uint32_t pin)
 {
 	regs->PORT_PINCFG[pin] &= ~PORT_PINCFG_INEN(1);
-	regs->PORT_DIRSET = HAL_BIT(pin);
+	regs->PORT_DIRSET = HAL_MCHP_GPIO_BIT(pin);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline void hal_mchp_gpio_set_dir_output(hal_gpio_port_reg *regs, const u
 static inline void hal_mchp_gpio_set_dir_input(hal_gpio_port_reg *regs, const uint32_t pin)
 {
 	hal_mchp_gpio_enable_input(regs, pin);
-	regs->PORT_DIRCLR = HAL_BIT(pin);
+	regs->PORT_DIRCLR = HAL_MCHP_GPIO_BIT(pin);
 }
 
 /**
@@ -83,7 +83,7 @@ static inline void hal_mchp_gpio_set_dir_input(hal_gpio_port_reg *regs, const ui
 static inline int hal_mchp_gpio_set_dir_input_output(hal_gpio_port_reg *regs, const uint32_t pin)
 {
 	hal_mchp_gpio_enable_input(regs, pin);
-	regs->PORT_DIRSET = HAL_BIT(pin);
+	regs->PORT_DIRSET = HAL_MCHP_GPIO_BIT(pin);
 	return 0;
 }
 
@@ -111,7 +111,7 @@ static inline bool hal_mchp_gpio_is_pullup(hal_gpio_port_reg *regs, const uint32
 /**
  * Set multiple GPIO pins to high.
  */
-static inline void hal_mchp_gpio_set_pins_high(hal_gpio_port_reg *regs, const uint32_t pins)
+static inline void hal_mchp_gpio_port_set_pins_high(hal_gpio_port_reg *regs, const uint32_t pins)
 {
 	regs->PORT_OUTSET = pins;
 }
@@ -119,7 +119,7 @@ static inline void hal_mchp_gpio_set_pins_high(hal_gpio_port_reg *regs, const ui
 /**
  * Set multiple GPIO pins to low.
  */
-static inline void hal_mchp_gpio_set_pins_low(hal_gpio_port_reg *regs, const uint32_t pins)
+static inline void hal_mchp_gpio_port_set_pins_low(hal_gpio_port_reg *regs, const uint32_t pins)
 {
 	regs->PORT_OUTCLR = pins;
 }
@@ -127,7 +127,7 @@ static inline void hal_mchp_gpio_set_pins_low(hal_gpio_port_reg *regs, const uin
 /**
  * Toggle multiple GPIO pins.
  */
-static inline void hal_mchp_gpio_toggle_pins(hal_gpio_port_reg *regs, const uint32_t pins)
+static inline void hal_mchp_gpio_port_toggle_pins(hal_gpio_port_reg *regs, const uint32_t pins)
 {
 	regs->PORT_OUTTGL = pins;
 }
@@ -138,7 +138,7 @@ static inline void hal_mchp_gpio_toggle_pins(hal_gpio_port_reg *regs, const uint
 static inline bool hal_mchp_gpio_is_pin_high(hal_gpio_port_reg *regs, const uint32_t pin)
 {
 	bool is_output_high = false;
-	if ((regs->PORT_OUT & HAL_BIT(pin)) != 0) {
+	if ((regs->PORT_OUT & HAL_MCHP_GPIO_BIT(pin)) != 0) {
 		is_output_high = true;
 	}
 	return is_output_high;
@@ -158,7 +158,7 @@ static inline uint32_t hal_mchp_gpio_port_get_dir(hal_gpio_port_reg *regs)
 static inline bool hal_mchp_gpio_is_pin_output(hal_gpio_port_reg *regs, const uint32_t pin)
 {
 	bool is_output = false;
-	if ((hal_mchp_gpio_port_get_dir(regs) & HAL_BIT(pin)) != 0) {
+	if ((hal_mchp_gpio_port_get_dir(regs) & HAL_MCHP_GPIO_BIT(pin)) != 0) {
 		is_output = true;
 	}
 	return is_output;
@@ -173,7 +173,7 @@ static inline uint32_t hal_mchp_gpio_port_get_input_pins(hal_gpio_port_reg *regs
 	uint32_t port_input = 0;
 	for (pin_id = 0; pin_id < 32; pin_id++) {
 		if (((regs->PORT_PINCFG[pin_id] & PORT_PINCFG_INEN(1)) != 0)) {
-			port_input |= HAL_BIT(pin_id);
+			port_input |= HAL_MCHP_GPIO_BIT(pin_id);
 		}
 	}
 
@@ -193,7 +193,7 @@ static inline uint32_t hal_mchp_gpio_port_get_output_pins(hal_gpio_port_reg *reg
 /**
  * Set the GPIO pins to open-drain mode.
  */
-static inline int hal_mchp_gpio_set_open_drain(hal_gpio_port_reg *regs, const uint32_t pins)
+static inline int hal_mchp_gpio_port_set_open_drain(hal_gpio_port_reg *regs, const uint32_t pins)
 {
 	/* Not Supported */
 	return HAL_MCHP_GPIO_ERR_NOTSUP;
@@ -202,7 +202,7 @@ static inline int hal_mchp_gpio_set_open_drain(hal_gpio_port_reg *regs, const ui
 /**
  * Set the GPIO pins to open-source mode.
  */
-static inline int hal_mchp_gpio_set_open_source(hal_gpio_port_reg *regs, const uint32_t pins)
+static inline int hal_mchp_gpio_port_set_open_source(hal_gpio_port_reg *regs, const uint32_t pins)
 {
 	/* Not Supported */
 	return HAL_MCHP_GPIO_ERR_NOTSUP;
@@ -226,7 +226,7 @@ static inline int hal_mchp_gpio_disconnect(hal_gpio_port_reg *regs, const uint32
 	regs->PORT_PINCFG[pin] &= ~PORT_PINCFG_PULLEN(1);
 	/* Disable input on a specific GPIO pin. */
 	regs->PORT_PINCFG[pin] &= ~PORT_PINCFG_INEN(1);
-	regs->PORT_DIRCLR = HAL_BIT(pin);
+	regs->PORT_DIRCLR = HAL_MCHP_GPIO_BIT(pin);
 	return 0;
 }
 #endif /* MICROCHIP_HAL_MCHP_GPIO_PORT_U2210_H_ */
