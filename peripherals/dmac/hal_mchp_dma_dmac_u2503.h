@@ -48,6 +48,41 @@ typedef struct dma_mchp_dmac {
 #define HAL_DMA_MCHP_DATA_MEMORY_SIZE sizeof(dma_mchp_dmac_t)
 
 /**
+ * @brief DMA buffer address alignment requirement.
+ *
+ * This macro defines the required alignment (in bytes) for the starting address
+ * of a DMA buffer. For 32-bit transfers, a 4-byte alignment is required.
+ */
+#define HAL_MCHP_DMA_BUF_ADDR_ALIGNMENT 4
+
+/**
+ * @brief DMA buffer size alignment requirement.
+ *
+ * This macro defines the required alignment (in bytes) for the size (length)
+ * of a DMA buffer. For 32-bit transfers, a 4-byte alignment is required.
+ */
+#define HAL_MCHP_DMA_BUF_SIZE_ALIGNMENT 4
+
+/**
+ * @brief DMA copy alignment requirement.
+ *
+ * This macro defines the required alignment (in bytes) for both source and
+ * destination addresses, as well as the transfer size, when performing DMA copy
+ * operations. For 32-bit transfers, a 4-byte alignment is required.
+ */
+#define HAL_MCHP_DMA_COPY_ALIGNMENT 4
+
+/**
+ * @brief Maximum block count for DMA transfers.
+ *
+ * This macro defines the maximum number of data units (blocks) that can be
+ * transferred in a single DMA block transfer operation. The DMAC Block Transfer
+ * Count field is 16 bits wide, allowing a maximum value of 65535 (0xFFFF).
+ * The actual number of bytes transferred depends on the configured data width.
+ */
+#define HAL_MCHP_DMA_MAX_BLOCK_COUNT 65535
+
+/**
  * @brief Handle DMA interrupt and retrieve the associated callback and user data.
  *
  * This function reads the DMA interrupt status, determines the channel number,
@@ -714,6 +749,43 @@ static inline void hal_mchp_dma_enable_cyclic_desc_chain(void *last_desc_ptr, vo
 
 	/* Link the last descriptor to the base descriptor to form a cyclic chain */
 	last_desc->DMAC_DESCADDR = (uint32_t)base_desc;
+}
+
+/**
+ * @brief Function to get specific DMA hardware attribute.
+ *
+ * @param type DMA attribute type (enum dma_mchp_attribute_type).
+ * @param value Pointer to return the attribute value.
+ * @return 0 on success, -ENOTSUP if unsupported type.
+ */
+static inline int hal_mchp_dma_get_hw_attribute(uint32_t type, uint32_t *value)
+{
+	int ret = 0;
+	dma_mchp_attribute_type_t attr = (dma_mchp_attribute_type_t)type;
+
+	switch (attr) {
+	case DMA_MCHP_ATTR_BUFFER_ADDRESS_ALIGNMENT:
+		*value = HAL_MCHP_DMA_BUF_ADDR_ALIGNMENT;
+		break;
+
+	case DMA_MCHP_ATTR_BUFFER_SIZE_ALIGNMENT:
+		*value = HAL_MCHP_DMA_BUF_SIZE_ALIGNMENT;
+		break;
+
+	case DMA_MCHP_ATTR_COPY_ALIGNMENT:
+		*value = HAL_MCHP_DMA_COPY_ALIGNMENT;
+		break;
+
+	case DMA_MCHP_ATTR_MAX_BLOCK_COUNT:
+		*value = HAL_MCHP_DMA_MAX_BLOCK_COUNT;
+		break;
+
+	default:
+		ret = -ENOTSUP;
+		break;
+	}
+
+	return ret;
 }
 
 #endif /* MICROCHIP_HAL_MCHP_DMA_DMAC_U2503_H_ */

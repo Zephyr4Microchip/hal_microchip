@@ -106,6 +106,26 @@ typedef enum hal_dma_mchp_ch_direction {
 } hal_dma_mchp_ch_direction_t;
 
 /**
+ * @brief DMA attribute types for Microchip MCHP DMA controller.
+ *
+ * This enumeration defines attribute types that describe hardware-specific
+ * constraints and capabilities for DMA transfers.
+ */
+typedef enum dma_mchp_attribute_type {
+	/** Required alignment (in bytes) of the DMA buffer address. */
+	DMA_MCHP_ATTR_BUFFER_ADDRESS_ALIGNMENT,
+
+	/** Required alignment (in bytes) of the total buffer size. */
+	DMA_MCHP_ATTR_BUFFER_SIZE_ALIGNMENT,
+
+	/** Required alignment (in bytes) for each DMA copy transfer. */
+	DMA_MCHP_ATTR_COPY_ALIGNMENT,
+
+	/** Maximum number of blocks supported per DMA transfer. */
+	DMA_MCHP_ATTR_MAX_BLOCK_COUNT,
+} dma_mchp_attribute_type_t;
+
+/**
  * @brief Macro defining the required memory size for DMA peripheral data.
  *
  * This macro must be defined in the implementation file. It specifies the
@@ -352,5 +372,14 @@ static inline void *hal_mchp_dma_desc_get_used(const hal_mchp_dma_t *hal_dma, ui
  * @param base_desc_ptr Pointer to the base (first) descriptor in the chain.
  */
 static inline void hal_mchp_dma_enable_cyclic_desc_chain(void *last_desc_ptr, void *base_desc_ptr);
+
+/**
+ * @brief Function to get specific DMA hardware attribute.
+ *
+ * @param type DMA attribute type (enum dma_mchp_attribute_type).
+ * @param value Pointer to return the attribute value.
+ * @return 0 on success, -ENOTSUP if unsupported type.
+ */
+static inline int hal_mchp_dma_get_hw_attribute(uint32_t type, uint32_t *value);
 
 #endif /* MICROCHIP_HAL_MCHP_DMA_H_ */
