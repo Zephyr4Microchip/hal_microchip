@@ -1980,6 +1980,8 @@
 #define PA8_AC_CMPTOUT_OUT     MCHP_PINMUX(a, 8, 0x274, 37, periph)
 /* pa8_ac_cmptrdy_out */
 #define PA8_AC_CMPTRDY_OUT     MCHP_PINMUX(a, 8, 0x270, 41, periph)
+/* pa8_can0_tx_out */
+#define PA8_CAN0_TX_OUT        MCHP_PINMUX(a, 8, NA, NA, gpio)
 /* pa8_can1rx_in */
 #define PA8_CAN1RX_IN          MCHP_PINMUX(a, 8, 0x190, 2, periph)
 /* pa8_can1_tx_out */
@@ -2228,6 +2230,8 @@
 #define PA9_AC_CMPTOUT_OUT     MCHP_PINMUX(a, 9, 0x280, 37, periph)
 /* pa9_ac_cmptrdy_out */
 #define PA9_AC_CMPTRDY_OUT     MCHP_PINMUX(a, 9, 0x27c, 41, periph)
+/* pa9_can0rx_in */
+#define PA9_CAN0RX_IN          MCHP_PINMUX(a, 9, NA, NA, gpio)
 /* pa9_can1rx_in */
 #define PA9_CAN1RX_IN          MCHP_PINMUX(a, 9, 0x190, 16, periph)
 /* pa9_can1_tx_out */
